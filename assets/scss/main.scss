@@ -1,3 +1,88 @@
+@use "variables";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    --logoFont: "Fira Code", monospace;
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --ring: 0 0% 3.9%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 0 0% 7%; /* Цвет #121212, очень темный серый фон */
+    --foreground: 0 0% 80%; /* Светлый текст с нейтральным оттенком */
+
+    --muted: 0 0% 10%; /* Очень темный серый для muted */
+    --muted-foreground: 0 0% 50%; /* Средний серый для muted-foreground */
+
+    --popover: 0 0% 8%; /* Очень темный серый для поповеров */
+    --popover-foreground: 0 0% 85%; /* Светлый текст в поповере */
+
+    --card: 0 0% 6%; /* Почти черный для карточек */
+    --card-foreground: 0 0% 90%; /* Светлый текст в карточке */
+
+    --border: 0 0% 12%; /* Очень темный серый для границ */
+    --input: 0 0% 15%; /* Темный серый для инпутов */
+
+    --primary: 0 0% 20%; /* Темный серый для основных элементов */
+    --primary-foreground: 0 0% 85%; /* Светлый текст на основном фоне */
+
+    --secondary: 0 0% 12%; /* Очень темный серый для вторичных элементов */
+    --secondary-foreground: 0 0% 90%; /* Светлый серый для текста на вторичных элементах */
+
+    --accent: 0 0% 25%; /* Темный серый для акцентных элементов */
+    --accent-foreground: 0 0% 90%; /* Светлый текст на акцентных элементах */
+
+    --destructive: 0 50% 35%; /* Темный красный для destructive */
+    --destructive-foreground: 0 0% 100%; /* Белый для текста в destructive элементах */
+
+    --ring: 0 0% 18%; /* Темный серый для кольцевых эффектов */
+  }
+}
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+.v-overlay.v-overlay--active.v-dialog {
+  backdrop-filter: blur(10px);
+}
+
+.card-modal {
+  padding: 20px !important;
+}

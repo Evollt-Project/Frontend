@@ -1,10 +1,9 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div>
-    <Header />
+  <v-btn variant="outlined" :ripple="false" rounded="lg">
     <slot></slot>
-  </div>
+  </v-btn>
 </template>
 
 <style scoped lang="scss"></style>

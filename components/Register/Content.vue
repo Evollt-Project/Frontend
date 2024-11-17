@@ -1,0 +1,83 @@
+<script setup lang="ts">
+const props = defineProps<{
+  loading: boolean;
+}>();
+const data = ref({
+  first_name: "",
+  email: "",
+  password: "",
+  password_confirmation: "",
+});
+const form = ref(null);
+
+const register = async () => {
+  // @ts-ignore
+  const { valid } = await form.value.validate();
+
+  if (valid) {
+  }
+};
+
+const validate = () => {
+  if (props.loading) {
+    return true;
+  }
+
+  return false;
+};
+</script>
+
+<template>
+  <v-form fast-fail ref="form" class="mt-4" @submit.prevent>
+    <v-text-field
+      v-model="data.first_name"
+      :rules="Rule.getRequired()"
+      :disabled="loading"
+      label="Введите имя"
+      variant="outlined"
+      density="comfortable"
+    ></v-text-field>
+
+    <v-text-field
+      v-model="data.email"
+      :rules="Rule.getEmail()"
+      :disabled="loading"
+      label="Введите Email"
+      variant="outlined"
+      density="comfortable"
+    ></v-text-field>
+
+    <v-text-field
+      v-model="data.password"
+      :rules="Rule.getPassword()"
+      :disabled="loading"
+      type="password"
+      label="Введите пароль"
+      variant="outlined"
+      density="comfortable"
+    ></v-text-field>
+
+    <v-text-field
+      v-model="data.password_confirmation"
+      :rules="Rule.getPasswordConfirmation(data.password)"
+      :disabled="loading"
+      type="password"
+      label="Подтвердите пароль"
+      variant="outlined"
+      density="comfortable"
+    ></v-text-field>
+
+    <MyButton
+      class="mt-4"
+      size="large"
+      type="submit"
+      @click="register"
+      :disabled="validate()"
+      :loading="loading"
+      block
+      >Зарегистрироваться</MyButton
+    >
+  </v-form>
+</template>
+
+<style scoped lang="scss"></style>

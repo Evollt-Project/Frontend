@@ -19,7 +19,7 @@ logs
 .idea
 .vscode
 
-# Local env files
+# Local env files j
 .env
 .env.*
 !.env.example

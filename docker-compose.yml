@@ -1,0 +1,19 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: ./docker/frontend.Dockerfile
+    volumes:
+      - ./:/app
+      - ./node_modules/:/app/node_modules
+    ports:
+      - "3000:3000"
+    env_file:
+      - docker/.env
+    environment:
+      - HOST=0.0.0.0
+      - PORT=3000
+      - NODE_ENV=development
+    command: npm run dev
+    stdin_open: true
+    tty: true

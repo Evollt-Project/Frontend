@@ -8,6 +8,7 @@ const openAuthModal = (currentTab: TabType) => {
   tab.value = currentTab;
   loginModal.value = true;
 };
+const router = useRouter();
 </script>
 
 <template>
@@ -24,14 +25,63 @@ const openAuthModal = (currentTab: TabType) => {
         </div>
         <div class="header__title text-3xl">Evollt Project</div>
       </NuxtLink>
-      <div class="header__right flex gap-5">
+      <div class="header__center flex gap-5 items-center">
+        <HeaderMenu />
+      </div>
+      <div class="header__right flex gap-5 items-center">
         <ColorScheme />
-        <MyButton @click="openAuthModal('login')" class="text-lg"
-          >Вход</MyButton
-        >
-        <MyButton @click="openAuthModal('register')" class="text-lg"
-          >Регистрация</MyButton
-        >
+
+        <div v-if="User.store.user">
+          <DropdownMenu>
+            <DropdownMenuTrigger as-child>
+              <v-avatar
+                :image="
+                  User.store.userPhotoUrl(
+                    User.store.user.avatar,
+                    User.store.user.first_name,
+                  )
+                "
+              />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent class="w-56">
+              <DropdownMenuLabel class="flex justify-center">{{
+                [
+                  User.store.user.surname,
+                  User.store.user.first_name,
+                  User.store.user.last_name,
+                ].join(" ")
+              }}</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                <DropdownMenuItem
+                  class="cursor-pointer"
+                  @click="router.push({ name: 'profile' })"
+                >
+                  <span>Профиль</span>
+                  <DropdownMenuShortcut>
+                    <v-icon icon="mdi-account-outline"></v-icon>
+                  </DropdownMenuShortcut>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+
+              <DropdownMenuSeparator />
+              <DropdownMenuItem @click="User.logout()">
+                <span>Выйти</span>
+                <DropdownMenuShortcut
+                  ><v-icon icon="mdi-logout"></v-icon
+                ></DropdownMenuShortcut>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+        <div class="flex gap-5 items-center" v-else>
+          <MyButton @click="openAuthModal('login')" class="text-lg"
+            >Вход</MyButton
+          >
+          <MyButton @click="openAuthModal('register')" class="text-lg"
+            >Регистрация</MyButton
+          >
+        </div>
       </div>
     </div>
     <ModalsAuthorize
@@ -49,5 +99,9 @@ const openAuthModal = (currentTab: TabType) => {
       font-family: var(--logoFont);
     }
   }
+}
+
+.list-item {
+  background-color: #2e2e2e;
 }
 </style>

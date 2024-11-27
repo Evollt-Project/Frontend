@@ -1,5 +1,10 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  runtimeConfig: {
+    public: {
+      url: process.env.URL,
+    },
+  },
   compatibilityDate: "2024-04-03",
   devtools: { enabled: true },
   css: ["~/assets/scss/main.scss"],
@@ -9,7 +14,11 @@ export default defineNuxtConfig({
     "vuetify-nuxt-module",
     "shadcn-nuxt",
     "@nuxtjs/color-mode",
+    "@pinia/nuxt",
   ],
+  pinia: {
+    storesDirs: ["./stores/**"],
+  },
   alias: {
     "@": "./",
   },
@@ -24,7 +33,10 @@ export default defineNuxtConfig({
      */
     componentDir: "./components/ui",
   },
-  plugins: ["~/plugins/preline.client.ts"],
+  plugins: [
+    "~/plugins/preline.client.ts",
+    { src: "~/plugins/vue3-toastify.client.ts", mode: "client" },
+  ],
   vite: {
     css: {
       preprocessorOptions: {

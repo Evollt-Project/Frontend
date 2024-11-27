@@ -9,7 +9,7 @@ useHead({
 </script>
 
 <template>
-  <div>It's index.vue</div>
+  <div>Главная</div>
 </template>
 
 <style scoped></style>

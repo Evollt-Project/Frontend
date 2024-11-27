@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import type { IRegister } from "~/types/Auth";
+
 const props = defineProps<{
   loading: boolean;
 }>();
-const data = ref({
+const emits = defineEmits(["loading", "dialog"]);
+const data: Ref<IRegister> = ref({
   first_name: "",
   email: "",
   password: "",
@@ -15,6 +18,12 @@ const register = async () => {
   const { valid } = await form.value.validate();
 
   if (valid) {
+    emits("loading", true);
+    const response = await User.register(data.value);
+    if (response.token) {
+      emits("dialog", false);
+    }
+    emits("loading", false);
   }
 };
 

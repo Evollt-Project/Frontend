@@ -1,10 +1,13 @@
 <script setup lang="ts">
+import type { ILogin } from "~/types/Auth";
+
 const props = defineProps<{
   loading: boolean;
 }>();
-const data = ref({
-  email: "",
-  password: "",
+const emits = defineEmits(["loading", "dialog"]);
+const data: Ref<ILogin> = ref({
+  email: "evollt@gmail.com",
+  password: "qwerty12!!",
 });
 const form = ref(null);
 
@@ -13,6 +16,13 @@ const login = async () => {
   const { valid } = await form.value.validate();
 
   if (valid) {
+    emits("loading", true);
+    const response = await User.login(data.value);
+
+    if (response.token) {
+      emits("dialog", false);
+    }
+    emits("loading", false);
   }
 };
 

@@ -28,7 +28,6 @@ watch(
 watch(
   () => props.tab,
   (value) => {
-    console.log(value);
     tab.value = value;
   },
 );
@@ -83,10 +82,18 @@ watch(
         <v-card-text class="dark:text-white">
           <v-window v-model="tab">
             <v-window-item value="login">
-              <LoginContent :loading="loading" />
+              <LoginContent
+                :loading="loading"
+                @loading="(e: boolean) => (loading = e)"
+                @dialog="(e: boolean) => (dialog = e)"
+              />
             </v-window-item>
             <v-window-item value="register">
-              <RegisterContent :loading="loading" />
+              <RegisterContent
+                :loading="loading"
+                @loading="(e: boolean) => (loading = e)"
+                @dialog="(e: boolean) => (dialog = e)"
+              />
             </v-window-item>
           </v-window>
         </v-card-text>

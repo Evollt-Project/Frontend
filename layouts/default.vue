@@ -1,7 +1,19 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div>
+  <div
+    v-if="Loader.store.loading"
+    class="h-screen flex justify-center items-center"
+  >
+    <div class="w-2/4">
+      <v-progress-linear
+        height="8"
+        v-model="Loader.store.progress"
+        rounded
+      ></v-progress-linear>
+    </div>
+  </div>
+  <div v-else>
     <Header />
     <slot></slot>
   </div>

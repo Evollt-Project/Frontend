@@ -48,7 +48,7 @@ watch(
   >
     <template v-if="dialog">
       <v-card
-        rounded="lg"
+        rounded="xl"
         class="!bg-white dark:!bg-neutral-900 card-modal"
         variant="outlined"
         :loading="loading"

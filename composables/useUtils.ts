@@ -9,3 +9,10 @@ export const useErrorNotification = (errors: { message?: string }) => {
     toast.error(value);
   }
 };
+
+export const useFormatAmount = (amount: number) => {
+  return Number(amount).toLocaleString("ru-RU", {
+    style: "currency",
+    currency: "RUB",
+  });
+};

@@ -23,7 +23,7 @@ const router = useRouter();
         <div class="header__logo">
           <IconsLogo />
         </div>
-        <div class="header__title text-3xl">Evollt Project</div>
+        <div class="header__title text-3xl">Evollt School</div>
       </NuxtLink>
       <div class="header__center flex gap-5 items-center">
         <HeaderMenu />
@@ -60,6 +60,15 @@ const router = useRouter();
                   <span>Профиль</span>
                   <DropdownMenuShortcut>
                     <v-icon icon="mdi-account-outline"></v-icon>
+                  </DropdownMenuShortcut>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  class="cursor-pointer"
+                  @click="router.push({ name: 'settings' })"
+                >
+                  <span>Настройки</span>
+                  <DropdownMenuShortcut>
+                    <v-icon icon="mdi-cog-outline"></v-icon>
                   </DropdownMenuShortcut>
                 </DropdownMenuItem>
               </DropdownMenuGroup>

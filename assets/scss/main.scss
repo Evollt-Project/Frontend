@@ -4,11 +4,40 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  box-sizing: border-box;
+}
+
+.shadow-lg {
+  box-shadow: 0px 0px 10px red;
+}
+
+// .cities-swiper-custom-pagination {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   .swiper-pagination-bullet {
+//     width: 15px;
+//     height: 15px;
+//     background-color: #fff !important;
+//     opacity: 1;
+//   }
+//
+//   .swiper-pagination-bullet-active {
+//     transition: 0.4s;
+//     background-color: #16697a !important;
+//     scale: 1.5;
+//   }
+// }
+
 @layer base {
   :root {
     --logoFont: "Fira Code", monospace;
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
+    --navigation-bg-color: rgba(255, 255, 255, 0.7);
+    --navigation-icon-color: black;
+    --navigation-bg-hover-color: #ffffff;
 
     --muted: 0 0% 96.1%;
     --muted-foreground: 0 0% 45.1%;
@@ -42,6 +71,9 @@
   .dark {
     --background: 0 0% 7%; /* Цвет #121212, очень темный серый фон */
     --foreground: 0 0% 80%; /* Светлый текст с нейтральным оттенком */
+    --navigation-bg-color: rgba(50, 50, 50, 0.9);
+    --navigation-icon-color: #ffffff;
+    --navigation-bg-hover-color: rgba(100, 100, 100, 0.9);
 
     --muted: 0 0% 10%; /* Очень темный серый для muted */
     --muted-foreground: 0 0% 50%; /* Средний серый для muted-foreground */

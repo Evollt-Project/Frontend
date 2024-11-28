@@ -1,0 +1,54 @@
+.swiper-navigation {
+  position: absolute;
+  z-index: 1000;
+  top: 50%;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transform: translateY(-50%);
+  pointer-events: none;
+
+  .swiper-navigation-custom-left,
+  .swiper-navigation-custom-right {
+    background: var(--navigation-bg-color);
+    padding: 5px 10px;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+    transition:
+      transform 0.3s,
+      background-color 0.3s;
+    cursor: pointer;
+    pointer-events: auto;
+
+    &:hover {
+      transform: scale(1.1);
+      background-color: var(--navigation-bg-hover-color);
+    }
+
+    svg path {
+      stroke: var(--navigation-icon-color);
+    }
+  }
+
+  .swiper-navigation-custom-left {
+    position: absolute;
+    left: 0;
+    z-index: 2000;
+  }
+
+  .swiper-navigation-custom-right {
+    position: absolute;
+    right: 0;
+    z-index: 2000;
+  }
+
+  .swiper-button-disabled {
+    opacity: 0;
+  }
+}

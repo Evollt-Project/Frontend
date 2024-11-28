@@ -11,6 +11,8 @@ const data: Ref<IRegister> = ref({
   password: "",
   password_confirmation: "",
 });
+const showPassword: Ref<boolean> = ref(false);
+const showConfirmationPassword: Ref<boolean> = ref(false);
 const form = ref(null);
 
 const register = async () => {
@@ -42,7 +44,8 @@ const validate = () => {
       v-model="data.first_name"
       :rules="Rule.getRequired()"
       :disabled="loading"
-      label="Введите имя"
+      label="Имя"
+      prepend-inner-icon="mdi-account-circle-outline"
       variant="outlined"
       density="comfortable"
     ></v-text-field>
@@ -51,7 +54,8 @@ const validate = () => {
       v-model="data.email"
       :rules="Rule.getEmail()"
       :disabled="loading"
-      label="Введите Email"
+      label="Email"
+      prepend-inner-icon="mdi-email-outline"
       variant="outlined"
       density="comfortable"
     ></v-text-field>
@@ -60,8 +64,11 @@ const validate = () => {
       v-model="data.password"
       :rules="Rule.getPassword()"
       :disabled="loading"
-      type="password"
-      label="Введите пароль"
+      label="Пароль"
+      prepend-inner-icon="mdi-lock-outline"
+      :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+      :type="showPassword ? 'text' : 'password'"
+      @click:append-inner="showPassword = !showPassword"
       variant="outlined"
       density="comfortable"
     ></v-text-field>
@@ -70,7 +77,10 @@ const validate = () => {
       v-model="data.password_confirmation"
       :rules="Rule.getPasswordConfirmation(data.password)"
       :disabled="loading"
-      type="password"
+      prepend-inner-icon="mdi-lock-outline"
+      :append-inner-icon="showConfirmationPassword ? 'mdi-eye-off' : 'mdi-eye'"
+      :type="showConfirmationPassword ? 'text' : 'password'"
+      @click:append-inner="showConfirmationPassword = !showConfirmationPassword"
       label="Подтвердите пароль"
       variant="outlined"
       density="comfortable"

@@ -9,6 +9,7 @@ const data: Ref<ILogin> = ref({
   email: "evollt@gmail.com",
   password: "qwerty12!!",
 });
+const showPassword: Ref<boolean> = ref(false);
 const form = ref(null);
 
 const login = async () => {
@@ -41,7 +42,8 @@ const validate = () => {
       v-model="data.email"
       :rules="Rule.getEmail()"
       :disabled="loading"
-      label="Введите Email"
+      label="Email"
+      prepend-inner-icon="mdi-email-outline"
       variant="outlined"
       density="comfortable"
     ></v-text-field>
@@ -50,8 +52,11 @@ const validate = () => {
       v-model="data.password"
       :rules="Rule.getPassword()"
       :disabled="loading"
-      type="password"
-      label="Введите пароль"
+      label="Пароль"
+      prepend-inner-icon="mdi-lock-outline"
+      :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+      :type="showPassword ? 'text' : 'password'"
+      @click:append-inner="showPassword = !showPassword"
       variant="outlined"
       density="comfortable"
     ></v-text-field>

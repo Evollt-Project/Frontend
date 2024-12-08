@@ -31,6 +31,8 @@ const router = useRouter();
       <div class="header__right flex gap-5 items-center">
         <ColorScheme />
 
+        <NotificationsList />
+
         <div v-if="User.store.user">
           <DropdownMenu>
             <DropdownMenuTrigger as-child>

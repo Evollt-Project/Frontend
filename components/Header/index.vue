@@ -2,7 +2,12 @@
 import type { TabType } from "~/types/TabType";
 
 const loginModal: Ref<boolean> = ref(false);
+const newsListModal: Ref<boolean> = ref(false);
 const tab: Ref<TabType> = ref("login");
+
+const openNewsList = () => {
+  newsListModal.value = true;
+};
 
 const openAuthModal = (currentTab: TabType) => {
   tab.value = currentTab;
@@ -73,6 +78,12 @@ const router = useRouter();
                     <v-icon icon="mdi-cog-outline"></v-icon>
                   </DropdownMenuShortcut>
                 </DropdownMenuItem>
+                <DropdownMenuItem class="cursor-pointer" @click="openNewsList">
+                  <span>Что нового?</span>
+                  <DropdownMenuShortcut>
+                    <v-icon icon="mdi-newspaper-variant-outline"></v-icon>
+                  </DropdownMenuShortcut>
+                </DropdownMenuItem>
               </DropdownMenuGroup>
 
               <DropdownMenuSeparator />
@@ -99,6 +110,10 @@ const router = useRouter();
       :dialog="loginModal"
       :tab="tab"
       @dialog="(e: boolean) => (loginModal = e)"
+    />
+    <ModalsNewsList
+      :dialog="newsListModal"
+      @dialog="(e: boolean) => (newsListModal = e)"
     />
   </header>
 </template>

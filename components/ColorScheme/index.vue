@@ -1,5 +1,10 @@
 <script lang="ts" setup>
 import { useDark, useToggle } from "@vueuse/core";
+import type { StyleValue } from "vue";
+
+defineProps<{
+  iconStyle?: StyleValue;
+}>();
 
 const isDark = useDark();
 const toggleDark = useToggle(isDark);
@@ -23,6 +28,7 @@ const iconPath = computed(() => {
         viewBox="0 0 24 24"
         stroke-width="1.5"
         stroke="currentColor"
+        :style="iconStyle ?? {}"
         class="w-7 h-7"
       >
         <path stroke-linecap="round" stroke-linejoin="round" :d="iconPath" />

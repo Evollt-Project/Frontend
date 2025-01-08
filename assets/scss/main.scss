@@ -8,26 +8,8 @@
   box-sizing: border-box;
 }
 
-.shadow-lg {
-  box-shadow: 0px 0px 10px red;
-}
-
-// .cities-swiper-custom-pagination {
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   .swiper-pagination-bullet {
-//     width: 15px;
-//     height: 15px;
-//     background-color: #fff !important;
-//     opacity: 1;
-//   }
-//
-//   .swiper-pagination-bullet-active {
-//     transition: 0.4s;
-//     background-color: #16697a !important;
-//     scale: 1.5;
-//   }
+// .shadow-lg {
+//   box-shadow: 0px 0px 10px red;
 // }
 
 @layer base {
@@ -117,4 +99,14 @@
 
 .card-modal {
   padding: 20px !important;
+}
+
+.page-enter-active,
+.page-leave-active {
+  transition: all 0.4s;
+}
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+  filter: blur(1rem);
 }

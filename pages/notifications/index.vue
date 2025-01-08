@@ -1,6 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
   name: "notifications",
+  layout: "sidebar",
 });
 </script>
 

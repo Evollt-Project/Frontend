@@ -1,5 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  app: {
+    pageTransition: { name: "page", mode: "out-in" },
+  },
   runtimeConfig: {
     public: {
       url: process.env.URL,
@@ -36,6 +39,7 @@ export default defineNuxtConfig({
   plugins: [
     "~/plugins/preline.client.ts",
     { src: "~/plugins/vue3-toastify.client.ts", mode: "client" },
+    { src: "~/plugins/vue-markdown-preview.ts", mode: "client" },
   ],
   vite: {
     css: {
@@ -47,4 +51,3 @@ export default defineNuxtConfig({
     },
   },
 });
-

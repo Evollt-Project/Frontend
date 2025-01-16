@@ -155,23 +155,19 @@ const validate = () => {
         variant="outlined"
         density="comfortable"
       ></v-text-field>
-      <!-- <v-text-field -->
-      <!--   v-model="data.email" -->
-      <!--   :rules="Rule.getEmail()" -->
-      <!--   :disabled="loading" -->
-      <!--   rounded="lg" -->
-      <!--   label="Email" -->
-      <!--   prepend-inner-icon="mdi-email-outline" -->
-      <!--   variant="outlined" -->
-      <!--   density="comfortable" -->
-      <!-- ></v-text-field> -->
     </v-form>
     <div class="teach-courses__list mt-[20px]">
-      <div class="grid gap-[20px] grid-cols-3">
-        <ArticleCard v-for="article in articles" :article="article" />
-      </div>
+      <ArticleCard v-for="article in articles" :article="article" />
     </div>
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.teach-courses {
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 20px;
+  }
+}
+</style>

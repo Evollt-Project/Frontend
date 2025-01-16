@@ -22,14 +22,14 @@ watch(
   () => props.dialog,
   (value) => {
     dialog.value = value;
-  },
+  }
 );
 
 watch(
   () => props.tab,
   (value) => {
     tab.value = value;
-  },
+  }
 );
 </script>
 

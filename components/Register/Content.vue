@@ -98,8 +98,9 @@ const validate = () => {
       :disabled="validate()"
       :loading="loading"
       block
-      >Зарегистрироваться</MyButton
     >
+      Зарегистрироваться
+    </MyButton>
   </v-form>
 </template>
 

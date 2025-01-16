@@ -12,6 +12,10 @@ export class Rule {
 
   private static passwordConfirmation = (value: string, oldPassword: string) =>
     value == oldPassword || "Пароли должны совпадать";
+  private static telegramNik = (value: string) =>
+    !value.trim() || /^@[^\s]*$/.test(value) || "Ник должен иметь тип @username и не должен содержать пробелы";
+  private static githubLink = (value: string) =>
+    !value.trim() || /^https:\/\/github\.com\/[^\s]+$/.test(value) || "Ссылка должна иметь протокол https и ссылаться на github.com, также ник не должен содержать пробелы";
 
   static getPassword() {
     return [this.required, this.password];
@@ -30,5 +34,12 @@ export class Rule {
 
   static getRequired() {
     return [this.required];
+  }
+
+  static getTelegramNik() {
+    return [this.telegramNik]
+  }
+  static getGithubLink() {
+    return [this.githubLink]
   }
 }

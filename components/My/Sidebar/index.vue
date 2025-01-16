@@ -297,47 +297,49 @@ onMounted(() => {
       <SidebarRail />
     </Sidebar>
     <SidebarInset>
-      <header
-        class="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12"
-      >
-        <div class="flex items-center gap-2 px-4">
-          <SidebarTrigger class="-ml-1" />
-          <Separator orientation="vertical" class="mr-2 h-4" />
-          <Breadcrumb v-if="currentCategory">
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <span>{{ currentCategory.title }}</span>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator v-if="currentItem" />
-              <BreadcrumbItem>
-                <DropdownMenu v-if="currentItem">
-                  <DropdownMenuTrigger as-child>
-                    <div>
-                      <span class="flex items-center gap-1">
-                        {{ currentItem.title }}
-                        <ChevronsUpDown class="ml-auto size-4" />
-                      </span>
-                    </div>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuGroup>
-                      <DropdownMenuItem
-                        v-for="item in currentCategory.items"
-                        :key="item.url"
-                        @click="router.push({ name: item.url })"
-                      >
-                        {{ item.title }}
-                      </DropdownMenuItem>
-                    </DropdownMenuGroup>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
+      <div class="sidebar-content">
+        <header
+          class="fixed !bg-white dark:!bg-background z-50 w-full flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12"
+        >
+          <div class="flex items-center gap-2 px-4">
+            <SidebarTrigger class="-ml-1" />
+            <Separator orientation="vertical" class="mr-2 h-4" />
+            <Breadcrumb v-if="currentCategory">
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <span>{{ currentCategory.title }}</span>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator v-if="currentItem" />
+                <BreadcrumbItem>
+                  <DropdownMenu v-if="currentItem">
+                    <DropdownMenuTrigger as-child>
+                      <div>
+                        <span class="flex items-center gap-1">
+                          {{ currentItem.title }}
+                          <ChevronsUpDown class="ml-auto size-4" />
+                        </span>
+                      </div>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuGroup>
+                        <DropdownMenuItem
+                          v-for="item in currentCategory.items"
+                          :key="item.url"
+                          @click="router.push({ name: item.url })"
+                        >
+                          {{ item.title }}
+                        </DropdownMenuItem>
+                      </DropdownMenuGroup>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </div>
+        </header>
+        <div class="px-4 mt-[67px] sidebar-content__div">
+          <slot></slot>
         </div>
-      </header>
-      <div class="px-4">
-        <slot></slot>
       </div>
     </SidebarInset>
   </SidebarProvider>

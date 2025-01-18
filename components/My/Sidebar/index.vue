@@ -43,24 +43,8 @@ const collapsibleItems: ICollapsibleSidebarItem[] = [
         url: "settings-profile",
       },
       {
-        title: "Изменить почту",
-        url: "settings-email",
-      },
-      {
-        title: "Вход через социальные сети",
-        url: "settings-social",
-      },
-      {
-        title: "Ссылки на социальные сети",
-        url: "settings-links",
-      },
-      {
         title: "Изменить пароль",
         url: "settings-password",
-      },
-      {
-        title: "Уведомления",
-        url: "settings-notifications",
       },
       {
         title: "Реквизиты",
@@ -106,7 +90,7 @@ const currentItem: Ref<ISidebarItem | null> = ref(null);
 const checkSplitPath = (
   category: ICollapsibleSidebarItem,
   word: string,
-  arr: string[],
+  arr: string[]
 ) => {
   arr.map((item, index) => {
     if (word == item) {
@@ -133,11 +117,7 @@ const checkCategoryAndItem = () => {
 
     checkSplitPath(currentCategory.value, splitRouteName[1], [
       "profile",
-      "email",
-      "social",
-      "links",
       "password",
-      "notifications",
       "requisites",
     ]);
   } else if (splitRouteName[0] == "teach") {
@@ -161,7 +141,7 @@ watch(
   () => route.params,
   () => {
     checkCategoryAndItem();
-  },
+  }
 );
 
 onMounted(() => {
@@ -212,7 +192,7 @@ onMounted(() => {
                     :image="
                       User.store.userPhotoUrl(
                         User.store.user.avatar,
-                        User.store.user.first_name,
+                        User.store.user.first_name
                       )
                     "
                   />
@@ -249,7 +229,7 @@ onMounted(() => {
                       :image="
                         User.store.userPhotoUrl(
                           User.store.user.avatar,
-                          User.store.user.first_name,
+                          User.store.user.first_name
                         )
                       "
                     />

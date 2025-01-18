@@ -3,10 +3,133 @@ definePageMeta({
   name: "courses-wishlist",
   layout: "sidebar",
 });
+
+const articles = ref([
+  {
+    id: 1,
+    title: "Hello",
+    author: User.store.user,
+    photo: "https://cdn.stepik.net/media/catalog_blocks/116/cover_zzco07x.png",
+    students_complete: "5",
+    time: "14",
+    rate: "5",
+    price: 5000,
+  },
+  {
+    id: 1,
+    title: "Hello",
+    author: User.store.user,
+    photo: "https://cdn.stepik.net/media/catalog_blocks/116/cover_zzco07x.png",
+    students_complete: "5",
+    time: "14",
+    rate: "5",
+    price: 5000,
+  },
+  {
+    id: 1,
+    title: "Hello",
+    author: User.store.user,
+    photo: "https://cdn.stepik.net/media/catalog_blocks/116/cover_zzco07x.png",
+    students_complete: "5",
+    time: "14",
+    rate: "5",
+    price: 5000,
+  },
+  {
+    id: 1,
+    title: "Hello",
+    author: User.store.user,
+    photo: "https://cdn.stepik.net/media/catalog_blocks/116/cover_zzco07x.png",
+    students_complete: "5",
+    time: "14",
+    rate: "5",
+    price: 5000,
+  },
+  {
+    id: 1,
+    title: "Hello",
+    author: User.store.user,
+    photo: "https://cdn.stepik.net/media/catalog_blocks/116/cover_zzco07x.png",
+    students_complete: "5",
+    time: "14",
+    rate: "5",
+    price: 5000,
+  },
+  {
+    id: 1,
+    title: "Hello",
+    author: User.store.user,
+    photo: "https://cdn.stepik.net/media/catalog_blocks/116/cover_zzco07x.png",
+    students_complete: "5",
+    time: "14",
+    rate: "5",
+    price: 5000,
+  },
+  {
+    id: 1,
+    title: "Hello",
+    author: User.store.user,
+    photo: "https://cdn.stepik.net/media/catalog_blocks/116/cover_zzco07x.png",
+    students_complete: "5",
+    time: "14",
+    rate: "5",
+    price: 5000,
+  },
+  {
+    id: 1,
+    title: "Hello",
+    author: User.store.user,
+    photo: "https://cdn.stepik.net/media/catalog_blocks/116/cover_zzco07x.png",
+    students_complete: "5",
+    time: "14",
+    rate: "5",
+    price: 5000,
+  },
+  {
+    id: 1,
+    title: "Hello",
+    author: User.store.user,
+    photo: "https://cdn.stepik.net/media/catalog_blocks/116/cover_zzco07x.png",
+    students_complete: "5",
+    time: "14",
+    rate: "5",
+    price: 5000,
+  },
+  {
+    id: 1,
+    title: "Hello",
+    author: User.store.user,
+    photo: "https://cdn.stepik.net/media/catalog_blocks/116/cover_zzco07x.png",
+    students_complete: "5",
+    time: "14",
+    rate: "5",
+    price: 5000,
+  },
+  {
+    id: 1,
+    title: "Hello",
+    author: User.store.user,
+    photo: "https://cdn.stepik.net/media/catalog_blocks/116/cover_zzco07x.png",
+    students_complete: "5",
+    time: "14",
+    rate: "5",
+    price: 5000,
+  },
+  {
+    id: 1,
+    title: "Hello",
+    author: User.store.user,
+    photo: "https://cdn.stepik.net/media/catalog_blocks/116/cover_zzco07x.png",
+    students_complete: "5",
+    time: "14",
+    rate: "5",
+    price: 5000,
+  },
+]);
 </script>
 
 <template>
-  <div>Хочу пройти</div>
+  <div class="courses-wishlist">
+    <CourseSearchAndList :articles="articles" />
+  </div>
 </template>
-
-<style scoped lang="scss"></style>

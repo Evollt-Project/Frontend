@@ -22,9 +22,6 @@ const register = async () => {
   if (valid) {
     emits("loading", true);
     const response = await User.register(data.value);
-    if (response.token) {
-      emits("dialog", false);
-    }
     emits("loading", false);
   }
 };

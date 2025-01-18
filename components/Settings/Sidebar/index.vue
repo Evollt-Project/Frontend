@@ -7,6 +7,7 @@ const drawer: Ref<boolean> = ref(props.drawer);
 const data = ref({
   telegram: "" as string,
   github: "" as string,
+  vk: "" as string,
 });
 
 watch(drawer, (value) => {
@@ -23,7 +24,7 @@ watch(
 const isCanSaveTelegram = () => {
   if (
     data.value.telegram.trim().length > 0 &&
-    /^@[^\s]*$/.test(data.value.telegram)
+    /^https:\/\/t\.me\/[^\s]+$/.test(data.value.telegram)
   ) {
     return false;
   }
@@ -34,6 +35,16 @@ const isCanSaveGithub = () => {
   if (
     data.value.github.trim().length > 0 &&
     /^https:\/\/github\.com\/[^\s]+$/.test(data.value.github)
+  ) {
+    return false;
+  }
+
+  return true;
+};
+const isCanSaveVk = () => {
+  if (
+    data.value.vk.trim().length > 0 &&
+    /^https:\/\/vk\.com\/[^\s]+$/.test(data.value.vk)
   ) {
     return false;
   }
@@ -84,9 +95,9 @@ const isCanSaveGithub = () => {
           <div class="text-lg">
             <v-text-field
               v-model="data.telegram"
-              :rules="Rule.getTelegramNik()"
+              :rules="Rule.getTelegramLink()"
               rounded="lg"
-              label="@username"
+              label="https://t.me/username"
               variant="outlined"
               density="comfortable"
             ></v-text-field>
@@ -102,7 +113,7 @@ const isCanSaveGithub = () => {
       <div>
         <div class="grid gap-4">
           <h3 class="font-bold text-2xl flex items-center gap-3">
-            <v-icon icon="mdi-github"></v-icon> Аккаунт Github
+            <v-icon icon="mdi-github"></v-icon> GitHub
           </h3>
           <div class="text-lg">
             <v-text-field
@@ -116,6 +127,27 @@ const isCanSaveGithub = () => {
           </div>
           <div>
             <MyButton block :disabled="isCanSaveGithub()"> Сохранить </MyButton>
+          </div>
+        </div>
+      </div>
+      <MyDivider />
+      <div>
+        <div class="grid gap-4">
+          <h3 class="font-bold text-2xl flex items-center gap-3">
+            <IconsVk /> Vkontakte
+          </h3>
+          <div class="text-lg">
+            <v-text-field
+              v-model="data.vk"
+              :rules="Rule.getVkLink()"
+              rounded="lg"
+              label="https://vk.com/username"
+              variant="outlined"
+              density="comfortable"
+            ></v-text-field>
+          </div>
+          <div>
+            <MyButton block :disabled="isCanSaveVk()"> Сохранить </MyButton>
           </div>
         </div>
       </div>

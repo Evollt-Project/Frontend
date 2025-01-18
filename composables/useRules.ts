@@ -12,8 +12,10 @@ export class Rule {
 
   private static passwordConfirmation = (value: string, oldPassword: string) =>
     value == oldPassword || "Пароли должны совпадать";
-  private static telegramNik = (value: string) =>
-    !value.trim() || /^@[^\s]*$/.test(value) || "Ник должен иметь тип @username и не должен содержать пробелы";
+  private static telegramLink = (value: string) =>
+    !value.trim() || /^https:\/\/t\.me\/[^\s]+$/.test(value) || "Ссылка должна иметь протокол https и ссылаться на t.me, также ник не должен содержать пробелы";
+  private static vkLink = (value: string) =>
+    !value.trim() || /^https:\/\/vk\.com\/[^\s]+$/.test(value) || "Ссылка должна иметь протокол https и ссылаться на vk.com, также ник не должен содержать пробелы";
   private static githubLink = (value: string) =>
     !value.trim() || /^https:\/\/github\.com\/[^\s]+$/.test(value) || "Ссылка должна иметь протокол https и ссылаться на github.com, также ник не должен содержать пробелы";
 
@@ -36,8 +38,11 @@ export class Rule {
     return [this.required];
   }
 
-  static getTelegramNik() {
-    return [this.telegramNik]
+  static getTelegramLink() {
+    return [this.telegramLink]
+  }
+  static getVkLink() {
+    return [this.vkLink]
   }
   static getGithubLink() {
     return [this.githubLink]

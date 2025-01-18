@@ -31,7 +31,7 @@ const skills: Ref<ITag[]> = ref([
       :drawer="settingsSidebar"
       @drawer="(e) => (settingsSidebar = e)"
     />
-    <div class="max-w-[1000px]">
+    <div class="sidebar-content">
       <div class="flex justify-between">
         <h1 class="text-4xl font-bold mb-4">Мой профиль</h1>
         <MyButton
@@ -74,10 +74,10 @@ const skills: Ref<ITag[]> = ref([
             </div>
           </div>
         </div>
-        <button class="flex items-center">
+        <NuxtLink :to="{ name: 'settings-profile' }" class="flex items-center">
           <v-icon icon="mdi-account-edit-outline"></v-icon> Редактировать
           профиль
-        </button>
+        </NuxtLink>
         <div class="profile-content__skills my-5">
           <ProfileTagList :items="skills" />
         </div>

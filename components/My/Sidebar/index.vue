@@ -76,6 +76,16 @@ const collapsibleItems: ICollapsibleSidebarItem[] = [
     icon: "mdi-bell-outline",
     url: "notifications",
     isActive: false,
+    items: [
+      {
+        title: "Все",
+        url: "notifications-all",
+      },
+      {
+        title: "Избранные",
+        url: "notifications-favorites",
+      },
+    ],
   },
   {
     title: "Сертификаты",
@@ -127,6 +137,13 @@ const checkCategoryAndItem = () => {
       "courses",
       "lessons",
       "mailing",
+    ]);
+  } else if (splitRouteName[0] == "notifications") {
+    currentCategory.value = collapsibleItems[4];
+
+    checkSplitPath(currentCategory.value, splitRouteName[1], [
+      "all",
+      "favorites",
     ]);
   } else if (splitRouteName[0] == "notifications") {
     currentCategory.value = collapsibleItems[4];
@@ -202,8 +219,6 @@ onMounted(() => {
                         [
                           User.store.user.surname,
                           User.store.user.first_name,
-                          ,
-                          User.store.user.last_name,
                         ].join(" ")
                       }}
                     </span>
@@ -239,8 +254,6 @@ onMounted(() => {
                           [
                             User.store.user.surname,
                             User.store.user.first_name,
-                            ,
-                            User.store.user.last_name,
                           ].join(" ")
                         }}
                       </span>
@@ -277,7 +290,7 @@ onMounted(() => {
       <SidebarRail />
     </Sidebar>
     <SidebarInset>
-      <div class="sidebar-content">
+      <div class="sidebar-container">
         <header
           class="fixed !bg-white dark:!bg-background z-50 w-full flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12"
         >

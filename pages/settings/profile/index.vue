@@ -1,26 +1,36 @@
 <script setup lang="ts">
 import { toast } from "vue3-toastify";
+import type { ISkill } from "~/types/IUser";
 
 definePageMeta({
   name: "settings-profile",
   layout: "sidebar",
 });
 const loading = ref(false);
-const data = ref({
-  first_name: User.store.user?.first_name ?? "",
-  surname: "" as string,
-  city: "" as string,
-  skills: "" as string,
-  gender: null as number | null,
-  description: "" as string,
-  privacy: false as boolean,
-  avatar: "" as string,
-});
+const skills: Ref<ISkill[]> = ref([]);
 const gender = ref([
   { id: 1, title: "Мужской" },
   { id: 2, title: "Женский" },
 ]);
+const data = ref({
+  first_name: User.store.user?.first_name ?? "",
+  surname: User.store.user?.surname ?? "",
+  city: User.store.user?.city ?? "",
+  skill_ids: User.store.user?.skills.map((item) => item.id) ?? [],
+  job: User.store.user?.job ?? "",
+  gender: User.store.user?.gender ?? null,
+  description: User.store.user?.description ?? "",
+  privacy: User.store.user?.privacy ?? false,
+  avatar: User.store.user?.avatar ?? ("" as string | File),
+});
+const previewImage: Ref<string | null> = ref(null);
 const form = ref(null);
+
+onMounted(async () => {
+  await User.skills().then((response) => {
+    skills.value = response.data;
+  });
+});
 const saveProfile = async () => {
   if (form.value) {
     // @ts-ignore
@@ -28,7 +38,27 @@ const saveProfile = async () => {
 
     if (valid) {
       loading.value = true;
-      toast.success("Отредактировано");
+      const formData = new FormData();
+      formData.append("_method", "PUT");
+      Object.keys(data.value).forEach((key) => {
+        const typedKey = key as keyof typeof data.value;
+        let value = data.value[typedKey];
+        if (value) {
+          if (typeof value == "boolean") {
+            // @ts-ignore
+            value = 1;
+          }
+          if (Array.isArray(value)) {
+            formData.append(key, JSON.stringify(value));
+          } else {
+            // @ts-ignore
+            formData.append(key, value);
+          }
+        }
+      });
+      await User.update(formData).then((response) => {
+        toast.success("Отредактировано");
+      });
       loading.value = false;
     }
   }
@@ -40,6 +70,22 @@ const validate = () => {
 
   return false;
 };
+
+const fileInput: Ref<HTMLInputElement | null> = ref(null);
+const triggerFileInput = () => {
+  if (fileInput.value) {
+    fileInput.value.click();
+  }
+};
+const handleFileChange = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  const file = target.files?.[0];
+
+  if (file) {
+    previewImage.value = URL.createObjectURL(file);
+    data.value.avatar = file;
+  }
+};
 </script>
 
 <template>
@@ -49,16 +95,30 @@ const validate = () => {
       <v-form fast-fail ref="form" class="mt-4 grid gap-5" @submit.prevent>
         <div class="grid grid-cols-2 gap-5">
           <div class="flex items-center gap-5">
+            <v-avatar size="100" v-if="previewImage" :image="previewImage" />
             <v-avatar
+              v-else
               size="100"
               :image="
                 User.store.userPhotoUrl(
-                  User.store.user.avatar,
+                  String(data.avatar),
                   User.store.user.first_name
                 )
               "
             />
-            <MyButton size="large">
+            <input
+              type="file"
+              ref="fileInput"
+              accept="image/*"
+              @change="handleFileChange"
+              style="display: none"
+            />
+
+            <MyButton
+              :disabled="loading"
+              size="large"
+              @click="triggerFileInput"
+            >
               <v-icon class="mr-3" icon="mdi-tray-arrow-up"></v-icon>
               Загрузить
             </MyButton>
@@ -89,7 +149,7 @@ const validate = () => {
         <div class="grid grid-cols-2 gap-5">
           <v-text-field
             :disabled="loading"
-            v-model="data.city"
+            v-model="data.job"
             rounded="lg"
             label="Должность"
             prepend-inner-icon="mdi-shopping-outline"
@@ -100,6 +160,7 @@ const validate = () => {
           <v-select
             v-model="data.gender"
             :items="gender"
+            :disabled="loading"
             rounded="lg"
             item-title="title"
             item-value="id"
@@ -112,16 +173,26 @@ const validate = () => {
             density="comfortable"
           ></v-select>
         </div>
-        <v-text-field
-          :disabled="loading"
-          v-model="data.skills"
+        <v-select
+          v-model="data.skill_ids"
+          :items="skills"
           rounded="lg"
-          label="Умения, через запятую"
-          prepend-inner-icon="mdi-certificate-outline"
+          item-title="title"
+          item-value="id"
           hide-details
+          label="Умения"
+          multiple
+          :disabled="loading"
+          prepend-inner-icon="mdi-certificate-outline"
           variant="outlined"
           density="comfortable"
-        ></v-text-field>
+        >
+          <template v-slot:selection="{ item, index }">
+            <v-chip>
+              <span>{{ item.title }}</span>
+            </v-chip>
+          </template>
+        </v-select>
         <v-textarea
           :disabled="loading"
           v-model="data.description"
@@ -142,6 +213,7 @@ const validate = () => {
         <MyButton
           size="large"
           type="submit"
+          color="success"
           @click="saveProfile"
           :disabled="validate()"
           :loading="loading"

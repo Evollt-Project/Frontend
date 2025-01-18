@@ -45,18 +45,14 @@ const router = useRouter();
                 :image="
                   User.store.userPhotoUrl(
                     User.store.user.avatar,
-                    User.store.user.first_name,
+                    User.store.user.first_name
                   )
                 "
               />
             </DropdownMenuTrigger>
             <DropdownMenuContent class="w-56">
               <DropdownMenuLabel class="flex justify-center">{{
-                [
-                  User.store.user.surname,
-                  User.store.user.first_name,
-                  User.store.user.last_name,
-                ].join(" ")
+                [User.store.user.surname, User.store.user.first_name].join(" ")
               }}</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
@@ -112,6 +108,7 @@ const router = useRouter();
       @dialog="(e: boolean) => (loginModal = e)"
     />
     <ModalsNewsList
+      :loading="false"
       :dialog="newsListModal"
       @dialog="(e: boolean) => (newsListModal = e)"
     />

@@ -1,13 +1,15 @@
 <script setup lang="ts">
+import { toast } from "vue3-toastify";
+
 const props = defineProps<{
   drawer: boolean;
 }>();
 const emits = defineEmits(["drawer"]);
 const drawer: Ref<boolean> = ref(props.drawer);
 const data = ref({
-  telegram: "" as string,
-  github: "" as string,
-  vk: "" as string,
+  telegram: User.store.user?.telegram ?? "",
+  github: User.store.user?.github ?? "",
+  vk: User.store.user?.vk ?? "",
 });
 
 watch(drawer, (value) => {
@@ -50,6 +52,15 @@ const isCanSaveVk = () => {
   }
 
   return true;
+};
+
+const saveSocialLink = async (value: object) => {
+  await User.update({
+    _method: "PUT",
+    ...value,
+  }).then((response) => {
+    toast.success("Социальная сеть привязана");
+  });
 };
 </script>
 
@@ -103,7 +114,11 @@ const isCanSaveVk = () => {
             ></v-text-field>
           </div>
           <div>
-            <MyButton block :disabled="isCanSaveTelegram()">
+            <MyButton
+              @click="saveSocialLink({ telegram: data.telegram })"
+              block
+              :disabled="isCanSaveTelegram()"
+            >
               Сохранить
             </MyButton>
           </div>
@@ -126,7 +141,13 @@ const isCanSaveVk = () => {
             ></v-text-field>
           </div>
           <div>
-            <MyButton block :disabled="isCanSaveGithub()"> Сохранить </MyButton>
+            <MyButton
+              @click="saveSocialLink({ github: data.github })"
+              block
+              :disabled="isCanSaveGithub()"
+            >
+              Сохранить
+            </MyButton>
           </div>
         </div>
       </div>
@@ -147,7 +168,13 @@ const isCanSaveVk = () => {
             ></v-text-field>
           </div>
           <div>
-            <MyButton block :disabled="isCanSaveVk()"> Сохранить </MyButton>
+            <MyButton
+              @click="saveSocialLink({ vk: data.vk })"
+              block
+              :disabled="isCanSaveVk()"
+            >
+              Сохранить
+            </MyButton>
           </div>
         </div>
       </div>

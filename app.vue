@@ -8,6 +8,9 @@ onMounted(async () => {
   if (!User.store.user && localStorage.getItem("token")) {
     await User.get();
   }
+  if (!User.store.enums) {
+    await User.getEnums();
+  }
   Loader.changeLoading();
 });
 </script>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 definePageMeta({
-  name: "notifications",
+  name: "notifications-favorites",
   layout: "sidebar",
 });
 </script>

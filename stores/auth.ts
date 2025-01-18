@@ -4,6 +4,7 @@ import type { IUser } from "~/types/IUser";
 
 export const useAuthStore = defineStore("auth", () => {
   const user: Ref<IUser | null> = ref(null);
+  const enums = ref(null)
   const notifications: Ref<INotification[] | null> = ref([
     {
       id: 1,
@@ -61,6 +62,7 @@ export const useAuthStore = defineStore("auth", () => {
 
   return {
     user,
+    enums,
     notifications,
     userPhotoUrl,
   };

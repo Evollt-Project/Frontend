@@ -1,13 +1,19 @@
 <script lang="ts" setup>
-import { useDark, useToggle } from "@vueuse/core";
+import { useDark } from "@vueuse/core";
 import type { StyleValue } from "vue";
+import { ToastifyContainer } from "vue3-toastify";
 
 defineProps<{
   iconStyle?: StyleValue;
 }>();
 
 const isDark = useDark();
-const toggleDark = useToggle(isDark);
+const theme = useTheme();
+theme.global.name.value = isDark.value ? "dark" : "light";
+const toggleDark = () => {
+  isDark.value = !isDark.value;
+  theme.global.name.value = isDark.value ? "dark" : "light";
+};
 
 const iconPath = computed(() => {
   return isDark.value

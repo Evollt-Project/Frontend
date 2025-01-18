@@ -6,6 +6,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       url: process.env.URL,
+      dadataToken: process.env.DADATA_TOKEN,
+      dadataSecretToken: process.env.DADATA_SECRET_TOKEN
     },
   },
   compatibilityDate: "2024-04-03",
@@ -38,6 +40,9 @@ export default defineNuxtConfig({
   },
   plugins: [
     "~/plugins/preline.client.ts",
+    {
+      src: "~/plugins/v-mask.ts",
+    },
     { src: "~/plugins/vue3-toastify.client.ts", mode: "client" },
     { src: "~/plugins/vue-markdown-preview.ts", mode: "client" },
   ],

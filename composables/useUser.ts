@@ -1,5 +1,6 @@
+import { toast } from "vue3-toastify";
 import type { ILogin, IRegister } from "~/types/Auth";
-import type { IUser } from "~/types/IUser";
+import type { ISkill, IUser } from "~/types/IUser";
 
 export class User {
   static get store() {
@@ -18,6 +19,21 @@ export class User {
 
       return response.data;
     });
+  }
+
+  static async getEnums() {
+    return await useRequest<IUser>({
+      url: "api/enums",
+    }).then((response) => {
+      this.store.enums = response.data;
+
+      return response.data;
+    });
+  }
+
+  // TODO: Доделать разделение ролей на бэке и фронте
+  static hasPermission(role: number, permission: number): boolean {
+    return (role & permission) === permission;
   }
 
   static async login(params: ILogin): Promise<IUser> {
@@ -80,5 +96,33 @@ export class User {
         this.router.push({ name: "index" });
       }
     });
+  }
+
+  static async update(data: object) {
+    return await useRequest<IUser>({
+      url: 'api/user/update',
+      method: "POST",
+      body: data
+    })
+      .then(response => {
+        this.store.user = response.data
+        return response.data
+      })
+      .catch((response) => {
+        useErrorNotification(response.response.data.errors);
+        return response.response.data;
+      });
+  }
+  static async skills() {
+    return await useRequest<ISkill[]>({
+      url: 'api/user/skills',
+    })
+  }
+  static async changePassword(data: object) {
+    return await useRequest<{ status: boolean, message: string }>({
+      url: 'api/user/update/password',
+      method: "POST",
+      body: data
+    })
   }
 }

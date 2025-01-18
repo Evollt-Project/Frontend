@@ -12,6 +12,11 @@ const data = ref({
   password: "" as string,
   password_confirmation: "" as string,
 });
+const initialData = ref({
+  old_password: "" as string,
+  password: "" as string,
+  password_confirmation: "" as string,
+});
 const showOldPassword = ref(false);
 const showPassword = ref(false);
 const showConfirmationPassword = ref(false);
@@ -23,7 +28,15 @@ const saveNewPassword = async () => {
 
     if (valid) {
       loading.value = true;
-      toast.success("Новый пароль сохранен");
+      await User.changePassword(data.value)
+        .then((response) => {
+          toast.success(response.data.message);
+          // @ts-ignore
+          form.value.reset();
+        })
+        .catch((response) => {
+          toast.error(response.response.data.message);
+        });
       loading.value = false;
     }
   }
@@ -88,6 +101,7 @@ const validate = () => {
       <MyButton
         size="large"
         type="submit"
+        color="success"
         @click="saveNewPassword"
         :disabled="validate()"
         :loading="loading"

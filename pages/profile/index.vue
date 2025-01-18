@@ -17,12 +17,6 @@ const roles: Ref<ITag[]> = ref([
     title: "Администратор",
   },
 ]);
-
-const skills: Ref<ITag[]> = ref([
-  {
-    title: "Умение",
-  },
-]);
 </script>
 
 <template>
@@ -57,12 +51,7 @@ const skills: Ref<ITag[]> = ref([
           <div class="profile-content__right grid gap-2 mb-2">
             <div class="profile-content__title text-2xl font-bold">
               {{
-                [
-                  User.store.user.surname,
-                  User.store.user.first_name,
-                  ,
-                  User.store.user.last_name,
-                ].join(" ")
+                [User.store.user.surname, User.store.user.first_name].join(" ")
               }}
             </div>
             <div class="profile-content__other">
@@ -79,17 +68,10 @@ const skills: Ref<ITag[]> = ref([
           профиль
         </NuxtLink>
         <div class="profile-content__skills my-5">
-          <ProfileTagList :items="skills" />
+          <ProfileTagList :items="User.store.user.skills" />
         </div>
         <div class="profile-content__description">
-          Обучил более 15000 студентов по всему миру на своих авторских онлайн
-          курсах. Более 6000 реальных отзывов со средней оценкой 4,83 из 5.00! Я
-          преподаю веб дизайн, веб разработку и необходимое ПО (Photoshop
-          Illustrator, Figma). Мой опыт преподавания складывается из 5 лет
-          репетиторства на фрилансе, а так- же преподавания через онлайн школы и
-          курсы, на мировых площадках по дистанционному обучению. Студенты моих
-          курсов, отмечают лучшие мои качества в том, как я преподаю материал
-          без зубрежки, весело и интересно.
+          {{ User.store.user.description ?? "" }}
         </div>
       </div>
     </div>

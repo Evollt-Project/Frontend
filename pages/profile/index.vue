@@ -7,16 +7,39 @@ definePageMeta({
 });
 
 const settingsSidebar: Ref<boolean> = ref(false);
-const roles: Ref<ITag[]> = ref([
-  {
-    title: "Ученик",
-    description:
-      "Дефолтный статус пользователя wofjoew owej ojefo jeofj oj ofjofj ojefo jfje ojefo jfojeof jofjeow jeofj ofejo",
-  },
-  {
-    title: "Администратор",
-  },
-]);
+const roles: Ref<ITag[]> = ref([]);
+
+onMounted(() => {
+  if (User.store.enums) {
+    User.getAllPermissions().forEach((item) => {
+      if (User.store.enums) {
+        roles.value.push({
+          title: User.store.enums.roles[item],
+        });
+      }
+    });
+    // if (User.hasPermission(1)) {
+    //   roles.value.push({
+    //     title: User.store.enums.roles[1],
+    //   });
+    // }
+    // if (User.hasPermission(3)) {
+    //   roles.value.push({
+    //     title: User.store.enums.roles[3],
+    //   });
+    // }
+    // if (User.hasPermission(7)) {
+    //   roles.value.push({
+    //     title: User.store.enums.roles[7],
+    //   });
+    // }
+    // if (User.hasPermission(15)) {
+    //   roles.value.push({
+    //     title: User.store.enums.roles[15],
+    //   });
+    // }
+  }
+});
 </script>
 
 <template>

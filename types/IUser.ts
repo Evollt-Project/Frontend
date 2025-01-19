@@ -1,7 +1,10 @@
+import type { EnumValues } from "./IEnum";
+
 export interface IUser {
   id: number;
   first_name: string;
   surname: string | null;
+  role: 1 | 3 | 7 | 15;
   city: string;
   skills: ISkill[];
   job?: string;

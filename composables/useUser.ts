@@ -1,8 +1,13 @@
 import { toast } from "vue3-toastify";
 import type { ILogin, IRegister } from "~/types/Auth";
+import type { EnumValues, IEnum } from "~/types/IEnum";
 import type { ISkill, IUser } from "~/types/IUser";
 
 export class User {
+  static readonly STUDENT = 1
+  static readonly TEACHER = 3
+  static readonly MODERATOR = 7
+  static readonly ADMIN = 15
   static get store() {
     return useAuthStore();
   }
@@ -22,7 +27,7 @@ export class User {
   }
 
   static async getEnums() {
-    return await useRequest<IUser>({
+    return await useRequest<IEnum>({
       url: "api/enums",
     }).then((response) => {
       this.store.enums = response.data;
@@ -32,8 +37,23 @@ export class User {
   }
 
   // TODO: Доделать разделение ролей на бэке и фронте
-  static hasPermission(role: number, permission: number): boolean {
-    return (role & permission) === permission;
+  static hasPermission(permission: number): boolean {
+    if (!this.store.user) {
+      return false
+    }
+    return (this.store.user.role & permission) === permission;
+  }
+
+  static getAllPermissions(): (1 | 3 | 7 | 15)[] {
+    if (this.store.user && this.store.enums) {
+      const role = this.store.user.role
+      return Object.entries(this.store.enums.roles)
+        .filter(([key]) => {
+          return (role & Number(key)) > 0 && Number(key) <= role;
+        })
+        .map(([key]) => Number(key) as 1 | 3 | 7 | 15);
+    }
+    return []
   }
 
   static async login(params: ILogin): Promise<IUser> {

@@ -27,7 +27,7 @@ export class User {
   }
 
   static async getEnums() {
-    return await useRequest<IEnum>({
+    return useRequest<IEnum>({
       url: "api/enums",
     }).then((response) => {
       this.store.enums = response.data;

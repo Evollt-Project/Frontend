@@ -7,7 +7,7 @@ export default defineNuxtConfig({
     public: {
       url: process.env.URL,
       dadataToken: process.env.DADATA_TOKEN,
-      dadataSecretToken: process.env.DADATA_SECRET_TOKEN
+      dadataSecretToken: process.env.DADATA_SECRET_TOKEN,
     },
   },
   compatibilityDate: "2024-04-03",

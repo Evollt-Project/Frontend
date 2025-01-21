@@ -14,7 +14,9 @@ useHead({
 const insertRequisites = ref(true);
 const initialRequisites = ref({
   nalog_status: Requisites.PHYSICAL,
-  date_of_birth: null as Date | null,
+  date_of_birth: User.store.user?.date_of_birth
+    ? new Date(User.store.user?.date_of_birth)
+    : (null as Date | null),
   passport: "" as string,
   legal_address: "" as string,
   inn: "" as string,
@@ -25,7 +27,9 @@ const initialRequisites = ref({
 });
 const requisites = ref({
   nalog_status: Requisites.PHYSICAL,
-  date_of_birth: null as Date | null,
+  date_of_birth: User.store.user?.date_of_birth
+    ? new Date(User.store.user?.date_of_birth)
+    : (null as Date | null),
   passport: "" as string,
   legal_address: "" as string,
   inn: "" as string,
@@ -180,6 +184,7 @@ watch(
               item-value="id"
               :disabled="loading"
               label="Налоговый статус"
+              hide-details="auto"
               variant="outlined"
               density="comfortable"
             ></v-select>
@@ -193,26 +198,30 @@ watch(
               requisites.nalog_status == Requisites.SELF_EMPLOYED
             "
           >
-            <v-date-input
-              v-model="requisites.date_of_birth"
-              label="Дата рождения"
-              :rules="Rule.getRequired()"
-              prepend-inner-icon="$calendar"
-              :max="new Date()"
-              prepend-icon=""
-              :disabled="loading"
-              variant="outlined"
-              density="comfortable"
-              first-day-of-week="1"
-              :value="
-                requisites.date_of_birth
-                  ? DateTime.fromJSDate(requisites.date_of_birth).toFormat(
-                      'dd.MM.yyyy'
-                    )
-                  : ''
-              "
-              rounded="lg"
-            ></v-date-input>
+            <div class="flex gap-2 items-center">
+              <v-date-input
+                v-model="requisites.date_of_birth"
+                label="Дата рождения"
+                :rules="Rule.getRequired()"
+                prepend-inner-icon="$calendar"
+                :max="new Date()"
+                disabled
+                prepend-icon=""
+                hide-details="auto"
+                variant="outlined"
+                density="comfortable"
+                first-day-of-week="1"
+                :value="
+                  requisites.date_of_birth
+                    ? DateTime.fromJSDate(requisites.date_of_birth).toFormat(
+                        'dd.MM.yyyy'
+                      )
+                    : ''
+                "
+                rounded="lg"
+              >
+              </v-date-input>
+            </div>
           </div>
           <div
             v-if="
@@ -226,6 +235,7 @@ watch(
               :rules="Rule.getRequired()"
               :disabled="loading"
               rounded="lg"
+              hide-details="auto"
               label="Номер и серия паспорта"
               prepend-inner-icon="mdi-account-circle-outline"
               variant="outlined"
@@ -253,6 +263,7 @@ watch(
               :rules="Rule.getInn(requisites.nalog_status)"
               :disabled="loading"
               rounded="lg"
+              hide-details="auto"
               prepend-inner-icon="mdi-domain"
               label="ИНН"
               @input="getCompanyByInn()"
@@ -267,6 +278,7 @@ watch(
               :disabled="loading"
               rounded="lg"
               prepend-inner-icon="mdi-account-circle-outline"
+              hide-details="auto"
               label="Получатель"
               variant="outlined"
               density="comfortable"
@@ -281,6 +293,7 @@ watch(
             rounded="lg"
             label="Адрес"
             prepend-inner-icon="mdi-map-marker-outline"
+            hide-details="auto"
             variant="outlined"
             density="comfortable"
           ></v-text-field>
@@ -297,6 +310,7 @@ watch(
               rounded="lg"
               @input="getBankByBik()"
               v-mask="['#########']"
+              hide-details="auto"
               label="БИК банка"
               variant="outlined"
               density="comfortable"
@@ -309,6 +323,7 @@ watch(
               disabled
               rounded="lg"
               label="Наименование банка"
+              hide-details="auto"
               variant="outlined"
               density="comfortable"
             ></v-text-field>
@@ -321,6 +336,7 @@ watch(
             :disabled="loading"
             rounded="lg"
             v-mask="['####################']"
+            hide-details="auto"
             label="Номер расчетного счета"
             variant="outlined"
             class="mb-[20px]"

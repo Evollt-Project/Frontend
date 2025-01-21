@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { DateTime } from "luxon";
+import { VDateInput } from "vuetify/labs/components";
 import { toast } from "vue3-toastify";
 import type { ISkill } from "~/types/IUser";
 
@@ -18,6 +20,9 @@ const data = ref({
   city: User.store.user?.city ?? "",
   skill_ids: User.store.user?.skills.map((item) => item.id) ?? [],
   job: User.store.user?.job ?? "",
+  date_of_birth: User.store.user?.date_of_birth
+    ? new Date(User.store.user?.date_of_birth)
+    : (null as Date | null),
   gender: User.store.user?.gender ?? null,
   description: User.store.user?.description ?? "",
   privacy: User.store.user?.privacy ?? false,
@@ -47,6 +52,8 @@ const saveProfile = async () => {
           if (typeof value == "boolean") {
             // @ts-ignore
             value = 1;
+          } else if (value instanceof Date) {
+            value = DateTime.fromJSDate(value).toFormat("yyyy-MM-dd");
           }
           if (Array.isArray(value)) {
             formData.append(key, JSON.stringify(value));
@@ -173,26 +180,47 @@ const handleFileChange = (event: Event) => {
             density="comfortable"
           ></v-select>
         </div>
-        <v-select
-          v-model="data.skill_ids"
-          :items="skills"
-          rounded="lg"
-          item-title="title"
-          item-value="id"
-          hide-details
-          label="Умения"
-          multiple
-          :disabled="loading"
-          prepend-inner-icon="mdi-certificate-outline"
-          variant="outlined"
-          density="comfortable"
-        >
-          <template v-slot:selection="{ item, index }">
-            <v-chip>
-              <span>{{ item.title }}</span>
-            </v-chip>
-          </template>
-        </v-select>
+        <div class="grid grid-cols-2 gap-5">
+          <v-select
+            v-model="data.skill_ids"
+            :items="skills"
+            rounded="lg"
+            item-title="title"
+            item-value="id"
+            hide-details
+            label="Умения"
+            multiple
+            :disabled="loading"
+            prepend-inner-icon="mdi-certificate-outline"
+            variant="outlined"
+            density="comfortable"
+          >
+            <template v-slot:selection="{ item, index }">
+              <v-chip>
+                <span>{{ item.title }}</span>
+              </v-chip>
+            </template>
+          </v-select>
+          <v-date-input
+            v-model="data.date_of_birth"
+            label="Дата рождения"
+            :rules="Rule.getRequired()"
+            prepend-inner-icon="$calendar"
+            :max="new Date()"
+            prepend-icon=""
+            :disabled="loading"
+            variant="outlined"
+            density="comfortable"
+            first-day-of-week="1"
+            hide-details
+            :value="
+              data.date_of_birth
+                ? DateTime.fromJSDate(data.date_of_birth).toFormat('dd.MM.yyyy')
+                : ''
+            "
+            rounded="lg"
+          ></v-date-input>
+        </div>
         <v-textarea
           :disabled="loading"
           v-model="data.description"

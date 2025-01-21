@@ -2,14 +2,14 @@
 useDark();
 
 onMounted(async () => {
-  if (Catalog.store.catalogs.length == 0) {
-    await Catalog.getCatalogs();
-  }
   if (!User.store.user && localStorage.getItem("token")) {
     await User.get();
   }
+  if (Catalog.store.catalogs.length == 0) {
+    Catalog.getCatalogs();
+  }
   if (!User.store.enums) {
-    await User.getEnums();
+    User.getEnums();
   }
   Loader.changeLoading();
 });

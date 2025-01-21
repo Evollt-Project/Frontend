@@ -6,8 +6,9 @@ export class Catalog {
   }
 
   static async getCatalogs() {
-    await useRequest<ICatalog[]>({ url: "/api/catalog" }).then((response) => {
+    return useRequest<ICatalog[]>({ url: "/api/catalog" }).then((response) => {
       this.store.catalogs = response.data;
+      return response.data
     });
   }
 }

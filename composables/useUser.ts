@@ -17,7 +17,7 @@ export class User {
 
   static async get(): Promise<IUser> {
     return await useRequest<IUser>({
-      url: "/api/user/get",
+      url: "/api/v1/user/get",
       method: "get",
     }).then((response) => {
       this.store.user = response.data;
@@ -28,7 +28,7 @@ export class User {
 
   static async getEnums() {
     return useRequest<IEnum>({
-      url: "api/enums",
+      url: "api/v1/enums",
     }).then((response) => {
       this.store.enums = response.data;
 
@@ -58,7 +58,7 @@ export class User {
 
   static async login(params: ILogin): Promise<IUser> {
     return await useRequest<IUser>({
-      url: "/api/auth/login",
+      url: "/api/v1/auth/login",
       method: "post",
       body: params,
     })
@@ -84,7 +84,7 @@ export class User {
 
   static async register(params: IRegister): Promise<IUser> {
     return await useRequest<IUser>({
-      url: "/api/auth/register",
+      url: "/api/v1/auth/register",
       method: "post",
       body: params,
     })
@@ -108,7 +108,7 @@ export class User {
 
   static async logout() {
     return await useRequest<{ status: boolean }>({
-      url: "api/auth/logout",
+      url: "api/v1/auth/logout",
     }).then((response) => {
       if (response.data.status) {
         this.store.user = null;
@@ -120,7 +120,7 @@ export class User {
 
   static async update(data: object) {
     return await useRequest<IUser>({
-      url: 'api/user/update',
+      url: 'api/v1/user/update',
       method: "POST",
       body: data
     })
@@ -135,12 +135,12 @@ export class User {
   }
   static async skills() {
     return await useRequest<ISkill[]>({
-      url: 'api/user/skills',
+      url: 'api/v1/user/skills',
     })
   }
   static async changePassword(data: object) {
     return await useRequest<{ status: boolean, message: string }>({
-      url: 'api/user/update/password',
+      url: 'api/v1/user/update/password',
       method: "POST",
       body: data
     })

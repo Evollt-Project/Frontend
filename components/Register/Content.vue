@@ -36,12 +36,13 @@ const validate = () => {
 </script>
 
 <template>
-  <v-form fast-fail ref="form" class="mt-4" @submit.prevent>
+  <v-form fast-fail ref="form" class="mt-4 grid gap-5" @submit.prevent>
     <v-text-field
       v-model="data.first_name"
       :rules="Rule.getRequired()"
       :disabled="loading"
       rounded="lg"
+      hide-details="auto"
       label="Имя"
       prepend-inner-icon="mdi-account-circle-outline"
       variant="outlined"
@@ -54,6 +55,7 @@ const validate = () => {
       :disabled="loading"
       rounded="lg"
       label="Email"
+      hide-details="auto"
       prepend-inner-icon="mdi-email-outline"
       variant="outlined"
       density="comfortable"
@@ -65,6 +67,7 @@ const validate = () => {
       :disabled="loading"
       rounded="lg"
       label="Пароль"
+      hide-details="auto"
       prepend-inner-icon="mdi-lock-outline"
       :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
       :type="showPassword ? 'text' : 'password'"
@@ -82,6 +85,7 @@ const validate = () => {
       :append-inner-icon="showConfirmationPassword ? 'mdi-eye-off' : 'mdi-eye'"
       :type="showConfirmationPassword ? 'text' : 'password'"
       @click:append-inner="showConfirmationPassword = !showConfirmationPassword"
+      hide-details="auto"
       label="Подтвердите пароль"
       variant="outlined"
       density="comfortable"

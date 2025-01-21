@@ -13,30 +13,32 @@ useHead({
 });
 const insertRequisites = ref(true);
 const initialRequisites = ref({
-  nalog_status: Requisites.PHYSICAL,
+  nalog_status:
+    User.store.user?.requisites?.nalog_status ?? Requisites.PHYSICAL,
   date_of_birth: User.store.user?.date_of_birth
     ? new Date(User.store.user?.date_of_birth)
     : (null as Date | null),
-  passport: "" as string,
-  legal_address: "" as string,
-  inn: "" as string,
-  fio: "" as string,
-  bik: "" as string,
-  bank: "" as string,
-  payment_account: "" as string,
+  passport: User.store.user?.requisites?.passport ?? "",
+  legal_address: User.store.user?.requisites?.legal_address ?? "",
+  inn: User.store.user?.requisites?.inn ?? "",
+  fio: User.store.user?.requisites?.fio ?? "",
+  bik: User.store.user?.requisites?.bik ?? "",
+  bank: User.store.user?.requisites?.bank ?? "",
+  payment_account: User.store.user?.requisites?.payment_account ?? "",
 });
 const requisites = ref({
-  nalog_status: Requisites.PHYSICAL,
+  nalog_status:
+    User.store.user?.requisites?.nalog_status ?? Requisites.PHYSICAL,
   date_of_birth: User.store.user?.date_of_birth
     ? new Date(User.store.user?.date_of_birth)
     : (null as Date | null),
-  passport: "" as string,
-  legal_address: "" as string,
-  inn: "" as string,
-  fio: "" as string,
-  bik: "" as string,
-  bank: "" as string,
-  payment_account: "" as string,
+  passport: User.store.user?.requisites?.passport ?? "",
+  legal_address: User.store.user?.requisites?.legal_address ?? "",
+  inn: User.store.user?.requisites?.inn ?? "",
+  fio: User.store.user?.requisites?.fio ?? "",
+  bik: User.store.user?.requisites?.bik ?? "",
+  bank: User.store.user?.requisites?.bank ?? "",
+  payment_account: User.store.user?.requisites?.payment_account ?? "",
 });
 const loading = ref(false);
 const selfEmployedDescription = computed(() => {
@@ -51,8 +53,19 @@ const saveRequisites = async () => {
 
     if (valid) {
       loading.value = true;
-      toast.success("Реквизиты сохранены");
-      loading.value = false;
+      console.log(User.store.user?.date_of_birth);
+      User.update({
+        _method: "PUT",
+        requisites: {
+          ...requisites.value,
+          date_of_birth: User.store.user?.date_of_birth ?? undefined,
+        },
+      }).then((response) => {
+        if (!response.errors) {
+          toast.success("Реквизиты сохранены");
+        }
+        loading.value = false;
+      });
     }
   }
 };
@@ -243,12 +256,7 @@ watch(
             ></v-text-field>
           </div>
         </div>
-        <MyDivider
-          v-if="
-            requisites.nalog_status == Requisites.PHYSICAL ||
-            requisites.nalog_status == Requisites.SELF_EMPLOYED
-          "
-        />
+        <MyDivider />
         <div
           class="grid grid-cols-[repeat(auto-fill,_minmax(350px,_1fr))] gap-5 mb-[20px]"
         >

@@ -37,13 +37,14 @@ const validate = () => {
 </script>
 
 <template>
-  <v-form fast-fail ref="form" class="mt-4" @submit.prevent>
+  <v-form fast-fail ref="form" class="mt-4 grid gap-5" @submit.prevent>
     <v-text-field
       v-model="data.email"
       :rules="Rule.getEmail()"
       :disabled="loading"
       rounded="lg"
       label="Email"
+      hide-details="auto"
       prepend-inner-icon="mdi-email-outline"
       variant="outlined"
       density="comfortable"
@@ -55,6 +56,7 @@ const validate = () => {
       :disabled="loading"
       rounded="lg"
       label="Пароль"
+      hide-details="auto"
       prepend-inner-icon="mdi-lock-outline"
       :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
       :type="showPassword ? 'text' : 'password'"

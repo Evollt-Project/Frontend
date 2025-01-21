@@ -1,4 +1,5 @@
 import type { EnumValues } from "./IEnum";
+import type { IRequisite } from "./IRequisite";
 
 export interface IUser {
   id: number;
@@ -9,6 +10,7 @@ export interface IUser {
   skills: ISkill[];
   job?: string;
   gender?: number;
+  requisites: IRequisite;
   description?: string;
   privacy: boolean;
   balance: number;

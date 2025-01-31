@@ -48,19 +48,15 @@ const saveProfile = async () => {
       Object.keys(data.value).forEach((key) => {
         const typedKey = key as keyof typeof data.value;
         let value = data.value[typedKey];
-        if (value) {
-          if (typeof value == "boolean") {
-            // @ts-ignore
-            value = 1;
-          } else if (value instanceof Date) {
-            value = DateTime.fromJSDate(value).toFormat("yyyy-MM-dd");
-          }
-          if (Array.isArray(value)) {
-            formData.append(key, JSON.stringify(value));
-          } else {
-            // @ts-ignore
-            formData.append(key, value);
-          }
+        if (typeof value == "boolean") {
+          value = value ? 1 : 0;
+        } else if (value instanceof Date) {
+          value = DateTime.fromJSDate(value).toFormat("yyyy-MM-dd");
+        }
+        if (Array.isArray(value)) {
+          formData.append(key, JSON.stringify(value));
+        } else {
+          formData.append(key, value);
         }
       });
       await User.update(formData).then((response) => {

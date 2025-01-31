@@ -4,6 +4,7 @@ definePageMeta({
   layout: "sidebar",
 });
 
+// TODO: Получать правильные курсы и сделать пагинацию
 const articles = ref([
   {
     id: 1,

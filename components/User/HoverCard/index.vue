@@ -9,21 +9,23 @@ const props = defineProps<{
 
 const date = DateTime.fromISO(props.user.created_at, { zone: "utc" });
 const formattedDate = date.setLocale("ru").toFormat("d MMMM yyyy");
-const router = useRouter();
 </script>
 
 <template>
   <HoverCard>
     <HoverCardTrigger as-child>
       <NuxtLink
-        :to="{ name: 'profile', query: { id: user.id } }"
+        :to="{ name: 'other-profile', params: { id: user.id } }"
         class="hover:underline text-black dark:!text-white"
       >
         <slot name="title"></slot>
       </NuxtLink>
     </HoverCardTrigger>
     <HoverCardContent class="w-80">
-      <div class="flex space-x-4">
+      <NuxtLink
+        class="flex space-x-4"
+        :to="{ name: 'other-profile', params: { id: user.id } }"
+      >
         <v-avatar
           size="40"
           :image="User.store.userPhotoUrl(user.avatar, user.first_name)"
@@ -43,7 +45,7 @@ const router = useRouter();
             </span>
           </div>
         </div>
-      </div>
+      </NuxtLink>
     </HoverCardContent>
   </HoverCard>
 </template>

@@ -25,15 +25,11 @@ const readAllNotifications = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent class="w-96 mt-2">
         <DropdownMenuLabel class="flex justify-between">
-          <NuxtLink
-            :to="{
-              name: 'settings-notifications',
-            }"
-          >
+          <NuxtLink to="#">
             <v-icon icon="mdi-cog-outline"></v-icon>
-            <v-tooltip activator="parent" theme="dark" location="bottom"
-              >Настройки уведомлений</v-tooltip
-            >
+            <v-tooltip activator="parent" theme="dark" location="bottom">
+              Настройки уведомлений
+            </v-tooltip>
           </NuxtLink>
           <span>Уведомления</span>
           <span class="cursor-pointer" @click="readAllModal = !readAllModal">
@@ -57,7 +53,7 @@ const readAllNotifications = () => {
         <DropdownMenuItem
           @click="
             router.push({
-              name: 'notifications',
+              name: 'notifications-all',
             })
           "
           class="flex justify-center cursor-pointer"

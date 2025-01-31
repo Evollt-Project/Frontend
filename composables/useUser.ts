@@ -26,6 +26,15 @@ export class User {
     });
   }
 
+  static async getById(id: number): Promise<IUser | { message: string }> {
+    return await useRequest<IUser | { message: string }>({
+      url: `/api/v1/user/get/${id}`,
+      method: "get",
+    }).then((response) => {
+      return response.data;
+    })
+  }
+
   static async getEnums() {
     return useRequest<IEnum>({
       url: "api/v1/enums",
@@ -43,9 +52,10 @@ export class User {
     return (this.store.user.role & permission) === permission;
   }
 
-  static getAllPermissions(): (1 | 3 | 7 | 15)[] {
-    if (this.store.user && this.store.enums) {
-      const role = this.store.user.role
+  static getAllPermissions(user?: IUser | null): (1 | 3 | 7 | 15)[] {
+    const selectedUser: IUser | null = user ?? this.store.user
+    if (selectedUser && this.store.enums) {
+      const role = selectedUser.role
       return Object.entries(this.store.enums.roles)
         .filter(([key]) => {
           return (role & Number(key)) > 0 && Number(key) <= role;

@@ -18,26 +18,6 @@ onMounted(() => {
         });
       }
     });
-    // if (User.hasPermission(1)) {
-    //   roles.value.push({
-    //     title: User.store.enums.roles[1],
-    //   });
-    // }
-    // if (User.hasPermission(3)) {
-    //   roles.value.push({
-    //     title: User.store.enums.roles[3],
-    //   });
-    // }
-    // if (User.hasPermission(7)) {
-    //   roles.value.push({
-    //     title: User.store.enums.roles[7],
-    //   });
-    // }
-    // if (User.hasPermission(15)) {
-    //   roles.value.push({
-    //     title: User.store.enums.roles[15],
-    //   });
-    // }
   }
 });
 </script>

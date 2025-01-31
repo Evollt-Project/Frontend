@@ -7,7 +7,7 @@ export interface IRequisite {
   fio: string;
   inn: string;
   legal_address: string;
-  nalog_status: string;
+  nalog_status: number;
   passport: string;
   payment_account: string;
   updated_at: string;

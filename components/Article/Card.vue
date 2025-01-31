@@ -21,27 +21,52 @@ defineProps<{
         {{ article.title }}
       </h3>
       <p class="article-content__authors text-sm">
-        Автор: {{ article.author?.first_name }}
+        Автор:
+        <UserHoverCard :user="article.owner">
+          <template #title>
+            {{ [article.owner?.surname, article.owner?.first_name].join(" ") }}
+          </template>
+        </UserHoverCard>
       </p>
       <div class="article-content__cover">
         <img
-          :src="article.photo"
+          :src="article.avatar"
           class="w-20 h-20 object-cover rounded-2xl"
+          v-if="article.avatar"
           alt=""
         />
+        <div
+          v-else
+          class="w-20 h-20 rounded-2xl flex justify-center items-center border-black dark:border-white border-2"
+        >
+          <p class="text-center text-sm">Пока нет фото</p>
+        </div>
       </div>
       <div class="article-content__widgets flex gap-3">
-        <div class="flex items-center gap-1">
+        <div class="flex items-center gap-1" v-if="article.students.length > 0">
           <v-icon icon="mdi-account-group-outline"></v-icon>
-          {{ article.students_complete }}
+          {{ article.students.length }}
+          <v-tooltip activator="parent" max-width="300px" location="bottom">
+            Количество студентов, проходящих или прошедших курс
+          </v-tooltip>
         </div>
-        <div class="flex items-center gap-1">
+        <div class="flex items-center gap-1" v-if="article.time">
           <v-icon icon="mdi-clock-time-eight-outline"></v-icon>
-          {{ article.time }} ч
+          {{ article.time }}
+          <v-tooltip activator="parent" max-width="300px" location="bottom">
+            Примерное количество времени, нужное для прохождения курса
+          </v-tooltip>
+        </div>
+        <div v-if="article.has_certificate">
+          <v-icon icon="mdi-certificate-outline"></v-icon>
+          <v-tooltip activator="parent" max-width="300px" location="bottom">
+            После прохождения этого курса вы можете получить сертификат
+          </v-tooltip>
         </div>
       </div>
+
       <div class="article-content__price font-bold text-lg">
-        {{ useFormatAmount(article.price) }}
+        {{ article.price ? useFormatAmount(article.price) : "Бесплатно" }}
       </div>
     </div>
   </NuxtLink>
@@ -71,6 +96,7 @@ defineProps<{
     }
     &__widgets {
       grid-area: widgets;
+      height: 24px;
     }
     &__price {
       grid-area: price;

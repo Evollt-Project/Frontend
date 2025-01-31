@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { SwiperSlide } from "swiper/vue";
 import type { IArticleCategory } from "~/types/IArticleCategory";
+import lodash from "lodash";
 
 const props = defineProps<{
   title: string;
@@ -8,6 +9,12 @@ const props = defineProps<{
 }>();
 
 const tab = ref(props.articleCategories[0].tab);
+
+const chunkArticles = computed(() => {
+  for (let articleCategory of props.articleCategories) {
+    return lodash.chunk(articleCategory.articles, 6);
+  }
+});
 </script>
 
 <template>
@@ -35,10 +42,14 @@ const tab = ref(props.articleCategories[0].tab);
         >
           <ArticleSwiper>
             <template #slides>
-              <SwiperSlide>
-                <div class="grid gap-[20px] grid-cols-3">
+              <SwiperSlide
+                v-for="(group, groupIndex) in chunkArticles"
+                :key="groupIndex"
+              >
+                <div class="grid gap-5 grid-cols-3 grid-rows-2">
                   <ArticleCard
-                    v-for="article in articleCategory.articles"
+                    v-for="(article, index) in group"
+                    :key="index"
                     :article="article"
                   />
                 </div>

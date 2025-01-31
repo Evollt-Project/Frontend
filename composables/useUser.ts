@@ -36,7 +36,6 @@ export class User {
     });
   }
 
-  // TODO: Доделать разделение ролей на бэке и фронте
   static hasPermission(permission: number): boolean {
     if (!this.store.user) {
       return false

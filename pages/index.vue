@@ -10,84 +10,9 @@ useHead({
   title: "Evollt School | Главная",
 });
 
-const onlineCourses: Ref<IArticleCategory[]> = ref([
-  {
-    tab: "В тренде",
-    articles: [
-      {
-        id: 1,
-        title: "Hello",
-        author: User.store.user,
-        photo:
-          "https://cdn.stepik.net/media/catalog_blocks/116/cover_zzco07x.png",
-        students_complete: "5",
-        time: "14",
-        rate: "5",
-        price: 5000,
-      },
-      {
-        id: 1,
-        title: "Hello",
-        author: User.store.user,
-        photo:
-          "https://cdn.stepik.net/media/catalog_blocks/116/cover_zzco07x.png",
-        students_complete: "5",
-        time: "14",
-        rate: "5",
-        price: 5000,
-      },
-      {
-        id: 1,
-        title: "Hello",
-        author: User.store.user,
-        photo:
-          "https://cdn.stepik.net/media/catalog_blocks/116/cover_zzco07x.png",
-        students_complete: "5",
-        time: "14",
-        rate: "5",
-        price: 5000,
-      },
-    ],
-  },
-  {
-    tab: "Новые курсы",
-    articles: [
-      {
-        id: 1,
-        title: "Hello 2",
-        author: User.store.user,
-        photo:
-          "https://cdn.stepik.net/media/catalog_blocks/116/cover_zzco07x.png",
-        students_complete: "5",
-        time: "14",
-        rate: "5",
-        price: 5000,
-      },
-      {
-        id: 1,
-        title: "Hello 2",
-        author: User.store.user,
-        photo:
-          "https://cdn.stepik.net/media/catalog_blocks/116/cover_zzco07x.png",
-        students_complete: "5",
-        time: "14",
-        rate: "5",
-        price: 5000,
-      },
-      {
-        id: 1,
-        title: "Hello 2",
-        author: User.store.user,
-        photo:
-          "https://cdn.stepik.net/media/catalog_blocks/116/cover_zzco07x.png",
-        students_complete: "5",
-        time: "14",
-        rate: "5",
-        price: 5000,
-      },
-    ],
-  },
-]);
+const onlineCourses: Ref<IArticleCategory[] | null> = ref(
+  await Article.online()
+);
 
 const businessSubcategories: Ref<ISubcategory[]> = ref([
   {

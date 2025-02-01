@@ -5,9 +5,16 @@ export class Catalog {
     return useCatalogStore();
   }
 
-  static async getCatalogs() {
+  static async getAll() {
     return useRequest<ICatalog[]>({ url: "/api/v1/catalog" }).then((response) => {
       this.store.catalogs = response.data;
+      return response.data
+    });
+  }
+
+  static async get(id: number) {
+    return useRequest<ICatalog>({ url: `/api/v1/catalog/${id}` }).then((response) => {
+      console.log(response.data)
       return response.data
     });
   }

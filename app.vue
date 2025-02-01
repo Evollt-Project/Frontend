@@ -6,7 +6,7 @@ onMounted(async () => {
     await User.get();
   }
   if (Catalog.store.catalogs.length == 0) {
-    Catalog.getCatalogs();
+    Catalog.getAll();
   }
   if (!User.store.enums) {
     User.getEnums();

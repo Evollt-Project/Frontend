@@ -8,7 +8,7 @@ const props = defineProps<{
   articleCategories: IArticleCategory[];
 }>();
 
-const tab = ref(props.articleCategories[0].tab);
+const tab = ref(props.articleCategories[0].tab ?? null);
 
 const chunkArticles = computed(() => {
   for (let articleCategory of props.articleCategories) {
@@ -24,7 +24,12 @@ const chunkArticles = computed(() => {
       <v-icon icon="mdi-arrow-down" size="35"></v-icon>
     </div>
     <div class="mt-5">
-      <v-tabs v-model="tab" background-color="transparent" class="flex gap-2.5">
+      <v-tabs
+        v-model="tab"
+        v-if="tab"
+        background-color="transparent"
+        class="flex gap-2.5"
+      >
         <v-tab
           v-for="articleCategory in articleCategories"
           :ripple="false"

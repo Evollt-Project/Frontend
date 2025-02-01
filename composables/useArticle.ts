@@ -13,4 +13,16 @@ export class Article {
       return null
     })
   }
+  static async big() {
+    return useRequest<IArticleCategory[]>({
+      url: 'api/v1/articles/big'
+    }).then(response => {
+      return response.data
+    }).catch(response => {
+      useErrorNotification(
+        response.response.data
+      );
+      return null
+    })
+  }
 }

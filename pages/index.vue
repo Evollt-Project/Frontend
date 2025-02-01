@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { IArticleCategory } from "~/types/IArticleCategory";
 import type { ISubcategory } from "~/types/ISubcategory";
+import type { ICatalog } from "~/types/ICatalog";
 
 definePageMeta({
   name: "index",
@@ -13,27 +14,9 @@ useHead({
 const onlineCourses: Ref<IArticleCategory[] | null> = ref(
   await Article.online()
 );
+const bigCourses: Ref<IArticleCategory[] | null> = ref(await Article.big());
 
-const businessSubcategories: Ref<ISubcategory[]> = ref([
-  {
-    id: 1,
-    title: "Маркетинг и продажи",
-    color: "#3f4fcb",
-    articles: [
-      {
-        id: 1,
-        title: "Hello 2",
-        author: User.store.user,
-        photo:
-          "https://cdn.stepik.net/media/catalog_blocks/116/cover_zzco07x.png",
-        students_complete: "5",
-        time: "14",
-        rate: "5",
-        price: 5000,
-      },
-    ],
-  },
-]);
+const businessCatalog: Ref<ICatalog> = ref(await Catalog.get(3));
 </script>
 
 <template>
@@ -43,17 +26,19 @@ const businessSubcategories: Ref<ISubcategory[]> = ref([
 
       <ArticleCategoryList
         title="Онлайн-курсы"
+        v-if="onlineCourses"
         :article-categories="onlineCourses"
       />
 
       <ArticleCategoryList
-        title="Войти в IT"
-        :article-categories="onlineCourses"
+        title="Большие курсы"
+        v-if="bigCourses"
+        :article-categories="bigCourses"
       />
 
-      <SubcategoryList
-        title="Бизнес, менеджмент, финансы"
-        :subcategories="businessSubcategories"
+      <CategoryList
+        :title="businessCatalog.title"
+        :categories="businessCatalog.categories.slice(0, 4)"
       />
     </div>
   </div>

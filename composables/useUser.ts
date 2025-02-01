@@ -1,13 +1,15 @@
 import { toast } from "vue3-toastify";
 import type { ILogin, IRegister } from "~/types/Auth";
+import type { IArticle } from "~/types/IArticle";
 import type { EnumValues, IEnum } from "~/types/IEnum";
 import type { ISkill, IUser } from "~/types/IUser";
 
 export class User {
-  static readonly STUDENT = 1
-  static readonly TEACHER = 3
-  static readonly MODERATOR = 7
-  static readonly ADMIN = 15
+  static readonly DEBOUNCE_DELAY = 800;
+  static readonly STUDENT = 1;
+  static readonly TEACHER = 3;
+  static readonly MODERATOR = 7;
+  static readonly ADMIN = 15;
   static get store() {
     return useAuthStore();
   }

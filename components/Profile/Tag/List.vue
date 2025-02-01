@@ -7,7 +7,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="tags_list flex gap-2">
+  <div class="tags_list flex gap-2 flex-wrap">
     <ProfileTagItem v-for="item in items" :key="item.title" :item="item" />
   </div>
 </template>

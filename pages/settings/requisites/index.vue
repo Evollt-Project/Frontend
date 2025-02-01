@@ -105,7 +105,7 @@ const getCompanyByInn = useDebounceFn(async () => {
         );
     }
   }
-}, 800);
+}, User.DEBOUNCE_DELAY);
 
 const getBankByBik = useDebounceFn(async () => {
   if (requisites.value.bik.length == 9) {
@@ -123,7 +123,7 @@ const getBankByBik = useDebounceFn(async () => {
       }
     });
   }
-}, 800);
+}, User.DEBOUNCE_DELAY);
 
 watch(
   () => requisites.value.nalog_status,

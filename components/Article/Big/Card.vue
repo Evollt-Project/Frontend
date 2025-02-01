@@ -8,7 +8,7 @@ defineProps<{
 
 <template>
   <NuxtLink
-    class="article rounded-3xl cursor-pointer dark:shadow-white transition duration-300 hover:shadow-custom h-full flex flex-col"
+    class="article rounded-3xl cursor-pointer dark:shadow-white min-w-[350px] transition duration-300 hover:shadow-custom h-full flex flex-col"
     :to="{
       name: 'article-page',
       params: {
@@ -20,10 +20,17 @@ defineProps<{
       <div class="article-content_top mb-[-30px]">
         <div class="article-content__cover">
           <img
-            :src="article.photo"
+            :src="article.avatar"
             class="w-full h-72 object-cover rounded-2xl"
+            v-if="article.avatar"
             alt=""
           />
+          <div
+            v-else
+            class="w-full h-72 rounded-2xl flex justify-center items-center"
+          >
+            <p class="text-center text-sm">Пока нет фото</p>
+          </div>
         </div>
       </div>
 
@@ -37,33 +44,66 @@ defineProps<{
                 {{ article.title }}
               </h3>
               <p class="article-content__authors text-neutral-500">
-                Автор: {{ article.author?.first_name }}
+                Автор:
+                <UserHoverCard :user="article.owner">
+                  <template #title>
+                    {{
+                      [article.owner?.surname, article.owner?.first_name].join(
+                        " "
+                      )
+                    }}
+                  </template>
+                </UserHoverCard>
               </p>
             </div>
-            <div class="article-content__widgets flex gap-3">
-              <div class="flex items-center gap-1">
+            <div class="article-content__widgets flex gap-3 flex-wrap">
+              <div
+                class="flex items-center gap-1"
+                v-if="article.students.length > 0"
+              >
                 <v-icon icon="mdi-account-group-outline"></v-icon>
-                {{ article.students_complete }}
+                {{ article.students.length }}
+                <v-tooltip
+                  activator="parent"
+                  max-width="300px"
+                  location="bottom"
+                >
+                  Количество студентов, проходящих или прошедших курс
+                </v-tooltip>
               </div>
-              <div class="flex items-center gap-1">
+              <div class="flex items-center gap-1" v-if="article.time">
                 <v-icon icon="mdi-clock-time-eight-outline"></v-icon>
-                {{ article.time }}
+                {{ article.time }} ч
+                <v-tooltip
+                  activator="parent"
+                  max-width="300px"
+                  location="bottom"
+                >
+                  Примерное количество времени, нужное для прохождения курса
+                </v-tooltip>
+              </div>
+              <div v-if="article.has_certificate">
+                <v-icon icon="mdi-certificate-outline"></v-icon>
+                <v-tooltip
+                  activator="parent"
+                  max-width="300px"
+                  location="bottom"
+                >
+                  После прохождения этого курса вы можете получить сертификат
+                </v-tooltip>
               </div>
             </div>
           </div>
           <div class="article-content__tags my-5 flex gap-3">
-            <div
-              class="text-lg px-3 py-1 rounded-3xl"
-              style="border: 1px solid black"
-            >
-              Frontend
-            </div>
+            <ProfileTagList
+              :items="[...article.categories, ...article.subcategories]"
+            />
           </div>
         </div>
 
         <div class="article-content__bottom mt-auto">
           <div class="article-content__price font-bold text-lg">
-            {{ useFormatAmount(article.price) }}
+            {{ article.price ? useFormatAmount(article.price) : "Бесплатно" }}
           </div>
         </div>
       </div>

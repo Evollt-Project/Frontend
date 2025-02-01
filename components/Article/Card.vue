@@ -52,7 +52,7 @@ defineProps<{
         </div>
         <div class="flex items-center gap-1" v-if="article.time">
           <v-icon icon="mdi-clock-time-eight-outline"></v-icon>
-          {{ article.time }}
+          {{ article.time }} ч
           <v-tooltip activator="parent" max-width="300px" location="bottom">
             Примерное количество времени, нужное для прохождения курса
           </v-tooltip>

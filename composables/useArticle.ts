@@ -1,4 +1,6 @@
+import type { IArticle } from "~/types/IArticle";
 import type { IArticleCategory } from "~/types/IArticleCategory";
+import type { IPagination } from "~/types/IPagination";
 
 export class Article {
   static async online() {
@@ -25,4 +27,18 @@ export class Article {
       return null
     })
   }
+  static async getAll(params: object) {
+    return useRequest<IPagination<IArticle>>({
+      url: 'api/v1/article',
+      params: params
+    }).then(response => {
+      return response.data
+    }).catch(response => {
+      useErrorNotification(
+        response.response.data
+      );
+      return null
+    })
+  }
+
 }

@@ -10,21 +10,20 @@ definePageMeta({
 
 const loadingArticles = ref(true);
 const articles: Ref<IPagination<IArticle> | null> = ref(null);
+const search = ref("");
 const page = ref(1);
-
-// TODO: Сделать загрузку страниц через observer
-// watch(page, async (value) => {
-//   await getArticles();
-// });
 
 const getArticles = async (search: string | undefined = undefined) => {
   loadingArticles.value = true;
   await Article.getAll({
     // type: ArticleTypeEnum.PASSING,
     page: page.value,
-    search,
+    search: sanitizeValue(search),
   }).then((response) => {
     if (response) {
+      if (articles.value) {
+        response.data = [...articles.value.data, ...response.data];
+      }
       articles.value = response;
     }
     loadingArticles.value = false;
@@ -34,6 +33,20 @@ const getArticles = async (search: string | undefined = undefined) => {
 onMounted(async () => {
   await getArticles();
 });
+
+const changePage = async (e: number) => {
+  page.value = e;
+  getArticles(search.value);
+};
+
+const changeSearch = async (e: string) => {
+  search.value = e;
+  page.value = 1;
+  if (articles.value) {
+    articles.value.data = [];
+  }
+  getArticles(search.value);
+};
 </script>
 
 <template>
@@ -41,8 +54,8 @@ onMounted(async () => {
     <CourseSearchAndList
       :loading-articles="loadingArticles"
       :page="page"
-      @changePage="(e) => (page = e)"
-      @search="(e: string) => getArticles(e)"
+      @changePage="(e: number) => changePage(e)"
+      @search="(e: string) => changeSearch(e)"
       :articles="articles"
     />
   </div>

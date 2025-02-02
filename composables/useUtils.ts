@@ -37,3 +37,27 @@ export const useNoun = (
   }
   return five;
 };
+
+
+export const sanitizeValue = (value: any) => {
+  if (typeof value === "number") {
+    return value > 0 ? value : undefined;
+  }
+  if (Array.isArray(value)) {
+    return value.length > 0 ? value : undefined;
+  }
+  if (typeof value === "object") {
+    if (value instanceof Date) {
+      return !isNaN(value.getTime()) ? value : undefined;
+    }
+    if (value && Object.keys(value).length > 0) {
+      const hasValidValues = Object.values(value).some(v => {
+        if (Array.isArray(v)) return v.length > 0;
+        return v !== undefined;
+      });
+      return hasValidValues ? value : undefined;
+    }
+    return undefined;
+  }
+  return value || undefined;
+};

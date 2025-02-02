@@ -14,7 +14,6 @@ export class Catalog {
 
   static async get(id: number) {
     return useRequest<ICatalog>({ url: `/api/v1/catalog/${id}` }).then((response) => {
-      console.log(response.data)
       return response.data
     });
   }

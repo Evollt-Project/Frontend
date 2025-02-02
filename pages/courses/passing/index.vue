@@ -16,7 +16,7 @@ const page = ref(1);
 const getArticles = async (search: string | undefined = undefined) => {
   loadingArticles.value = true;
   await Article.getAll({
-    // type: ArticleTypeEnum.PASSING,
+    type: ArticleTypeEnum.PASSING,
     page: page.value,
     search: sanitizeValue(search),
   }).then((response) => {

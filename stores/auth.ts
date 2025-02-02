@@ -57,8 +57,7 @@ export const useAuthStore = defineStore("auth", () => {
     if (!url) {
       return `https://ui-avatars.com/api/?name=${first_name}&background=random&size=${size}&font-size=0.3`;
     }
-
-    return url;
+    return photoUrl(url);
   };
 
   return {

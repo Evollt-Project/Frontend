@@ -20,7 +20,7 @@ defineProps<{
       <div class="article-content_top mb-[-30px]">
         <div class="article-content__cover">
           <img
-            :src="article.avatar"
+            :src="photoUrl(article.avatar)"
             class="w-full h-72 object-cover rounded-2xl"
             v-if="article.avatar"
             alt=""

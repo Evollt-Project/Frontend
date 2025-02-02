@@ -61,3 +61,10 @@ export const sanitizeValue = (value: any) => {
   }
   return value || undefined;
 };
+
+
+export const photoUrl = (url: string) => {
+  const config = useRuntimeConfig()
+
+  return String(new URL("storage/" + url, config.public.url));
+}

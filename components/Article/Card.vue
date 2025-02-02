@@ -30,7 +30,7 @@ defineProps<{
       </p>
       <div class="article-content__cover">
         <img
-          :src="article.avatar"
+          :src="photoUrl(article.avatar)"
           class="w-20 h-20 object-cover rounded-2xl"
           v-if="article.avatar"
           alt=""

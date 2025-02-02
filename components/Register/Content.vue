@@ -6,10 +6,10 @@ const props = defineProps<{
 }>();
 const emits = defineEmits(["loading", "dialog"]);
 const data: Ref<IRegister> = ref({
-  first_name: "",
-  email: "",
-  password: "",
-  password_confirmation: "",
+  first_name: "Evollt",
+  email: "evollt@gmail.com",
+  password: "qwerty12!",
+  password_confirmation: "qwerty12!",
 });
 const showPassword: Ref<boolean> = ref(false);
 const showConfirmationPassword: Ref<boolean> = ref(false);

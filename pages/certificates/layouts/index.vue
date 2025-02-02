@@ -1,12 +1,12 @@
 <script setup lang="ts">
 definePageMeta({
-  name: "certificates",
+  name: "certificates-layouts",
   layout: "sidebar",
 });
 </script>
 
 <template>
-  <div>Сертификаты</div>
+  <div>Шаблоны</div>
 </template>
 
 <style scoped lang="scss"></style>

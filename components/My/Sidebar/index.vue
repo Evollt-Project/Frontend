@@ -92,6 +92,20 @@ const collapsibleItems: ICollapsibleSidebarItem[] = [
     icon: "mdi-certificate-outline",
     url: "certificates",
     isActive: false,
+    items: [
+      {
+        title: "Мои",
+        url: "certificates-my",
+      },
+      {
+        title: "Шаблоны",
+        url: "certificates-layouts",
+      },
+      {
+        title: "Создать шаблон",
+        url: "certificates-create",
+      },
+    ],
   },
 ];
 const currentCategory: Ref<ICollapsibleSidebarItem | null> = ref(null);
@@ -150,7 +164,12 @@ const checkCategoryAndItem = () => {
     currentItem.value = null;
   } else if (splitRouteName[0] == "certificates") {
     currentCategory.value = collapsibleItems[5];
-    currentItem.value = null;
+
+    checkSplitPath(currentCategory.value, splitRouteName[1], [
+      "my",
+      "layouts",
+      "create",
+    ]);
   }
 };
 

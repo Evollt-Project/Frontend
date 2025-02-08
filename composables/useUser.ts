@@ -1,7 +1,5 @@
-import { toast } from "vue3-toastify";
 import type { ILogin, IRegister } from "~/types/Auth";
-import type { IArticle } from "~/types/IArticle";
-import type { EnumValues, IEnum } from "~/types/IEnum";
+import type { IEnum } from "~/types/IEnum";
 import type { ISkill, IUser } from "~/types/IUser";
 
 export class User {
@@ -149,6 +147,7 @@ export class User {
       url: 'api/v1/user/skills',
     })
   }
+
   static async changePassword(data: object) {
     return await useRequest<{ status: boolean, message: string }>({
       url: 'api/v1/user/update/password',

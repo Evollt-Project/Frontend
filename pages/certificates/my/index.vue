@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Certificate } from "~/composables/useCertificate";
-import type { ICertificate } from "~/types/ICertificate";
+import type { ICertificate, ICertificateType } from "~/types/ICertificate";
 import type { IPagination } from "~/types/IPagination";
 
 definePageMeta({
@@ -11,8 +11,10 @@ definePageMeta({
 const tab: Ref<"certificates" | "layouts"> = ref("certificates");
 const page = ref(1);
 const certificates: Ref<IPagination<ICertificate> | null> = ref(null);
+const certificateTypes: Ref<IPagination<ICertificateType> | null> = ref(null);
 const loading = ref(false);
 const search = ref("");
+const route = useRoute();
 
 const getMyCertificates = async (search: string | undefined = undefined) => {
   loading.value = true;
@@ -32,10 +34,29 @@ const getMyCertificates = async (search: string | undefined = undefined) => {
 
 const getCertificateLayouts = async (
   search: string | undefined = undefined
-) => {};
+) => {
+  loading.value = true;
+  await Certificate.getMyLayouts({
+    page: page.value,
+    my: 1,
+    search: sanitizeValue(search),
+  }).then((response) => {
+    if (response) {
+      if (certificateTypes.value) {
+        response.data = [...certificateTypes.value.data, ...response.data];
+      }
+      certificateTypes.value = response;
+    }
+    loading.value = false;
+  });
+};
 
 onMounted(async () => {
-  await getMyCertificates();
+  if (route.query.tab == "layouts") {
+    tab.value = "layouts";
+  } else {
+    await getMyCertificates();
+  }
 });
 
 // type - 0 получение сертификатов, 1 получение шаблонов для сертификатов
@@ -53,15 +74,28 @@ const changeSearch = async (e: string, type: number) => {
   if (certificates.value) {
     certificates.value.data = [];
   }
+  if (certificateTypes.value) {
+    certificateTypes.value.data = [];
+  }
   type == 0
     ? getMyCertificates(search.value)
     : getCertificateLayouts(search.value);
 };
+
+watch(tab, async (value) => {
+  page.value = 1;
+  certificateTypes.value = null;
+  certificates.value = null;
+  if (value == "certificates") {
+    await getMyCertificates();
+  } else if (value == "layouts") {
+    await getCertificateLayouts();
+  }
+});
 </script>
 
 <template>
   <div>
-    <!-- TODO: Доделать страницу сертификатов -->
     <v-tabs v-model="tab" background-color="transparent" class="flex gap-2.5">
       <v-tab
         :ripple="false"
@@ -83,13 +117,23 @@ const changeSearch = async (e: string, type: number) => {
       <v-window-item value="certificates">
         <CertificateSearchAndList
           :certificates="certificates"
+          :type="'certificate'"
           :loading="loading"
           @changePage="(e: number) => changePage(e, 0)"
           @search="(e: string) => changeSearch(e, 0)"
           :page="page"
         />
       </v-window-item>
-      <v-window-item value="layouts"> Мои шаблоны </v-window-item>
+      <v-window-item value="layouts">
+        <CertificateSearchAndList
+          :certificates="certificateTypes"
+          :loading="loading"
+          :type="'certificate_type'"
+          @changePage="(e: number) => changePage(e, 1)"
+          @search="(e: string) => changeSearch(e, 1)"
+          :page="page"
+        />
+      </v-window-item>
     </v-window>
   </div>
 </template>

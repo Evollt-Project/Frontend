@@ -6,7 +6,7 @@ export class Rule {
     /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
     "Почта должна иметь валидную форму";
 
-  private static required = (value: string) =>
+  public static required = (value: string) =>
     !!value || "Это поле обязательно для заполнения";
 
   private static password = (value: string) =>
@@ -30,6 +30,8 @@ export class Rule {
 
     return true
   }
+  public static min = (value: number, min: number) =>
+    value >= min || "Значение должно быть не менее " + min;
 
   static getPassword() {
     return [this.required, this.password];

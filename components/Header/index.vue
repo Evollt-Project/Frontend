@@ -93,12 +93,12 @@ const router = useRouter();
           </DropdownMenu>
         </div>
         <div class="flex gap-5 items-center" v-else>
-          <MyButton @click="openAuthModal('login')" class="text-lg"
-            >Вход</MyButton
-          >
-          <MyButton @click="openAuthModal('register')" class="text-lg"
-            >Регистрация</MyButton
-          >
+          <MyButton @click="openAuthModal('login')" class="text-lg">
+            Вход
+          </MyButton>
+          <MyButton @click="openAuthModal('register')" class="text-lg">
+            Регистрация
+          </MyButton>
         </div>
       </div>
     </div>

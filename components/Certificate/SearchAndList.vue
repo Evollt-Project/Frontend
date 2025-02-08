@@ -1,14 +1,19 @@
 <script setup lang="ts">
-import type { ICertificate } from "~/types/ICertificate";
+import type { ICertificate, ICertificateType } from "~/types/ICertificate";
 import type { IPagination } from "~/types/IPagination";
 
 const props = defineProps<{
-  certificates: IPagination<ICertificate> | null;
+  certificates:
+    | IPagination<ICertificate>
+    | IPagination<ICertificateType>
+    | null;
   page: number;
+  type: "certificate" | "certificate_type";
   loading: boolean;
 }>();
 const emits = defineEmits(["search", "changePage"]);
 const observer: Ref<HTMLDivElement | null> = ref(null);
+const router = useRouter();
 
 useIntersectionObserver(observer, ([entry], observerElement) => {
   if (
@@ -31,7 +36,7 @@ const changeSearchField = useDebounceFn((event: InputEvent) => {
 
 <template>
   <div class="courses">
-    <v-form fast-fail ref="form" class="mt-4" @submit.prevent>
+    <v-form fast-fail ref="form" class="mt-4 flex gap-4" @submit.prevent>
       <v-text-field
         hide-details
         rounded="lg"
@@ -41,37 +46,56 @@ const changeSearchField = useDebounceFn((event: InputEvent) => {
         variant="outlined"
         density="comfortable"
       ></v-text-field>
+      <MyButton
+        v-if="type == 'certificate_type'"
+        @click="router.push({ name: 'certificates-create' })"
+        density=""
+        class="text-lg"
+      >
+        Создать шаблон
+      </MyButton>
     </v-form>
     <div class="my-[20px]">
       <div>
         <div class="courses__list">
-          <ArticleBigCard
-            v-if="certificates && certificates.data.length > 0"
-            v-for="article in certificates.data"
-            :article="certificates"
+          <CertificateCard
+            v-if="
+              type == 'certificate' &&
+              certificates &&
+              certificates.data.length > 0
+            "
+            v-for="certificate in certificates.data"
+            :certificate="certificate as ICertificate"
+          />
+          <CertificateLayoutCard
+            v-if="
+              type == 'certificate_type' &&
+              certificates &&
+              certificates.data.length > 0
+            "
+            v-for="certificate in certificates.data"
+            :certificate="certificate as ICertificateType"
           />
           <div v-for="_ in 3" v-if="loading">
-            <div class="flex flex-col space-y-3">
-              <Skeleton class="h-[288px] w-[350px] rounded-xl" />
-              <div class="space-y-2">
-                <div class="flex justify-between">
-                  <Skeleton class="h-4 w-[250px]" />
-                  <Skeleton class="h-4 w-[80px]" />
-                </div>
-                <Skeleton class="h-4 w-[200px]" />
-                <span class="flex gap-2 flex-wrap mt-5">
-                  <Skeleton class="h-4 w-[80px]" />
-                  <Skeleton class="h-4 w-[100px]" />
-                  <Skeleton class="h-4 w-[120px]" />
+            <div class="flex flex-col space-y-3 p-8">
+              <div class="flex justify-between">
+                <div class="space-y-3">
                   <Skeleton class="h-4 w-[150px]" />
                   <Skeleton class="h-4 w-[80px]" />
-                </span>
-                <Skeleton class="h-4 w-[150px] mt-5" />
+                </div>
+                <Skeleton class="w-20 h-20 rounded-xl" />
+              </div>
+              <div class="flex justify-between">
+                <Skeleton class="h-4 w-[250px]" />
               </div>
             </div>
           </div>
+          <div
+            ref="observer"
+            v-if="certificates && certificates.data.length > 0"
+            class="observer"
+          ></div>
         </div>
-        <div ref="observer" class="observer"></div>
       </div>
       <div
         v-if="certificates && certificates.data.length == 0"

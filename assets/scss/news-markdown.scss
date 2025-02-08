@@ -1,0 +1,15 @@
+.md-editor {
+  --md-bk-color: transparent !important;
+  color: white;
+  &-preview a {
+    color: white;
+  }
+  &-preview-wrapper {
+    padding: 0 !important;
+  }
+}
+
+.md-editor-dark div.cyanosis-theme {
+  --md-theme-linkh-color: white !important;
+  --md-theme-border-color: white !important;
+}

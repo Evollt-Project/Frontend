@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Светлая тема */
+    --sidebar-background: 0 80% 98%; /* Очень светло-красный */
+    --sidebar-width: 1000px !important;
+    --sidebar-foreground: 0 50% 20%; /* Темно-красный */
+    --sidebar-primary: 0 70% 40%; /* Средне-красный */
+    --sidebar-primary-foreground: 0 0% 100%; /* Белый */
+    --sidebar-accent: 0 80% 90%; /* Нежный розовый */
+    --sidebar-accent-foreground: 0 70% 20%; /* Темно-красный */
+    --sidebar-border: 0 25% 88%; /* Светло-розовый */
+    --sidebar-ring: 0 100% 50%; /* Яркий красный */
+  }
+
+  .dark {
+    /* Темная тема */
+    --sidebar-background: 0 40% 10%; /* Темный бордовый */
+    --sidebar-foreground: 0 70% 90%; /* Светло-розовый */
+    --sidebar-primary: 0 90% 50%; /* Яркий красный */
+    --sidebar-primary-foreground: 0 0% 100%; /* Белый */
+    --sidebar-accent: 0 20% 15%; /* Очень темный бордовый */
+    --sidebar-accent-foreground: 0 70% 90%; /* Светло-розовый */
+    --sidebar-border: 0 20% 15%; /* Темный бордовый */
+    --sidebar-ring: 0 100% 50%; /* Яркий красный */
+  }
+}

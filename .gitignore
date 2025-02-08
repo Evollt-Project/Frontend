@@ -8,6 +8,7 @@ dist
 
 # Node dependencies
 node_modules
+package-lock.json
 
 # Logs
 logs
@@ -19,7 +20,7 @@ logs
 .idea
 .vscode
 
-# Local env files
+# Local env files j
 .env
 .env.*
 !.env.example

@@ -1,0 +1,5 @@
+export type EnumValues<K extends number, V = string> = { [key in K]: V };
+
+export interface IEnum {
+  roles: EnumValues<1 | 3 | 7 | 15>
+}

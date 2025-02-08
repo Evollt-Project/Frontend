@@ -4,6 +4,7 @@ import type { IUser } from "./IUser";
 export interface ICertificateType {
   id: number;
   path: string;
+  preview_image: string
   owner: IUser;
   title: string;
   positions: ICertificateTypePosition[];
@@ -16,9 +17,8 @@ export interface ICertificateTypePosition {
   x: number;
   y: number;
   type: 'logo' | 'title' | 'date';
-  width: number;
+  color: string;
   size: number;
-  height: number;
 }
 export interface ICertificate {
   id: number;

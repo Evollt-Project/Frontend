@@ -20,9 +20,9 @@ defineProps<{
       <div class="article-content_top mb-[-30px]">
         <div class="article-content__cover">
           <img
-            :src="photoUrl(certificate.path)"
+            :src="photoUrl(certificate.preview_image)"
             class="w-full h-72 object-cover rounded-2xl"
-            v-if="certificate.path"
+            v-if="certificate.preview_image"
             alt=""
           />
           <div

@@ -51,6 +51,8 @@ function blockStyle(block: ICertificateTypePosition): CSSProperties {
     position: "absolute" as "absolute",
     left: `${block.x}px`,
     top: `${block.y}px`,
+    color: block.color,
+    fontSize: `${block.size}px`,
     padding: "5px",
     background: "rgba(0, 123, 255, 0.5)",
     cursor: "move",
@@ -63,11 +65,11 @@ function startDrag(block: ICertificateTypePosition, event: MouseEvent) {
   state.dragData[block.type].offsetX = event.clientX - block.x;
   // @ts-ignore
   state.dragData[block.type].offsetY = event.clientY - block.y;
-  document.addEventListener("mousemove", onDrag);
+  document.addEventListener("mousemove", (e) => onDrag(e, block.type));
   document.addEventListener("mouseup", stopDrag);
 }
 
-function onDrag(event: MouseEvent) {
+function onDrag(event: MouseEvent, reference: string = "") {
   if (state.currentDrag && editor.value && image.value) {
     const rect = image.value.getBoundingClientRect();
     const dragType = state.currentDrag.type;
@@ -75,9 +77,16 @@ function onDrag(event: MouseEvent) {
 
     const newX = event.clientX - state.dragData[dragType].offsetX;
     const newY = event.clientY - state.dragData[dragType].offsetY;
+    const newBlock = document.getElementById(`block-${reference}`);
 
-    block.x = Math.min(Math.max(newX, 0), rect.width - block.width);
-    block.y = Math.min(Math.max(newY, 0), rect.height - block.height);
+    block.x = Math.min(
+      Math.max(newX, 0),
+      rect.width - (newBlock?.offsetWidth ?? 1)
+    );
+    block.y = Math.min(
+      Math.max(newY, 0),
+      rect.height - (newBlock?.offsetHeight ?? 1)
+    );
   }
 }
 
@@ -86,17 +95,6 @@ function stopDrag() {
   document.removeEventListener("mousemove", onDrag);
   document.removeEventListener("mouseup", stopDrag);
 }
-
-// function savePositions() {
-//   const positions = props.blocks.map((block) => ({
-//     x: block.x,
-//     y: block.y,
-//     type: block.type,
-//   }));
-//   console.log("Позиции блоков:", positions);
-//   console.log(state);
-//   // Здесь можно отправить данные на сервер через API
-// }
 </script>
 
 <template>
@@ -124,20 +122,12 @@ function stopDrag() {
       <div
         v-for="block in blocks"
         :style="blockStyle(block)"
+        :id="`block-${block.type}`"
         class="draggable-block"
         @mousedown="(event) => startDrag(block, event)"
       >
-        <div v-if="block.type == 'logo'">
-          <a class="flex gap-8 items-center">
-            <div class="header__logo">
-              <IconsLogo />
-            </div>
-            <div class="logo__title" :style="{ fontSize: block.size + 'px' }">
-              Evollt School
-            </div>
-          </a>
-        </div>
-        <div v-if="block.type == 'title'">Название</div>
+        <div v-if="block.type == 'logo'">Evollt School</div>
+        <div v-if="block.type == 'title'">Иванов Иван Иванович</div>
         <div v-if="block.type == 'date'">dd.mm.yyyy</div>
       </div>
     </div>

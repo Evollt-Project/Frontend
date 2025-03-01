@@ -127,11 +127,12 @@ watch(tab, async (value) => {
       <v-window-item value="layouts">
         <CertificateSearchAndList
           :certificates="certificateTypes"
+          certificate_type="my"
           :loading="loading"
           :type="'certificate_type'"
+          :page="page"
           @changePage="(e: number) => changePage(e, 1)"
           @search="(e: string) => changeSearch(e, 1)"
-          :page="page"
         />
       </v-window-item>
     </v-window>

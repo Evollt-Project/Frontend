@@ -8,7 +8,7 @@ export interface ICertificateType {
   owner: IUser;
   title: string;
   positions: ICertificateTypePosition[];
-  state: number;
+  state: 0 | 1 | 2;
   created_at: string;
   updated_at: string;
 }

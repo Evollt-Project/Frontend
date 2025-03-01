@@ -9,6 +9,7 @@ const props = defineProps<{
     | null;
   page: number;
   type: "certificate" | "certificate_type";
+  certificate_type?: "my" | "list";
   loading: boolean;
 }>();
 const emits = defineEmits(["search", "changePage"]);
@@ -75,6 +76,7 @@ const changeSearchField = useDebounceFn((event: InputEvent) => {
             "
             v-for="certificate in certificates.data"
             :certificate="certificate as ICertificateType"
+            :certificate_type="certificate_type ?? 'list'"
           />
           <div v-for="_ in 3" v-if="loading">
             <div class="flex flex-col space-y-3 p-8">

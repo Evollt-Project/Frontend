@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { IArticle } from "~/types/IArticle";
-import type { IPagination } from "~/types/IPagination";
+import type { IArticle } from "~/types/Article/IArticle";
+import type { IPagination } from "~/types/Base/IPagination";
 
 const props = defineProps<{
   articles: IPagination<IArticle> | null;

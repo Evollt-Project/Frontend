@@ -22,7 +22,7 @@ const businessCatalog: Ref<ICatalog> = ref(await Catalog.get(3));
 <template>
   <div class="container mx-auto">
     <div class="grid gap-16">
-      <Intro />
+      <Intro class="mb-5" />
 
       <ArticleCategoryList
         title="Онлайн-курсы"

@@ -6,34 +6,61 @@ import type {
 } from "~/types/ISidebarItem";
 
 const router = useRouter();
-const route = useRoute();
 const collapsibleItems: ICollapsibleSidebarItem[] = [
   {
-    title: "Профиль",
-    icon: "mdi-account-outline",
-    url: "profile",
-    isActive: false,
-  },
-  {
-    title: "Курсы",
+    title: "Курс",
     icon: "mdi-school-outline",
     isActive: false,
     items: [
       {
-        title: "Прохожу",
-        url: "courses-passing",
+        title: "Описание",
+        url: "course-description",
       },
       {
-        title: "Избранные",
-        url: "courses-favorites",
+        title: "Содержание",
+        url: "course-content",
       },
       {
-        title: "Хочу пройти",
-        url: "courses-wishlist",
+        title: "Чек-лист",
+        url: "course-checklist",
+      },
+    ],
+  },
+  {
+    title: "Общение с учащимися",
+    icon: "mdi-human-male-board",
+    isActive: false,
+    items: [
+      {
+        title: "Новости",
+        url: "course-news",
       },
       {
-        title: "Создать",
-        url: "courses-create",
+        title: "Комментарии",
+        url: "course-comments",
+      },
+      {
+        title: "Отзывы",
+        url: "course-feedbacks",
+      },
+    ],
+  },
+  {
+    title: "Аналитика",
+    icon: "mdi-human-male-board",
+    isActive: false,
+    items: [
+      {
+        title: "Отчеты",
+        url: "course-reports",
+      },
+      {
+        title: "Доход",
+        url: "course-revenue",
+      },
+      {
+        title: "Статистика",
+        url: "course-statistics",
       },
     ],
   },
@@ -43,151 +70,34 @@ const collapsibleItems: ICollapsibleSidebarItem[] = [
     isActive: false,
     items: [
       {
-        title: "Редактировать профиль",
-        url: "settings-profile",
+        title: "Публикация",
+        url: "course-publish",
       },
       {
-        title: "Изменить пароль",
-        url: "settings-password",
+        title: "Цена и промокоды",
+        url: "course-price",
       },
       {
-        title: "Реквизиты",
-        url: "settings-requisites",
-      },
-    ],
-  },
-  {
-    title: "Преподавание",
-    icon: "mdi-human-male-board",
-    isActive: false,
-    items: [
-      {
-        title: "Курсы",
-        url: "teach-courses",
-      },
-      {
-        title: "Уроки",
-        url: "teach-lessons",
-      },
-      {
-        title: "Рассылки",
-        url: "teach-mailing",
-      },
-    ],
-  },
-  {
-    title: "Уведомления",
-    icon: "mdi-bell-outline",
-    url: "notifications",
-    isActive: false,
-    items: [
-      {
-        title: "Все",
-        url: "notifications-all",
-      },
-      {
-        title: "Избранные",
-        url: "notifications-favorites",
+        title: "Права доступа",
+        url: "course-permissions",
       },
     ],
   },
   {
     title: "Сертификаты",
-    icon: "mdi-certificate-outline",
-    url: "certificates",
+    icon: "mdi-account-outline",
+    url: "course-certificates",
     isActive: false,
-    items: [
-      {
-        title: "Мои",
-        url: "certificates-my",
-      },
-      {
-        title: "Шаблоны",
-        url: "certificates-layouts",
-      },
-      {
-        title: "Создать шаблон",
-        url: "certificates-create",
-      },
-    ],
+  },
+  {
+    title: "Файлы",
+    icon: "mdi-account-outline",
+    url: "course-files",
+    isActive: false,
   },
 ];
 const currentCategory: Ref<ICollapsibleSidebarItem | null> = ref(null);
 const currentItem: Ref<ISidebarItem | null> = ref(null);
-
-const checkSplitPath = (
-  category: ICollapsibleSidebarItem,
-  word: string,
-  arr: string[]
-) => {
-  arr.map((item, index) => {
-    if (word == item) {
-      currentItem.value = category.items ? category.items[index] : null;
-    }
-  });
-};
-
-const checkCategoryAndItem = () => {
-  const splitRouteName = String(route.name).split("-");
-  if (splitRouteName[0] == "profile") {
-    currentCategory.value = collapsibleItems[0];
-    currentItem.value = null;
-  } else if (splitRouteName[0] == "courses") {
-    currentCategory.value = collapsibleItems[1];
-
-    checkSplitPath(currentCategory.value, splitRouteName[1], [
-      "passing",
-      "favorites",
-      "wishlist",
-      "create",
-    ]);
-  } else if (splitRouteName[0] == "settings") {
-    currentCategory.value = collapsibleItems[2];
-
-    checkSplitPath(currentCategory.value, splitRouteName[1], [
-      "profile",
-      "password",
-      "requisites",
-    ]);
-  } else if (splitRouteName[0] == "teach") {
-    currentCategory.value = collapsibleItems[3];
-
-    checkSplitPath(currentCategory.value, splitRouteName[1], [
-      "courses",
-      "lessons",
-      "mailing",
-    ]);
-  } else if (splitRouteName[0] == "notifications") {
-    currentCategory.value = collapsibleItems[4];
-
-    checkSplitPath(currentCategory.value, splitRouteName[1], [
-      "all",
-      "favorites",
-    ]);
-  } else if (splitRouteName[0] == "notifications") {
-    currentCategory.value = collapsibleItems[4];
-    currentItem.value = null;
-  } else if (splitRouteName[0] == "certificates") {
-    currentCategory.value = collapsibleItems[5];
-
-    checkSplitPath(currentCategory.value, splitRouteName[1], [
-      "my",
-      "layouts",
-      "create",
-    ]);
-  }
-};
-
-watch(
-  () => route.params,
-  () => {
-    checkCategoryAndItem();
-  }
-);
-
-onMounted(() => {
-  checkCategoryAndItem();
-});
 </script>
 
 <template>
@@ -197,6 +107,7 @@ onMounted(() => {
         <SidebarMenu>
           <SidebarMenuItem>
             <MySidebarLogoItem />
+            <SidebarMenuItem> weofjewoif </SidebarMenuItem>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>

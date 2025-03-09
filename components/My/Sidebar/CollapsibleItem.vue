@@ -3,6 +3,7 @@ import { ChevronRight } from "lucide-vue-next";
 import type { ICollapsibleSidebarItem } from "~/types/ISidebarItem";
 import { useSidebar } from "~/components/ui/sidebar/utils";
 import { useWindowSize } from "@vueuse/core";
+import type { RouteParamsRawGeneric } from "vue-router";
 
 defineProps<{
   item: ICollapsibleSidebarItem;
@@ -11,12 +12,12 @@ const router = useRouter();
 const { width } = useWindowSize();
 const { toggleSidebar } = useSidebar();
 
-const routeTo = (item: { url?: string }) => {
+const routeTo = (item: { url?: string; params?: RouteParamsRawGeneric }) => {
   if (width.value < 770) {
     toggleSidebar();
   }
   if (item.url) {
-    router.push({ name: item.url });
+    router.push({ name: item.url, params: item.params });
   }
 };
 </script>

@@ -1,4 +1,4 @@
-import type { IArticle } from "./IArticle";
+import type { IArticle } from "./Article/IArticle";
 import type { IUser } from "./IUser";
 
 export interface ICertificateType {

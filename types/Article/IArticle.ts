@@ -1,6 +1,6 @@
-import type { ICategory } from "./ICategory";
-import type { ISubcategory } from "./ISubcategory";
-import type { IUser } from "./IUser";
+import type { ICategory } from "../ICategory";
+import type { ISubcategory } from "../ISubcategory";
+import type { IUser } from "../IUser";
 
 export interface IArticle {
   id: number;

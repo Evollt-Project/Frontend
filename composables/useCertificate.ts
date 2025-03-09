@@ -1,5 +1,5 @@
 import type { ICertificate, ICertificateType } from "~/types/ICertificate";
-import type { IPagination } from "~/types/IPagination";
+import type { IPagination } from "~/types/Base/IPagination";
 
 export class Certificate {
   private static resourceCertificateUrl = 'api/v1/certificate'

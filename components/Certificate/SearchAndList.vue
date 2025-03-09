@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ICertificate, ICertificateType } from "~/types/ICertificate";
-import type { IPagination } from "~/types/IPagination";
+import type { IPagination } from "~/types/Base/IPagination";
 
 const props = defineProps<{
   certificates:

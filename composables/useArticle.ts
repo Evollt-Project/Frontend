@@ -1,6 +1,7 @@
-import type { IArticle } from "~/types/IArticle";
+import type { IArticlePayloadCreate, IArticleResponseCreate } from "~/types/Article/type";
+import type { IArticle } from "~/types/Article/IArticle";
 import type { IArticleCategory } from "~/types/IArticleCategory";
-import type { IPagination } from "~/types/IPagination";
+import type { IPagination } from "~/types/Base/IPagination";
 
 export class Article {
   static async online() {
@@ -33,6 +34,19 @@ export class Article {
       params: params
     }).then(response => {
       return response.data
+    }).catch(response => {
+      useErrorNotification(
+        response.response.data
+      );
+      return null
+    })
+  }
+
+  static async create(params: IArticlePayloadCreate) {
+    return useRequest<IArticleResponseCreate>({
+      url: 'api/v1/article',
+      method: "POST",
+      body: params
     }).catch(response => {
       useErrorNotification(
         response.response.data

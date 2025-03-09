@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Certificate } from "~/composables/useCertificate";
 import type { ICertificate, ICertificateType } from "~/types/ICertificate";
-import type { IPagination } from "~/types/IPagination";
+import type { IPagination } from "~/types/Base/IPagination";
 
 definePageMeta({
   name: "certificates-my",

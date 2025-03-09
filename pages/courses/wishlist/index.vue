@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ArticleTypeEnum } from "~/enums/ArticleTypeEnum";
-import type { IArticle } from "~/types/IArticle";
-import type { IPagination } from "~/types/IPagination";
+import type { IArticle } from "~/types/Article/IArticle";
+import type { IPagination } from "~/types/Base/IPagination";
 
 definePageMeta({
   name: "courses-wishlist",

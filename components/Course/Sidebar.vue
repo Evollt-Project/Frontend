@@ -107,7 +107,6 @@ const currentItem: Ref<ISidebarItem | null> = ref(null);
         <SidebarMenu>
           <SidebarMenuItem>
             <MySidebarLogoItem />
-            <SidebarMenuItem> weofjewoif </SidebarMenuItem>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>

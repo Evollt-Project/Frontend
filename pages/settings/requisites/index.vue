@@ -180,9 +180,9 @@ watch(
     </p>
     <div>
       <div class="flex justify-center" v-if="!insertRequisites">
-        <MyButton @click="insertRequisites = true"
-          >Заполнить реквизиты</MyButton
-        >
+        <MyButton @click="insertRequisites = true">
+          Заполнить реквизиты
+        </MyButton>
       </div>
       <v-form fast-fail ref="form" v-else @submit.prevent>
         <div

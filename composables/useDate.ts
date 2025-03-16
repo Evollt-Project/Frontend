@@ -3,14 +3,6 @@ import { ru } from "date-fns/locale";
 
 export class FormatDate {
   static localeString(date: Date) {
-    // const options = {
-    //   day: "numeric",
-    //   month: "long",
-    //   year: "numeric",
-    //   hour: "2-digit",
-    //   minute: "2-digit",
-    // };
-    // date.toLocaleString("ru-RU", options);
     return format(date, "d MMMM yyyy 'в' HH:mm", { locale: ru });
   }
 

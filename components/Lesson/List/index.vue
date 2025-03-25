@@ -3,7 +3,6 @@ import type { ILessonPayloadCreate } from "~/types/Lesson/type";
 import type { IModule } from "~/types/Module/IModule";
 
 const props = defineProps<{
-  status?: "edit";
   module: IModule;
 }>();
 const emits = defineEmits(["reload-modules"]);
@@ -12,21 +11,16 @@ const newLesson = ref<ILessonPayloadCreate>({
   title: "",
   module_id: props.module.id,
 });
-const isFormValid = ref(false);
+const isFormValid: Ref<boolean> = ref(false);
 const form: Ref<HTMLFormElement | null> = ref(null);
+const loading: Ref<boolean> = ref(false);
 
 const isCanEdit = computed(() => {
-  return props.status == "edit" ? true : false;
+  return Module.store.isEditContent;
 });
 
-const deleteLesson = async (id: number) => {
-  await Lesson.delete(id, {});
-
-  emits("reload-modules");
-};
-const editLesson = () => {};
-
 const createLesson = async () => {
+  loading.value = true;
   await Lesson.create(newLesson.value);
   if (form.value) {
     newLesson.value.title = "";
@@ -34,6 +28,7 @@ const createLesson = async () => {
   }
 
   emits("reload-modules");
+  loading.value = false;
 };
 </script>
 
@@ -56,18 +51,10 @@ const createLesson = async () => {
       class="list-group grid gap-8"
     >
       <template #item="{ element }">
-        <li class="flex justify-between">
-          <div class="flex gap-5">
-            <v-icon v-if="isCanEdit" icon="mdi-menu" class="handle"></v-icon>
-
-            <span>{{ element.title }} </span>
-          </div>
-
-          <v-icon
-            icon="mdi-delete-outline"
-            @click="deleteLesson(element.id)"
-          ></v-icon>
-        </li>
+        <LessonListItem
+          :item="element"
+          @reload-modules="emits('reload-modules')"
+        />
       </template>
 
       <template v-if="isCanEdit" #footer>
@@ -80,6 +67,7 @@ const createLesson = async () => {
           <v-text-field
             v-model="newLesson.title"
             :rules="Rule.getRequired()"
+            :disabled="loading"
             rounded="lg"
             label="Название урока"
             variant="outlined"
@@ -91,6 +79,7 @@ const createLesson = async () => {
             :density="undefined"
             type="submit"
             :disabled="!isFormValid"
+            :loading="loading"
             color="success"
             @click="createLesson"
           >

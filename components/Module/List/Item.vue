@@ -5,13 +5,12 @@ import type { IModulePayloadEdit } from "~/types/Module/type";
 
 const props = defineProps<{
   module: IModule;
-  status?: "edit";
   index: number;
 }>();
 const emits = defineEmits(["reload-modules"]);
 
 const isCanEdit = computed(() => {
-  return props.status == "edit" ? true : false;
+  return Module.store.isEditContent;
 });
 const route = useRoute();
 const initialNewModule: Ref<IModulePayloadEdit> = ref({
@@ -55,16 +54,22 @@ const rejectChanges = () => {
       class="border-black dark:border-white border sm:rounded-br-none sm:rounded-2xl rounded-t-2xl p-5 flex gap-3 items-center"
     >
       <v-form v-model="isFormValid" class="w-full grid gap-3" @submit.prevent>
-        <div v-if="isCanEdit" class="flex justify-between items-center gap-3">
-          <v-text-field
-            v-model="newModule.title"
-            :rules="Rule.getRequired()"
-            hide-details="auto"
-            rounded="lg"
-            label="Название"
-            variant="outlined"
-            density="compact"
-          />
+        <div class="flex justify-between items-center gap-3">
+          <div v-if="isCanEdit" class="w-full">
+            <v-text-field
+              v-model="newModule.title"
+              :rules="Rule.getRequired()"
+              hide-details="auto"
+              rounded="lg"
+              label="Название"
+              variant="outlined"
+              density="compact"
+            />
+          </div>
+          <div v-else>
+            <h3>{{ module.title }}</h3>
+          </div>
+
           <v-menu transition="scale-transition">
             <template v-slot:activator="{ props }">
               <v-btn
@@ -79,15 +84,17 @@ const rejectChanges = () => {
 
             <v-list>
               <v-list-item class="cursor-pointer">
+                <v-list-item-title @click="Module.store.isEditContent = true">
+                  Редактировать
+                </v-list-item-title>
+              </v-list-item>
+              <v-list-item class="cursor-pointer">
                 <v-list-item-title @click="deleteModule">
                   Удалить
                 </v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
-        </div>
-        <div v-else>
-          <h3>{{ module.title }}</h3>
         </div>
         <div class="w-full grid gap-2">
           <div>
@@ -127,11 +134,7 @@ const rejectChanges = () => {
     <div
       class="rounded-2xl border-black dark:border-white border border-t-0 sm:ml-24 rounded-t-none p-5 flex gap-3 items-center"
     >
-      <LessonList
-        :module="module"
-        :status="status"
-        @reload-modules="emits('reload-modules')"
-      />
+      <LessonList :module="module" @reload-modules="emits('reload-modules')" />
     </div>
   </div>
 </template>

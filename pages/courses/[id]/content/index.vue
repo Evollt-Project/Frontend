@@ -8,7 +8,6 @@ definePageMeta({
 
 const route = useRoute();
 const modules: Ref<IModule[]> = ref([]);
-const editContent = ref(false);
 
 const getModules = async () => {
   await Module.getCourseModules({
@@ -26,22 +25,21 @@ onMounted(async () => {
   <div class="courses-create sidebar-content">
     <h1 class="text-4xl font-bold mb-4">Программа курса</h1>
     <div class="mt-5">
-      <div v-if="!editContent">
+      <div v-if="!Module.store.isEditContent">
         <div class="mb-5">
           В курсе пока что нет ни одного урока.
           <br />
           Добавьте свой первый урок в редакторе содержания курса.
         </div>
-        <MyButton class="text-lg h-full" @click="editContent = true">
+        <MyButton
+          class="text-lg h-full"
+          @click="Module.store.isEditContent = true"
+        >
           Редактировать содержимое
         </MyButton>
       </div>
       <div class="mt-5">
-        <ModuleList
-          :modules="modules"
-          :status="editContent ? 'edit' : undefined"
-          @reload-modules="getModules"
-        />
+        <ModuleList :modules="modules" @reload-modules="getModules" />
       </div>
     </div>
   </div>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { DateTime } from "luxon";
 import type { IModule } from "~/types/Module/IModule";
 import type { IModulePayloadEdit } from "~/types/Module/type";
 
@@ -46,6 +45,10 @@ const editModule = async () => {
 const rejectChanges = () => {
   newModule.value = { ...initialNewModule.value };
 };
+
+const isFormButtonsDisabled = computed(() => {
+  return isEqual(newModule.value, initialNewModule.value) || !isFormValid.value;
+});
 </script>
 
 <template>
@@ -120,13 +123,15 @@ const rejectChanges = () => {
           <div v-if="isCanEdit" class="flex gap-5">
             <MyButton
               type="submit"
-              :disabled="!isFormValid"
+              :disabled="isFormButtonsDisabled"
               color="success"
               @click="editModule"
             >
               Сохранить
             </MyButton>
-            <MyButton @click="rejectChanges"> Отменить </MyButton>
+            <MyButton :disabled="isFormButtonsDisabled" @click="rejectChanges">
+              Отменить
+            </MyButton>
           </div>
         </div>
       </v-form>

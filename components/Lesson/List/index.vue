@@ -87,10 +87,10 @@ const lessonsReordered = useDebounceFn(async () => {
             type="submit"
             :disabled="!isFormValid"
             :loading="loading"
+            prepend-icon="mdi-plus"
             color="success"
             @click="createLesson"
           >
-            <v-icon icon="mdi-plus"></v-icon>
             Создать урок
           </MyButton>
         </v-form>

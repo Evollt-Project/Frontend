@@ -1,9 +1,11 @@
 import type {
   ILessonPayloadCreate,
   ILessonPayloadDelete,
+  ILessonPayloadEdit,
   ILessonPayloadReorder,
   ILessonResponseCreate,
   ILessonResponseDelete,
+  ILessonResponseEdit,
   ILessonResponseReorder,
 } from "~/types/Lesson/type";
 
@@ -15,6 +17,26 @@ export class Lesson {
       body: params,
     }).catch((response) => {
       useErrorNotification(response.response.data.errors);
+    });
+  }
+
+  // static async edit(params: ILessonPayloadCreate) {
+  //   return await useRequest<ILessonResponseCreate>({
+  //     url: "api/v1/lesson",
+  //     method: "POST",
+  //     body: params,
+  //   }).catch((response) => {
+  //     useErrorNotification(response.response.data.errors);
+  //   });
+  // }
+  static async edit({ id, ...payload }: ILessonPayloadEdit) {
+    return await useRequest<ILessonResponseEdit>({
+      url: `/api/v1/lesson/` + id,
+      method: "POST",
+      body: {
+        _method: "PUT",
+        ...payload,
+      },
     });
   }
 

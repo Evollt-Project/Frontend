@@ -14,7 +14,7 @@ const collapsibleItems: ICollapsibleSidebarItem[] = [
     items: [
       {
         title: "Описание",
-        url: "course-description",
+        url: "course-info",
       },
       {
         title: "Содержание",

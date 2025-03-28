@@ -20,6 +20,7 @@ export default defineNuxtConfig({
     "shadcn-nuxt",
     "@nuxtjs/color-mode",
     "@pinia/nuxt",
+    "nuxt-lodash",
   ],
   pinia: {
     storesDirs: ["./stores/**"],

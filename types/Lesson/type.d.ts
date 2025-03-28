@@ -11,10 +11,12 @@ export interface ILessonPayloadCreate extends ILessonPayloadBase {
 }
 export interface ILessonResponseCreate extends ILessonResponseBase {}
 
-// export interface IModulePayloadGet extends IModulePayloadBase {
-//   article_id: number;
-// }
-// export interface IModuleResponseGet extends IModuleResponseBase, IModule { }
+export interface ILessonPayloadEdit extends ILessonPayloadBase {
+  id: LessonId;
+  title: string;
+  content?: string;
+}
+export interface ILessonResponseEdit extends ILessonResponseBase {}
 
 export interface ILessonPayloadDelete extends IModulePayloadBase {}
 export interface ILessonResponseDelete extends IModuleResponseBase {}

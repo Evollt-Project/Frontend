@@ -44,12 +44,13 @@ const createModule = async () => {
           добавить уроки
         </i>
       </div>
-      <div class="mt-5 flex sm:justify-between flex-col-reverse gap-4">
+      <div
+        class="mt-5 flex flex-col-reverse sm:flex-row sm:justify-between gap-4"
+      >
         <MyButton @click="Module.store.isEditContent = false">
           Выйти из редактирования
         </MyButton>
-        <MyButton color="success" @click="createModule">
-          <v-icon icon="mdi-plus"></v-icon>
+        <MyButton prepend-icon="mdi-plus" color="success" @click="createModule">
           Новый модуль
         </MyButton>
       </div>

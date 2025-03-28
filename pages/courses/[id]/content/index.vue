@@ -35,6 +35,7 @@ onMounted(async () => {
           class="text-lg h-full"
           @click="Module.store.isEditContent = true"
         >
+          <v-icon icon="mdi-pencil" />
           Редактировать содержимое
         </MyButton>
       </div>

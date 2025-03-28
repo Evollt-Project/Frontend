@@ -1,5 +1,7 @@
+import type { LessonId } from "./type";
+
 export interface ILesson {
-  id: number;
+  id: LessonId;
   title: string;
   content: string;
   created_at: string;

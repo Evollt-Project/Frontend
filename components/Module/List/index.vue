@@ -9,7 +9,7 @@ const props = defineProps<{
 const emits = defineEmits(["reload-modules"]);
 
 const isCanEdit = computed(() => {
-  return props.status == "edit" ? true : false;
+  return Module.store.isEditContent;
 });
 const route = useRoute();
 
@@ -44,8 +44,11 @@ const createModule = async () => {
           добавить уроки
         </i>
       </div>
-      <div class="mt-5">
-        <MyButton @click="createModule">
+      <div class="mt-5 flex sm:justify-between flex-col-reverse gap-4">
+        <MyButton @click="Module.store.isEditContent = false">
+          Выйти из редактирования
+        </MyButton>
+        <MyButton color="success" @click="createModule">
           <v-icon icon="mdi-plus"></v-icon>
           Новый модуль
         </MyButton>

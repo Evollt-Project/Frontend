@@ -5,7 +5,7 @@ import type { IModule } from "~/types/Module/IModule";
 const props = defineProps<{
   module: IModule;
 }>();
-const emits = defineEmits(["reload-modules"]);
+const emits = defineEmits(["reload-modules", "reorder-lessons"]);
 
 const newLesson = ref<ILessonPayloadCreate>({
   title: "",
@@ -30,6 +30,12 @@ const createLesson = async () => {
   emits("reload-modules");
   loading.value = false;
 };
+
+const lessonsReordered = useDebounceFn(async () => {
+  await Lesson.reorder({
+    lesson_ids: props.module.lessons.map((lesson) => lesson.id),
+  });
+}, 1000);
 </script>
 
 <template>
@@ -49,6 +55,7 @@ const createLesson = async () => {
       item-key="id"
       handle=".handle"
       class="list-group grid gap-8"
+      @end="lessonsReordered"
     >
       <template #item="{ element }">
         <LessonListItem

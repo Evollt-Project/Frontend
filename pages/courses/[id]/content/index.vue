@@ -22,7 +22,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="courses-create sidebar-content">
+  <div class="sidebar-content mb-16">
     <h1 class="text-4xl font-bold mb-4">Программа курса</h1>
     <div class="mt-5">
       <div v-if="!Module.store.isEditContent">

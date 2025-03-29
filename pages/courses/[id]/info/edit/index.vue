@@ -13,6 +13,8 @@ const route = useRoute();
 const data: Ref<IArticlePayloadEdit> = ref({
   id: Number(route.params.id),
 });
+const SHORT_DESCRIPTION =
+  "Видно в поиске и на промостранице сразу после названия курса. Входит в предпросмотр опубликованной в соцсетях ссылки на курс.";
 
 const handleFileChange = (event: Event) => {
   const target = event.target as HTMLInputElement;
@@ -41,7 +43,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div v-if="User.store.user">
+  <div v-if="User.store.user && User.store.enums">
     <div
       v-if="loadingCourse"
       class="flex h-screen-minus-70 items-center justify-center"
@@ -83,17 +85,95 @@ onMounted(async () => {
           </div>
         </label>
         <div class="grid gap-3">
-          <label for="" class="font-bold text-xl">Название</label>
+          <label for="title" class="font-bold text-xl">Название курса</label>
           <v-text-field
+            v-model="data.title"
+            id="title"
             :rules="Rule.getMaxLengthAndRequired(64)"
             :disabled="loading"
-            v-model="data.title"
             rounded="lg"
-            label="Название"
+            label="Название курса"
             prepend-inner-icon="mdi-format-title"
             variant="outlined"
             density="comfortable"
-          ></v-text-field>
+          >
+            <template #details> {{ data.title?.length ?? 0 }}/64 </template>
+          </v-text-field>
+        </div>
+        <div class="space-y-3">
+          <div class="flex gap-3 items-center">
+            <label class="font-bold text-xl">Категории курса</label>
+            <Support>
+              <div class="mb-3 font-bold">
+                Выберите до 5 категорий, к которым относится курс.
+              </div>
+              Проверьте доступные категории в нашей документации. Если вы не
+              нашли подходящую категорию, попросите нас её добавить.
+            </Support>
+          </div>
+          <div class="flex gap-3 items-center">
+            <MyButton>Выбрать категорию</MyButton>
+            <div>Выберите до 5 категорий, к которым относится курс</div>
+          </div>
+        </div>
+        <div class="grid gap-3">
+          <div class="flex gap-3 items-center">
+            <label for="short-description" class="font-bold text-xl"
+              >Краткое описание</label
+            >
+            <Support>
+              {{ SHORT_DESCRIPTION }}
+            </Support>
+          </div>
+          <v-textarea
+            v-model="data.short_description"
+            id="short-description"
+            :rules="Rule.getMaxLengthAndRequired(500)"
+            :disabled="loading"
+            rounded="lg"
+            :label="SHORT_DESCRIPTION"
+            prepend-inner-icon="mdi-format-title"
+            variant="outlined"
+            density="comfortable"
+          >
+            <template #details>
+              {{ data.short_description?.length ?? 0 }}/64
+            </template>
+          </v-textarea>
+        </div>
+        <div class="grid grid-cols-3">
+          <div class="grid gap-3">
+            <label class="font-bold text-xl">Язык</label>
+            <v-select
+              v-model="data.language_id"
+              :items="User.store.enums.languages"
+              :disabled="loading"
+              rounded="lg"
+              item-title="title"
+              item-value="id"
+              label="Язык"
+              prepend-inner-icon="mdi-translate"
+              hide-details
+              variant="outlined"
+              density="comfortable"
+            ></v-select>
+          </div>
+          <div class="grid gap-3">
+            <label class="font-bold text-xl">Уровень</label>
+            <v-select
+              v-model="data.language_id"
+              :items="User.store.enums.languages"
+              :disabled="loading"
+              rounded="lg"
+              item-title="title"
+              item-value="id"
+              label="Язык"
+              prepend-inner-icon="mdi-translate"
+              hide-details
+              variant="outlined"
+              density="comfortable"
+            ></v-select>
+          </div>
         </div>
       </v-form>
     </div>

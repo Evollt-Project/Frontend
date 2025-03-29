@@ -15,7 +15,17 @@ export interface IArticlePayloadEdit extends IArticlePayloadBase {
   title?: string;
   avatar?: string;
   description?: string;
-  content?: string;
+  description?: string; // описание
+  short_description?: string; // короткое описание
+  what_learn_description?: string; // чему вы научитесь
+  about_description?: string; // о курсе
+  for_description?: string; // для кого этот курс
+  start_description?: string; // начальные требования
+  how_learn_description?: string; // как как проходит обучение
+  what_give_description?: string; // что вы получаете
+  language_id?: number;
+  level_id?: number;
+  recommended_load?: number;
 }
 export interface IArticleResponseEdit extends IArticle {}
 

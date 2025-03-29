@@ -10,17 +10,17 @@ const settingsSidebar: Ref<boolean> = ref(false);
 const roles: Ref<ITag[]> = ref([]);
 const route = useRoute();
 
-onMounted(() => {
-  if (User.store.enums) {
+watch(
+  () => User.store.enums,
+  (value) => {
     User.getAllPermissions(props.user).forEach((item) => {
-      if (User.store.enums) {
-        roles.value.push({
-          title: User.store.enums.roles[item],
-        });
-      }
+      if (!value) return;
+      roles.value.push({
+        title: value.roles[item],
+      });
     });
   }
-});
+);
 
 const canShow = computed(() => {
   if (route.params?.id) {

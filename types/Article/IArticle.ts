@@ -16,4 +16,20 @@ export interface IArticle {
   time: string;
   rate: string;
   price: number;
+  short_content: string; // краткое описание
+  what_learn_content: string; // чему вы научитесь
+  about_content: string; // о курсе
+  for_who_content: string; // для кого этот курс
+  start_content: string; // начальные требования
+  how_learn_content: string; // как как проходит обучение
+  what_give_content: string; // что вы получаете
+  language: {
+    id: number;
+    title: string;
+  };
+  level: {
+    id: number;
+    title: string;
+  };
+  recommended_load: number;
 }

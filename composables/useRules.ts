@@ -8,33 +8,50 @@ export class Rule {
 
   public static required = (value: string) =>
     !!value || "Это поле обязательно для заполнения";
-
+  public static maxLength = (value: string, length: number) =>
+    (value && value.length <= length) ||
+    `Максимальное значение поля не должно превышать ${length} ${useNoun(
+      length,
+      "символ",
+      "символа",
+      "символов"
+    )}`;
   private static password = (value: string) =>
     (value && value.length >= 8) || "Пароль должен содержать не менее 8 букв";
 
   private static passwordConfirmation = (value: string, oldPassword: string) =>
     value == oldPassword || "Пароли должны совпадать";
   private static telegramLink = (value: string) =>
-    !value.trim() || /^https:\/\/t\.me\/[^\s]+$/.test(value) || "Ссылка должна иметь протокол https и ссылаться на t.me, также ник не должен содержать пробелы";
+    !value.trim() ||
+    /^https:\/\/t\.me\/[^\s]+$/.test(value) ||
+    "Ссылка должна иметь протокол https и ссылаться на t.me, также ник не должен содержать пробелы";
   private static vkLink = (value: string) =>
-    !value.trim() || /^https:\/\/vk\.com\/[^\s]+$/.test(value) || "Ссылка должна иметь протокол https и ссылаться на vk.com, также ник не должен содержать пробелы";
+    !value.trim() ||
+    /^https:\/\/vk\.com\/[^\s]+$/.test(value) ||
+    "Ссылка должна иметь протокол https и ссылаться на vk.com, также ник не должен содержать пробелы";
   private static githubLink = (value: string) =>
-    !value.trim() || /^https:\/\/github\.com\/[^\s]+$/.test(value) || "Ссылка должна иметь протокол https и ссылаться на github.com, также ник не должен содержать пробелы";
+    !value.trim() ||
+    /^https:\/\/github\.com\/[^\s]+$/.test(value) ||
+    "Ссылка должна иметь протокол https и ссылаться на github.com, также ник не должен содержать пробелы";
   private static inn = (value: string, nalog_status: number) => {
     if (value.length < 10 && nalog_status == Requisites.JURIDICAL) {
-      return "Поле ИНН должно содержать 10 символов"
+      return "Поле ИНН должно содержать 10 символов";
     }
     if (value.length < 12 && nalog_status != Requisites.JURIDICAL) {
-      return "Поле ИНН должно содержать 12 символов"
+      return "Поле ИНН должно содержать 12 символов";
     }
 
-    return true
-  }
+    return true;
+  };
   public static min = (value: number, min: number) =>
     value >= min || "Значение должно быть не менее " + min;
 
   static getPassword() {
     return [this.required, this.password];
+  }
+
+  static getMaxLengthAndRequired(maxLength: number) {
+    return [this.required, (value: string) => this.maxLength(value, maxLength)];
   }
 
   static getPasswordConfirmation(oldPassword: string) {
@@ -59,12 +76,12 @@ export class Rule {
   }
 
   static getTelegramLink() {
-    return [this.telegramLink]
+    return [this.telegramLink];
   }
   static getVkLink() {
-    return [this.vkLink]
+    return [this.vkLink];
   }
   static getGithubLink() {
-    return [this.githubLink]
+    return [this.githubLink];
   }
 }

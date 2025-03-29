@@ -2,14 +2,16 @@
 
 <template>
   <div
-    v-if="Loader.store.loading"
-    class="h-screen flex justify-center items-center"
+    class="h-screen justify-center items-center"
+    :style="{
+      display: Loader.store.loading ? 'flex' : 'none',
+    }"
   >
     <div class="w-2/4">
       <v-progress-linear height="8" rounded indeterminate></v-progress-linear>
     </div>
   </div>
-  <div v-else>
+  <div>
     <Header />
     <div class="main-content">
       <slot></slot>

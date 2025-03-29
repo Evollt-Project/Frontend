@@ -104,7 +104,7 @@ const handleFileChange = (event: Event) => {
               size="100"
               :image="
                 User.store.userPhotoUrl(
-                  String(data.avatar),
+                  data.avatar as string,
                   User.store.user.first_name
                 )
               "

@@ -3,9 +3,8 @@ import animate from "tailwindcss-animate";
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
-  safelist: ["dark", "text-blue-400"],
+  safelist: ["dark", "text-blue-400", "grid-cols-2", "h-screen-minus-70"],
   prefix: "",
-
   theme: {
     container: {
       center: true,
@@ -17,6 +16,9 @@ module.exports = {
     extend: {
       boxShadow: {
         custom: "0px 0px 10px",
+      },
+      height: {
+        "screen-minus-70": "calc(100vh - 70px)",
       },
       colors: {
         border: "hsl(var(--border))",

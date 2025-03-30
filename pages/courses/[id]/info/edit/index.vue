@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { IArticle } from "~/types/Article/IArticle";
 import type { IArticlePayloadEdit } from "~/types/Article/type";
+import { LevelEnum } from "~/types/Level/LevelEnum";
 
 definePageMeta({
   layout: "course-sidebar",
@@ -12,7 +13,10 @@ const loadingCourse = ref(false);
 const route = useRoute();
 const data: Ref<IArticlePayloadEdit> = ref({
   id: Number(route.params.id),
+  level_id: 1,
+  language_id: 1,
 });
+const article: Ref<IArticle | null> = ref(null);
 const SHORT_DESCRIPTION =
   "Видно в поиске и на промостранице сразу после названия курса. Входит в предпросмотр опубликованной в соцсетях ссылки на курс.";
 
@@ -32,13 +36,39 @@ const getArticle = async () => {
   await Article.get({ id: Number(route.params.id) }).then((response) => {
     if (!response) return;
 
-    data.value = response.data;
+    data.value = {
+      id: response.data.id,
+      title: response.data.title,
+      avatar: response.data.avatar,
+      level_id: response.data.level.id,
+      language_id: response.data.language.id,
+      short_content: response.data.short_content,
+      what_learn_content: response.data.what_learn_content,
+      about_content: response.data.about_content,
+      for_who_content: response.data.for_who_content,
+      start_content: response.data.start_content,
+      how_learn_content: response.data.how_learn_content,
+      what_give_content: response.data.what_give_content,
+      recommended_load: response.data.recommended_load,
+    };
+    article.value = response.data;
     loadingCourse.value = false;
   });
 };
 
 onMounted(async () => {
   await getArticle();
+});
+
+const levelFillColor = computed(() => {
+  switch (data.value.level_id) {
+    case LevelEnum.BEGINNER:
+      return "#5cda48"; // зеленый
+    case LevelEnum.ADVANCED:
+      return "#fe9c15"; // оранжевый
+    case LevelEnum.PRO:
+      return "#e11b1c"; // красный
+  }
 });
 </script>
 
@@ -126,7 +156,7 @@ onMounted(async () => {
             </Support>
           </div>
           <v-textarea
-            v-model="data.short_description"
+            v-model="data.short_content"
             id="short-description"
             :rules="Rule.getMaxLengthAndRequired(500)"
             :disabled="loading"
@@ -137,11 +167,11 @@ onMounted(async () => {
             density="comfortable"
           >
             <template #details>
-              {{ data.short_description?.length ?? 0 }}/64
+              {{ data.short_content?.length ?? 0 }}/64
             </template>
           </v-textarea>
         </div>
-        <div class="grid grid-cols-3">
+        <div class="grid md:grid-cols-3 gap-5">
           <div class="grid gap-3">
             <label class="font-bold text-xl">Язык</label>
             <v-select
@@ -161,18 +191,38 @@ onMounted(async () => {
           <div class="grid gap-3">
             <label class="font-bold text-xl">Уровень</label>
             <v-select
-              v-model="data.language_id"
-              :items="User.store.enums.languages"
+              v-model="data.level_id"
+              :items="User.store.enums.levels"
               :disabled="loading"
               rounded="lg"
               item-title="title"
               item-value="id"
-              label="Язык"
-              prepend-inner-icon="mdi-translate"
+              label="Уровень"
               hide-details
               variant="outlined"
               density="comfortable"
-            ></v-select>
+            >
+              <template #prepend-inner>
+                <IconsLevel :fill="levelFillColor" width="25" height="25" />
+              </template>
+            </v-select>
+          </div>
+          <div class="grid gap-3">
+            <label for="recommended-load" class="font-bold text-xl">
+              Рекомендуемая нагрузка
+            </label>
+            <v-text-field
+              v-model="data.recommended_load"
+              id="recommended-load"
+              type="number"
+              hide-details
+              :disabled="loading"
+              rounded="lg"
+              label="Количество часов в неделю"
+              prepend-inner-icon="mdi-format-title"
+              variant="outlined"
+              density="comfortable"
+            />
           </div>
         </div>
       </v-form>

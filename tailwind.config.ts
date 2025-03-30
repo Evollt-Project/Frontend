@@ -3,7 +3,13 @@ import animate from "tailwindcss-animate";
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
-  safelist: ["dark", "text-blue-400", "grid-cols-2", "h-screen-minus-70"],
+  safelist: [
+    "dark",
+    "text-blue-400",
+    "grid-cols-2",
+    "md:grid-cols-3",
+    "h-screen-minus-70",
+  ],
   prefix: "",
   theme: {
     container: {

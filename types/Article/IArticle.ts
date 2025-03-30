@@ -30,6 +30,7 @@ export interface IArticle {
   level: {
     id: number;
     title: string;
+    level: number;
   };
   recommended_load: number;
 }

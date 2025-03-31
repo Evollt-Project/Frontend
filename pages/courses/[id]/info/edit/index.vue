@@ -155,7 +155,18 @@ const levelFillColor = computed(() => {
               {{ SHORT_DESCRIPTION }}
             </Support>
           </div>
-          <v-textarea
+          <MyMdEditor
+            :text="data.short_content"
+            :max-length="500"
+            @update:text="data.short_content = $event"
+          />
+          <div
+            v-if="data.short_content && data.short_content?.length >= 500"
+            class="!text-red-500"
+          >
+            Вы ввели максимальное количество символов для этого поля
+          </div>
+          <!-- <v-textarea
             v-model="data.short_content"
             id="short-description"
             :rules="Rule.getMaxLengthAndRequired(500)"
@@ -167,9 +178,9 @@ const levelFillColor = computed(() => {
             density="comfortable"
           >
             <template #details>
-              {{ data.short_content?.length ?? 0 }}/64
+              {{ data.short_content?.length ?? 0 }}/500
             </template>
-          </v-textarea>
+          </v-textarea> -->
         </div>
         <div class="grid md:grid-cols-3 gap-5">
           <div class="grid gap-3">

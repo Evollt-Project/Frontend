@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { IArticleCategory } from "~/types/IArticleCategory";
-import type { ISubcategory } from "~/types/ISubcategory";
 import type { ICatalog } from "~/types/ICatalog";
 
 definePageMeta({
@@ -8,7 +7,7 @@ definePageMeta({
 });
 
 useHead({
-  title: "Evollt School | Главная",
+  title: `Главная`,
 });
 
 const onlineCourses: Ref<IArticleCategory[] | null> = ref(

@@ -1,4 +1,5 @@
 @use "variables";
+@use "mixins" as *;
 
 @tailwind base;
 @tailwind components;
@@ -132,4 +133,23 @@
 
 .sidebar-content {
   max-width: 1000px;
+}
+
+.md-editor-toolbar-item svg {
+  width: 25px !important;
+  height: 25px !important;
+}
+
+.md-editor-toolbar-right {
+  .md-editor-toolbar-item:last-of-type {
+    display: none;
+  }
+}
+
+.md-editor {
+  @include mdi-editor-css-vars(false);
+}
+
+.md-editor-dark {
+  @include mdi-editor-css-vars(true);
 }

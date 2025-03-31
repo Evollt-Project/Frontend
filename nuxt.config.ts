@@ -2,9 +2,14 @@
 export default defineNuxtConfig({
   app: {
     pageTransition: { name: "page", mode: "out-in" },
+    head: {
+      title: process.env.APP_NAME, // Заголовок по умолчанию
+      titleTemplate: `%s | ${process.env.APP_NAME}`, // Шаблон для всех страниц
+    },
   },
   runtimeConfig: {
     public: {
+      app_name: process.env.APP_NAME,
       url: process.env.URL,
       dadataToken: process.env.DADATA_TOKEN,
       dadataSecretToken: process.env.DADATA_SECRET_TOKEN,
@@ -40,10 +45,8 @@ export default defineNuxtConfig({
     componentDir: "./components/ui",
   },
   plugins: [
-    "~/plugins/preline.client.ts",
-    {
-      src: "~/plugins/v-mask.ts",
-    },
+    { src: "~/plugins/preline.client.ts", mode: "client" },
+    { src: "~/plugins/v-mask.ts" },
     { src: "~/plugins/vue3-toastify.client.ts", mode: "client" },
     { src: "~/plugins/vue-markdown-preview.ts", mode: "client" },
     { src: "~/plugins/vuedraggable.ts", mode: "client" },

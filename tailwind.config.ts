@@ -9,6 +9,7 @@ module.exports = {
     "grid-cols-2",
     "md:grid-cols-3",
     "h-screen-minus-70",
+    "!text-red-500",
   ],
   prefix: "",
   theme: {

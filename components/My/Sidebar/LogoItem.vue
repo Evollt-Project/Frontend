@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const router = useRouter();
+const config = useRuntimeConfig();
 </script>
 
 <template>
@@ -11,7 +11,7 @@ const router = useRouter();
       }"
       class="title text-xl cursor-pointer"
     >
-      Evollt School
+      {{ config.public.app_name }}
     </NuxtLink>
   </SidebarMenuButton>
 </template>

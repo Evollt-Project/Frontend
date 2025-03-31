@@ -19,6 +19,7 @@ const state = reactive({
 });
 
 const editor = ref<HTMLElement | null>(null);
+const config = useRuntimeConfig();
 const image = ref<HTMLImageElement | null>(null);
 const fileInput: Ref<HTMLInputElement | null> = ref(null);
 
@@ -126,7 +127,9 @@ function stopDrag() {
         class="draggable-block"
         @mousedown="(event) => startDrag(block, event)"
       >
-        <div v-if="block.type == 'logo'">Evollt School</div>
+        <div v-if="block.type == 'logo'">
+          {{ config.public.app_name }}
+        </div>
         <div v-if="block.type == 'title'">Иванов Иван Иванович</div>
         <div v-if="block.type == 'date'">dd.mm.yyyy</div>
       </div>

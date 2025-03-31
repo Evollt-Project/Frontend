@@ -9,7 +9,7 @@ definePageMeta({
   layout: "sidebar",
 });
 useHead({
-  title: "Evollt School | Реквизиты",
+  title: "Реквизиты",
 });
 const insertRequisites = ref(true);
 const initialRequisites = ref({

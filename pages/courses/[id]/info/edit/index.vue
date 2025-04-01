@@ -17,8 +17,58 @@ const data: Ref<IArticlePayloadEdit> = ref({
   language_id: 1,
 });
 const article: Ref<IArticle | null> = ref(null);
-const SHORT_DESCRIPTION =
-  "Видно в поиске и на промостранице сразу после названия курса. Входит в предпросмотр опубликованной в соцсетях ссылки на курс.";
+const placeholder = ref({
+  short_content:
+    "Видно в поиске и на промостранице сразу после названия курса. Входит в предпросмотр опубликованной в соцсетях ссылки на курс.",
+  what_learn_content: `
+    <div class="mb-3">
+      Перечислите ожидаемые результаты обучения - что будут знать и
+      уметь учащиеся после успешного освоения курса.
+    </div>
+    Вам могут помочь глаголы учебных целей таксономии Блума:
+    применять, разрабатывать, строить, сравнивать и т.д.
+  `,
+  about_content: `
+    <div class="mb-3">
+      Вам могут помочь глаголы учебных целей таксономии Блума:
+      применять, разрабатывать, строить, сравнивать и т.д. Всё, что
+      важно знать учащимся до записи на курс.
+      <br />
+      Расскажите о:
+    </div>
+    <ul class="list-disc list-inside">
+      <li>цели курса,</li>
+      <li>почему стоит выбрать именно его,</li>
+      <li>что приобретут учащиеся после его успешного освоения,</li>
+      <li>какие особенности есть у курса,</li>
+      <li>что нужно будет делать,</li>
+      <li>какие разделы и задания входят в курс.</li>
+    </ul>
+  `,
+  for_who_content:
+    "Перечислите сегменты целевой аудитории - для кого курс предназначен и кому будет полезен. Опишите жизненные ситуации, когда возникает потребность в изучении вашей темы.",
+  start_content:
+    "Что нужно знать и уметь до старта, чтобы курс не оказался слишком сложным или слишком простым.",
+  how_learn_content: `
+      <div class="mb-3">
+        Что и как нужно будет делать, что входит в курс.
+      </div>
+      Например: видео-лекции, практические задания и тесты на усвоение материала с автоматической проверкой, поддержка преподавателей, обратная связь от однокурсников, выпускной экзамен или проектная работа.
+  `,
+  what_give_content: `
+    <div class="mb-3">
+      Например:
+    </div>
+    <ul class="list-disc list-inside">
+      <li>навыки и знания, востребованные работодателем,</li>
+      <li>возможность отработать теорию на практике,</li>
+      <li>доступ к форуму решений,</li>
+      <li>поддержку наставников, которые отвечают в течение дня,</li>
+      <li>сертификат,</li>
+      <li>проекты в портфолио.</li>
+    </ul>
+  `,
+});
 
 const handleFileChange = (event: Event) => {
   const target = event.target as HTMLInputElement;
@@ -119,7 +169,7 @@ const levelFillColor = computed(() => {
           <v-text-field
             v-model="data.title"
             id="title"
-            :rules="Rule.getMaxLengthAndRequired(64)"
+            :rules="Rule.getMinAndMaxLengthAndRequired(64)"
             :disabled="loading"
             rounded="lg"
             label="Название курса"
@@ -148,39 +198,30 @@ const levelFillColor = computed(() => {
         </div>
         <div class="grid gap-3">
           <div class="flex gap-3 items-center">
-            <label for="short-description" class="font-bold text-xl"
-              >Краткое описание</label
-            >
+            <label for="short-content" class="font-bold text-xl">
+              Краткое описание
+            </label>
             <Support>
-              {{ SHORT_DESCRIPTION }}
+              Видно в поиске и на промостранице сразу после названия курса.
+              Входит в предпросмотр опубликованной в соцсетях ссылки на курс.
             </Support>
           </div>
-          <MyMdEditor
-            :text="data.short_content"
-            :max-length="500"
-            @update:text="data.short_content = $event"
-          />
-          <div
-            v-if="data.short_content && data.short_content?.length >= 500"
-            class="!text-red-500"
-          >
-            Вы ввели максимальное количество символов для этого поля
-          </div>
-          <!-- <v-textarea
+          <v-textarea
             v-model="data.short_content"
-            id="short-description"
-            :rules="Rule.getMaxLengthAndRequired(500)"
+            id="short-content"
+            :rules="Rule.getMinAndMaxLengthAndRequired(500, 100)"
             :disabled="loading"
             rounded="lg"
-            :label="SHORT_DESCRIPTION"
+            :label="placeholder.short_content"
             prepend-inner-icon="mdi-format-title"
             variant="outlined"
             density="comfortable"
+            messages="Для публикации нужно больше 100 символов"
           >
             <template #details>
               {{ data.short_content?.length ?? 0 }}/500
             </template>
-          </v-textarea> -->
+          </v-textarea>
         </div>
         <div class="grid md:grid-cols-3 gap-5">
           <div class="grid gap-3">
@@ -235,6 +276,133 @@ const levelFillColor = computed(() => {
               density="comfortable"
             />
           </div>
+        </div>
+        <div class="grid gap-3">
+          <div class="flex gap-3 items-center">
+            <label for="short-what-learn-content" class="font-bold text-xl">
+              Чему вы научитесь
+            </label>
+            <Support>
+              <template #default>
+                <div v-html="placeholder.what_learn_content"></div>
+              </template>
+            </Support>
+          </div>
+          <v-textarea
+            v-model="data.what_learn_content"
+            id="short-what-learn-content"
+            :rules="Rule.getMinAndMaxLengthAndRequired(500, 100)"
+            :disabled="loading"
+            rounded="lg"
+            prepend-inner-icon="mdi-format-title"
+            variant="outlined"
+            density="comfortable"
+          >
+            <template #label>
+              Перечислите ожидаемые результаты обучения
+            </template>
+            <template #details>
+              {{ data.what_learn_content?.length ?? 0 }}/500
+            </template>
+          </v-textarea>
+        </div>
+        <div class="grid gap-3">
+          <div class="flex gap-3 items-center">
+            <label for="short-description" class="font-bold text-xl">
+              О курсе
+            </label>
+            <Support>
+              <div v-html="placeholder.about_content"></div>
+            </Support>
+          </div>
+          <MyMdEditor
+            :text="data.about_content"
+            :max-length="500"
+            @update:text="data.about_content = $event"
+          />
+        </div>
+        <div class="grid gap-3">
+          <div class="flex gap-3 items-center">
+            <label for="short-description" class="font-bold text-xl">
+              Для кого этот курс
+            </label>
+            <Support>
+              <div v-html="placeholder.for_who_content"></div>
+            </Support>
+          </div>
+          <v-textarea
+            v-model="data.for_who_content"
+            id="short-what-learn-content"
+            :rules="Rule.getMinAndMaxLengthAndRequired(500, 100)"
+            :disabled="loading"
+            :label="placeholder.for_who_content"
+            rounded="lg"
+            prepend-inner-icon="mdi-format-title"
+            variant="outlined"
+            density="comfortable"
+          >
+            <template #details>
+              {{ data.for_who_content?.length ?? 0 }}/500
+            </template>
+          </v-textarea>
+        </div>
+        <div class="grid gap-3">
+          <div class="flex gap-3 items-center">
+            <label for="short-description" class="font-bold text-xl">
+              Начальные требования
+            </label>
+            <Support>
+              {{ placeholder.start_content }}
+            </Support>
+          </div>
+          <MyMdEditor
+            :text="data.start_content"
+            :max-length="500"
+            @update:text="data.start_content = $event"
+          />
+        </div>
+        <div class="grid gap-3">
+          <div class="flex gap-3 items-center">
+            <label for="short-description" class="font-bold text-xl">
+              Как проходит обучение
+            </label>
+            <Support>
+              <div v-html="placeholder.how_learn_content"></div>
+            </Support>
+          </div>
+          <MyMdEditor
+            :text="data.how_learn_content"
+            :max-length="500"
+            @update:text="data.how_learn_content = $event"
+          />
+        </div>
+        <div class="grid gap-3">
+          <div class="flex gap-3 items-center">
+            <label for="short-description" class="font-bold text-xl">
+              Что вы получите
+            </label>
+            <Support>
+              <div v-html="placeholder.what_give_content"></div>
+            </Support>
+          </div>
+          <v-textarea
+            v-model="data.what_give_content"
+            id="short-what-learn-content"
+            :rules="Rule.getMinAndMaxLengthAndRequired(500)"
+            :disabled="loading"
+            rounded="lg"
+            prepend-inner-icon="mdi-format-title"
+            variant="outlined"
+            density="comfortable"
+            messages="Каждый пункт с новой строки"
+          >
+            <template #label>
+              Напишите что получат студенты после обучения
+            </template>
+            <template #details>
+              {{ data.what_give_content?.length ?? 0 }}/500
+            </template>
+          </v-textarea>
         </div>
       </v-form>
     </div>

@@ -31,7 +31,7 @@ const createCourse = () => {
             v-model="course.title"
             class="mb-6"
             rounded="lg"
-            :rules="Rule.getMaxLengthAndRequired(64)"
+            :rules="Rule.getMinAndMaxLengthAndRequired(64)"
             label="Название курса"
             variant="outlined"
             density="compact"

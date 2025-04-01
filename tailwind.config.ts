@@ -10,6 +10,8 @@ module.exports = {
     "md:grid-cols-3",
     "h-screen-minus-70",
     "!text-red-500",
+    "list-disc",
+    "list-inside",
   ],
   prefix: "",
   theme: {

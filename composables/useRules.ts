@@ -16,6 +16,14 @@ export class Rule {
       "символа",
       "символов"
     )}`;
+  public static minLength = (value: string, length: number) =>
+    (value && value.length >= length) ||
+    `Минимальное количество символов в поле не должно быть короче ${length} ${useNoun(
+      length,
+      "символ",
+      "символа",
+      "символов"
+    )}`;
   private static password = (value: string) =>
     (value && value.length >= 8) || "Пароль должен содержать не менее 8 букв";
 
@@ -50,8 +58,15 @@ export class Rule {
     return [this.required, this.password];
   }
 
-  static getMaxLengthAndRequired(maxLength: number) {
-    return [this.required, (value: string) => this.maxLength(value, maxLength)];
+  static getMinAndMaxLengthAndRequired(
+    maxLength: number,
+    minLength: number = 0
+  ) {
+    return [
+      this.required,
+      (value: string) => this.maxLength(value, maxLength),
+      (value: string) => this.minLength(value, minLength),
+    ];
   }
 
   static getPasswordConfirmation(oldPassword: string) {

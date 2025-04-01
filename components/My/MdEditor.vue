@@ -18,7 +18,7 @@ type MdEditorConfig = {
   maxLength?: number;
 };
 
-const text = ref(props.text);
+const text = ref(props.text ?? "");
 const isDark = useDark();
 const mdEditorConfig: Reactive<MdEditorConfig> = reactive({
   theme: isDark ? "dark" : "light",
@@ -32,7 +32,7 @@ watch(text, (value) => emits("update:text", value));
 watch(
   () => props.text,
   (value) => {
-    text.value = value;
+    text.value = value as string;
   }
 );
 watch(isDark, (value) => {
@@ -50,5 +50,8 @@ watch(isDark, (value) => {
       :code-theme="mdEditorConfig.codeTheme"
       :max-length="maxLength"
     />
+    <div v-if="maxLength && text.length >= maxLength" class="!text-red-500">
+      Вы ввели максимальное количество символов для этого поля
+    </div>
   </ClientOnly>
 </template>

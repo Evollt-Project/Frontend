@@ -1,11 +1,10 @@
-import { defineStore } from "pinia";
 import type { IEnum } from "~/types/IEnum";
 import type { INotification } from "~/types/INotification";
 import type { IUser } from "~/types/IUser";
 
 export const useAuthStore = defineStore("auth", () => {
   const user: Ref<IUser | null> = ref(null);
-  const enums: Ref<IEnum | null> = ref(null)
+  const enums: Ref<IEnum | null> = ref(null);
   const notifications: Ref<INotification[] | null> = ref([
     {
       id: 1,

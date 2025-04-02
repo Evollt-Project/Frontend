@@ -1,35 +1,16 @@
 services:
-  dev:
-    build:
-      context: .
-      dockerfile: ./docker/dev.Dockerfile
-    ports:
-      - "3000:3000"
-    volumes:
-      - .:/app
-      - /app/node_modules
-    environment:
-      - NODE_ENV=development
-    profiles:
-      - dev
   nginx:
     image: nginx:alpine
     volumes:
       - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./dist:/app/dist
+      - ./.output:/app/.output
     ports:
       - "80:80"
-    profiles:
-      - prod
   build:
     build:
       context: .
-      dockerfile: ./docker/prod.Dockerfile
-    volumes:
-      - ./dist:/app/dist
+      dockerfile: ./docker/Dockerfile
     environment:
       - NODE_ENV=production
-    profiles:
-      - prod
     depends_on:
       - nginx

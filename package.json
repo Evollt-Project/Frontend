@@ -50,6 +50,7 @@
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.12.2",
     "@types/luxon": "^3.4.2",
+    "@types/node": "^22.13.17",
     "@types/vue-the-mask": "^0.11.5",
     "@vueuse/core": "^11.3.0",
     "@vueuse/nuxt": "^11.2.0",

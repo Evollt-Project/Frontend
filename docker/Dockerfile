@@ -8,6 +8,8 @@ RUN npm install
 
 COPY . .
 
+RUN npx eslint . --cache --max-warnings=0
+
 RUN npm run build
 
 CMD ["node", ".output/server/index.mjs"]

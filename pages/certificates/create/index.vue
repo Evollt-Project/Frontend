@@ -48,11 +48,11 @@ const router = useRouter();
 
 const getLabelName = (position: ICertificateTypePosition) => {
   let label = "Размер шрифта для ";
-  if (position.type == "logo") {
+  if (position.type === "logo") {
     label += "логотипа";
-  } else if (position.type == "title") {
+  } else if (position.type === "title") {
     label += "ФИО студента";
-  } else if (position.type == "date") {
+  } else if (position.type === "date") {
     label += "даты";
   }
   return label;
@@ -66,7 +66,7 @@ const isCanSave = () => {
 };
 
 const findPosition = (type: ICertificateTypePosition["type"]) => {
-  return certificateType.value.positions.find((item) => item.type == type);
+  return certificateType.value.positions.find((item) => item.type === type);
 };
 
 const createCertificateLayout = async () => {
@@ -79,9 +79,9 @@ const createCertificateLayout = async () => {
   data.append("title_position", JSON.stringify(findPosition("title")));
   data.append("date_position", JSON.stringify(findPosition("date")));
   data.append("logo_position", JSON.stringify(findPosition("logo")));
-  Certificate.createLayout(data).then((response) => {
+  Certificate.createLayout(data).then(() => {
     toast.success(
-      "Шаблон для сертификата создан. Вы можете его привязать при создании или редактировании вашего курса"
+      "Шаблон для сертификата создан. Вы можете его привязать при создании или редактировании вашего курса",
     );
     loading.value = false;
     router.push({
@@ -130,7 +130,7 @@ const createCertificateLayout = async () => {
           ></v-text-field>
           <CertificateColorPicker
             :color="position.color"
-            @color="(e: string) => position.color = e"
+            @color="(e: string) => (position.color = e)"
           />
         </div>
       </div>
@@ -144,8 +144,8 @@ const createCertificateLayout = async () => {
         :loading="loading"
         @click="createCertificateLayout"
         color="success"
-        >Создать шаблон</MyButton
-      >
+        >Создать шаблон
+      </MyButton>
     </v-form>
   </div>
 </template>

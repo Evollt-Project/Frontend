@@ -1,4 +1,3 @@
-import type { EnumValues } from "./IEnum";
 import type { IRequisite } from "./IRequisite";
 
 export interface IUser {

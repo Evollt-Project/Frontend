@@ -14,7 +14,7 @@ export class Rule {
       length,
       "символ",
       "символа",
-      "символов"
+      "символов",
     )}`;
   public static minLength = (value: string, length: number) =>
     (value && value.length >= length) ||
@@ -22,13 +22,13 @@ export class Rule {
       length,
       "символ",
       "символа",
-      "символов"
+      "символов",
     )}`;
   private static password = (value: string) =>
     (value && value.length >= 8) || "Пароль должен содержать не менее 8 букв";
 
   private static passwordConfirmation = (value: string, oldPassword: string) =>
-    value == oldPassword || "Пароли должны совпадать";
+    value === oldPassword || "Пароли должны совпадать";
   private static telegramLink = (value: string) =>
     !value.trim() ||
     /^https:\/\/t\.me\/[^\s]+$/.test(value) ||
@@ -42,10 +42,10 @@ export class Rule {
     /^https:\/\/github\.com\/[^\s]+$/.test(value) ||
     "Ссылка должна иметь протокол https и ссылаться на github.com, также ник не должен содержать пробелы";
   private static inn = (value: string, nalog_status: number) => {
-    if (value.length < 10 && nalog_status == Requisites.JURIDICAL) {
+    if (value.length < 10 && nalog_status === Requisites.JURIDICAL) {
       return "Поле ИНН должно содержать 10 символов";
     }
-    if (value.length < 12 && nalog_status != Requisites.JURIDICAL) {
+    if (value.length < 12 && nalog_status !== Requisites.JURIDICAL) {
       return "Поле ИНН должно содержать 12 символов";
     }
 
@@ -58,10 +58,7 @@ export class Rule {
     return [this.required, this.password];
   }
 
-  static getMinAndMaxLengthAndRequired(
-    maxLength: number,
-    minLength: number = 0
-  ) {
+  static getMinAndMaxLengthAndRequired(maxLength: number, minLength = 0) {
     return [
       this.required,
       (value: string) => this.maxLength(value, maxLength),
@@ -75,6 +72,7 @@ export class Rule {
       (value: string) => this.passwordConfirmation(value, oldPassword),
     ];
   }
+
   static getInn(nalog_status: number) {
     return [
       (value: string) => this.required(value),
@@ -93,9 +91,11 @@ export class Rule {
   static getTelegramLink() {
     return [this.telegramLink];
   }
+
   static getVkLink() {
     return [this.vkLink];
   }
+
   static getGithubLink() {
     return [this.githubLink];
   }

@@ -20,7 +20,7 @@ watch(
   () => props.drawer,
   (value) => {
     drawer.value = value;
-  }
+  },
 );
 
 const isCanSaveTelegram = () => {
@@ -58,7 +58,7 @@ const saveSocialLink = async (value: object) => {
   await User.update({
     _method: "PUT",
     ...value,
-  }).then((response) => {
+  }).then(() => {
     toast.success("Социальная сеть привязана");
   });
 };
@@ -86,14 +86,15 @@ const saveSocialLink = async (value: object) => {
       <div>
         <div class="grid gap-4">
           <h3 class="font-bold text-2xl flex items-center gap-3">
-            <v-icon icon="mdi-account-outline"></v-icon> Аккаунт
+            <v-icon icon="mdi-account-outline"></v-icon>
+            Аккаунт
           </h3>
           <div class="text-lg">
             Email:
             <span class="text-neutral-500">{{ User.store.user.email }}</span>
           </div>
           <div>
-            <MyButton block> Сбросить пароль </MyButton>
+            <MyButton block> Сбросить пароль</MyButton>
           </div>
         </div>
       </div>
@@ -101,7 +102,8 @@ const saveSocialLink = async (value: object) => {
       <div>
         <div class="grid gap-4">
           <h3 class="font-bold text-2xl flex items-center gap-3">
-            <IconsTelegram /> Телеграм
+            <IconsTelegram />
+            Телеграм
           </h3>
           <div class="text-lg">
             <v-text-field
@@ -128,7 +130,8 @@ const saveSocialLink = async (value: object) => {
       <div>
         <div class="grid gap-4">
           <h3 class="font-bold text-2xl flex items-center gap-3">
-            <v-icon icon="mdi-github"></v-icon> GitHub
+            <v-icon icon="mdi-github"></v-icon>
+            GitHub
           </h3>
           <div class="text-lg">
             <v-text-field
@@ -155,7 +158,8 @@ const saveSocialLink = async (value: object) => {
       <div>
         <div class="grid gap-4">
           <h3 class="font-bold text-2xl flex items-center gap-3">
-            <IconsVk /> Vkontakte
+            <IconsVk />
+            Vkontakte
           </h3>
           <div class="text-lg">
             <v-text-field

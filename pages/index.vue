@@ -11,7 +11,7 @@ useHead({
 });
 
 const onlineCourses: Ref<IArticleCategory[] | null> = ref(
-  await Article.online()
+  await Article.online(),
 );
 const bigCourses: Ref<IArticleCategory[] | null> = ref(await Article.big());
 

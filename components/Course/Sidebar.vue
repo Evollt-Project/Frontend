@@ -135,7 +135,7 @@ const currentItem: Ref<ISidebarItem | null> = ref(null);
                     :image="
                       User.store.userPhotoUrl(
                         User.store.user.avatar,
-                        User.store.user.first_name
+                        User.store.user.first_name,
                       )
                     "
                   />
@@ -170,7 +170,7 @@ const currentItem: Ref<ISidebarItem | null> = ref(null);
                       :image="
                         User.store.userPhotoUrl(
                           User.store.user.avatar,
-                          User.store.user.first_name
+                          User.store.user.first_name,
                         )
                       "
                     />

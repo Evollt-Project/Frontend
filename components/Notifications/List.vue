@@ -6,7 +6,6 @@ const loading = ref(false);
 const readAllNotifications = () => {
   loading.value = true;
   setTimeout(() => {
-    console.log("hello");
     readAllModal.value = false;
     loading.value = false;
   }, 5000);

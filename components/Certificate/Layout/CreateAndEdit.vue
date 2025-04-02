@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, reactive, onMounted, type CSSProperties } from "vue";
+import { type CSSProperties } from "vue";
 import type { ICertificateTypePosition } from "~/types/ICertificate";
 
 defineProps<{
@@ -70,7 +70,7 @@ function startDrag(block: ICertificateTypePosition, event: MouseEvent) {
   document.addEventListener("mouseup", stopDrag);
 }
 
-function onDrag(event: MouseEvent, reference: string = "") {
+function onDrag(event: MouseEvent, reference = "") {
   if (state.currentDrag && editor.value && image.value) {
     const rect = image.value.getBoundingClientRect();
     const dragType = state.currentDrag.type;
@@ -82,11 +82,11 @@ function onDrag(event: MouseEvent, reference: string = "") {
 
     block.x = Math.min(
       Math.max(newX, 0),
-      rect.width - (newBlock?.offsetWidth ?? 1)
+      rect.width - (newBlock?.offsetWidth ?? 1),
     );
     block.y = Math.min(
       Math.max(newY, 0),
-      rect.height - (newBlock?.offsetHeight ?? 1)
+      rect.height - (newBlock?.offsetHeight ?? 1),
     );
   }
 }
@@ -148,12 +148,14 @@ function stopDrag() {
     display: inline-block;
     margin-top: 20px;
   }
+
   .uploaded-image {
     max-width: 100%;
     user-select: none;
     pointer-events: none;
     height: auto;
   }
+
   .draggable-block {
     position: absolute;
     font-weight: bold;

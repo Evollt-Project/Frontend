@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useWindowSize } from "@vueuse/core";
-import { VDialog, VBottomSheet } from "vuetify/components";
+import { VBottomSheet, VDialog } from "vuetify/components";
 import type { ICatalog } from "~/types/ICatalog";
 
 const props = defineProps<{
@@ -26,7 +26,7 @@ watch(dialog, (value) => {
 });
 
 watch(tab, (value) => {
-  if (value == "catalogs") {
+  if (value === "catalogs") {
     selectedCatalog.value = null;
   }
 });

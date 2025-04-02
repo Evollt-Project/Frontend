@@ -12,11 +12,7 @@ const data = ref({
   password: "" as string,
   password_confirmation: "" as string,
 });
-const initialData = ref({
-  old_password: "" as string,
-  password: "" as string,
-  password_confirmation: "" as string,
-});
+
 const showOldPassword = ref(false);
 const showPassword = ref(false);
 const showConfirmationPassword = ref(false);

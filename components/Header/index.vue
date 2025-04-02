@@ -48,7 +48,7 @@ const config = useRuntimeConfig();
                 :image="
                   User.store.userPhotoUrl(
                     User.store.user.avatar,
-                    User.store.user.first_name
+                    User.store.user.first_name,
                   )
                 "
               />

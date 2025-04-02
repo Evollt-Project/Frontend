@@ -10,7 +10,7 @@ const props = defineProps<{
 const emits = defineEmits(["search", "changePage"]);
 const observer: Ref<HTMLDivElement | null> = ref(null);
 
-useIntersectionObserver(observer, ([entry], observerElement) => {
+useIntersectionObserver(observer, ([entry]) => {
   if (
     entry.isIntersecting &&
     props.articles &&

@@ -3,16 +3,16 @@ export default defineNuxtConfig({
   app: {
     pageTransition: { name: "page", mode: "out-in" },
     head: {
-      title: process.env.APP_NAME, // Заголовок по умолчанию
-      titleTemplate: `%s | ${process.env.APP_NAME}`, // Шаблон для всех страниц
+      title: process.env["APP_NAME"], // Заголовок по умолчанию
+      titleTemplate: `%s | ${process.env["APP_NAME"]}`, // Шаблон для всех страниц
     },
   },
   runtimeConfig: {
     public: {
-      app_name: process.env.APP_NAME,
-      url: process.env.URL,
-      dadataToken: process.env.DADATA_TOKEN,
-      dadataSecretToken: process.env.DADATA_SECRET_TOKEN,
+      app_name: process.env["APP_NAME"],
+      url: process.env["URL"],
+      dadataToken: process.env["DADATA_TOKEN"],
+      dadataSecretToken: process.env["DADATA_SECRET_TOKEN"],
     },
   },
   compatibilityDate: "2024-04-03",
@@ -26,6 +26,7 @@ export default defineNuxtConfig({
     "@nuxtjs/color-mode",
     "@pinia/nuxt",
     "nuxt-lodash",
+    "@nuxt/eslint",
   ],
   pinia: {
     storesDirs: ["./stores/**"],
@@ -45,7 +46,6 @@ export default defineNuxtConfig({
     componentDir: "./components/ui",
   },
   plugins: [
-    { src: "~/plugins/preline.client.ts", mode: "client" },
     { src: "~/plugins/v-mask.ts" },
     { src: "~/plugins/vue3-toastify.client.ts", mode: "client" },
     { src: "~/plugins/vue-markdown-preview.ts", mode: "client" },

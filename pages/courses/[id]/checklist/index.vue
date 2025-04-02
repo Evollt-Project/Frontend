@@ -7,6 +7,7 @@ definePageMeta({
 
 <template>
   <div>Чек-лист курса</div>
+  {{ hello }}
 </template>
 
 <style scoped lang="scss"></style>

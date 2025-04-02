@@ -2,7 +2,7 @@
 import { DateTime } from "luxon";
 import type { IModule } from "~/types/Module/IModule";
 
-const props = defineProps<{
+defineProps<{
   modules: IModule[];
   status?: "edit";
 }>();

@@ -118,10 +118,10 @@ const currentItem: Ref<ISidebarItem | null> = ref(null);
 const checkSplitPath = (
   category: ICollapsibleSidebarItem,
   word: string,
-  arr: string[]
+  arr: string[],
 ) => {
   arr.map((item, index) => {
-    if (word == item) {
+    if (word === item) {
       currentItem.value = category.items ? category.items[index] : null;
     }
   });
@@ -129,10 +129,10 @@ const checkSplitPath = (
 
 const checkCategoryAndItem = () => {
   const splitRouteName = String(route.name).split("-");
-  if (splitRouteName[0] == "profile") {
+  if (splitRouteName[0] === "profile") {
     currentCategory.value = collapsibleItems[0];
     currentItem.value = null;
-  } else if (splitRouteName[0] == "courses") {
+  } else if (splitRouteName[0] === "courses") {
     currentCategory.value = collapsibleItems[1];
 
     checkSplitPath(currentCategory.value, splitRouteName[1], [
@@ -141,7 +141,7 @@ const checkCategoryAndItem = () => {
       "wishlist",
       "create",
     ]);
-  } else if (splitRouteName[0] == "settings") {
+  } else if (splitRouteName[0] === "settings") {
     currentCategory.value = collapsibleItems[2];
 
     checkSplitPath(currentCategory.value, splitRouteName[1], [
@@ -149,7 +149,7 @@ const checkCategoryAndItem = () => {
       "password",
       "requisites",
     ]);
-  } else if (splitRouteName[0] == "teach") {
+  } else if (splitRouteName[0] === "teach") {
     currentCategory.value = collapsibleItems[3];
 
     checkSplitPath(currentCategory.value, splitRouteName[1], [
@@ -157,17 +157,17 @@ const checkCategoryAndItem = () => {
       "lessons",
       "mailing",
     ]);
-  } else if (splitRouteName[0] == "notifications") {
+  } else if (splitRouteName[0] === "notifications") {
     currentCategory.value = collapsibleItems[4];
 
     checkSplitPath(currentCategory.value, splitRouteName[1], [
       "all",
       "favorites",
     ]);
-  } else if (splitRouteName[0] == "notifications") {
+  } else if (splitRouteName[0] === "notifications") {
     currentCategory.value = collapsibleItems[4];
     currentItem.value = null;
-  } else if (splitRouteName[0] == "certificates") {
+  } else if (splitRouteName[0] === "certificates") {
     currentCategory.value = collapsibleItems[5];
 
     checkSplitPath(currentCategory.value, splitRouteName[1], [
@@ -182,7 +182,7 @@ watch(
   () => route.params,
   () => {
     checkCategoryAndItem();
-  }
+  },
 );
 
 onMounted(() => {
@@ -225,7 +225,7 @@ onMounted(() => {
                     :image="
                       User.store.userPhotoUrl(
                         User.store.user.avatar,
-                        User.store.user.first_name
+                        User.store.user.first_name,
                       )
                     "
                   />
@@ -260,7 +260,7 @@ onMounted(() => {
                       :image="
                         User.store.userPhotoUrl(
                           User.store.user.avatar,
-                          User.store.user.first_name
+                          User.store.user.first_name,
                         )
                       "
                     />
@@ -294,9 +294,9 @@ onMounted(() => {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem @click="User.logout()">
                   <span>Выйти</span>
-                  <DropdownMenuShortcut
-                    ><v-icon icon="mdi-logout"></v-icon
-                  ></DropdownMenuShortcut>
+                  <DropdownMenuShortcut>
+                    <v-icon icon="mdi-logout"></v-icon>
+                  </DropdownMenuShortcut>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

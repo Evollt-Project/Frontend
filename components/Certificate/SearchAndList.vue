@@ -16,7 +16,7 @@ const emits = defineEmits(["search", "changePage"]);
 const observer: Ref<HTMLDivElement | null> = ref(null);
 const router = useRouter();
 
-useIntersectionObserver(observer, ([entry], observerElement) => {
+useIntersectionObserver(observer, ([entry]) => {
   if (
     entry.isIntersecting &&
     props.certificates &&

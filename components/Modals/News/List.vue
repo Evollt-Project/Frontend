@@ -30,7 +30,7 @@ watch(
   () => props.dialog,
   (value) => {
     dialog.value = value;
-  }
+  },
 );
 </script>
 

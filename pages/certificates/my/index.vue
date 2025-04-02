@@ -33,7 +33,7 @@ const getMyCertificates = async (search: string | undefined = undefined) => {
 };
 
 const getCertificateLayouts = async (
-  search: string | undefined = undefined
+  search: string | undefined = undefined,
 ) => {
   loading.value = true;
   await Certificate.getMyLayouts({
@@ -52,7 +52,7 @@ const getCertificateLayouts = async (
 };
 
 onMounted(async () => {
-  if (route.query.tab == "layouts") {
+  if (route.query.tab === "layouts") {
     tab.value = "layouts";
   } else {
     await getMyCertificates();
@@ -62,7 +62,7 @@ onMounted(async () => {
 // type - 0 получение сертификатов, 1 получение шаблонов для сертификатов
 const changePage = async (e: number, type: number) => {
   page.value = e;
-  type == 0
+  type === 0
     ? getMyCertificates(search.value)
     : getCertificateLayouts(search.value);
 };
@@ -77,7 +77,7 @@ const changeSearch = async (e: string, type: number) => {
   if (certificateTypes.value) {
     certificateTypes.value.data = [];
   }
-  type == 0
+  type === 0
     ? getMyCertificates(search.value)
     : getCertificateLayouts(search.value);
 };
@@ -86,9 +86,9 @@ watch(tab, async (value) => {
   page.value = 1;
   certificateTypes.value = null;
   certificates.value = null;
-  if (value == "certificates") {
+  if (value === "certificates") {
     await getMyCertificates();
-  } else if (value == "layouts") {
+  } else if (value === "layouts") {
     await getCertificateLayouts();
   }
 });

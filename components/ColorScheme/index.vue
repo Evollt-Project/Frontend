@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { useDark } from "@vueuse/core";
 import type { StyleValue } from "vue";
-import { ToastifyContainer } from "vue3-toastify";
 
 defineProps<{
   iconStyle?: StyleValue;

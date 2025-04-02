@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { Certificate } from "~/composables/useCertificate";
-import type { ICertificate, ICertificateType } from "~/types/ICertificate";
+import type { ICertificateType } from "~/types/ICertificate";
 import type { IPagination } from "~/types/Base/IPagination";
 
 definePageMeta({
@@ -8,14 +7,13 @@ definePageMeta({
   layout: "sidebar",
 });
 
-const tab: Ref<"certificates" | "layouts"> = ref("certificates");
 const page = ref(1);
 const certificateTypes: Ref<IPagination<ICertificateType> | null> = ref(null);
 const loading = ref(false);
 const search = ref("");
 
 const getCertificateLayouts = async (
-  search: string | undefined = undefined
+  search: string | undefined = undefined,
 ) => {
   loading.value = true;
   await Certificate.getMyLayouts({

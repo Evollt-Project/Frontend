@@ -19,5 +19,5 @@ export interface IPagination<T> {
     per_page: number;
     to: number;
     total: number;
-  }
+  };
 }

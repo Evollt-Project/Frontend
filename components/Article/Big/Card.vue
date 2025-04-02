@@ -49,7 +49,7 @@ defineProps<{
                   <template #title>
                     {{
                       [article.owner?.surname, article.owner?.first_name].join(
-                        " "
+                        " ",
                       )
                     }}
                   </template>

@@ -10,7 +10,7 @@ watch(
   () => props.color,
   (value) => {
     color.value = value;
-  }
+  },
 );
 
 watch(color, (value) => {

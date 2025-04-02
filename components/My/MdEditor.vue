@@ -33,7 +33,7 @@ watch(
   () => props.text,
   (value) => {
     text.value = value as string;
-  }
+  },
 );
 watch(isDark, (value) => {
   mdEditorConfig.theme = value ? "dark" : "light";

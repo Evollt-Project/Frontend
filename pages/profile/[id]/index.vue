@@ -10,7 +10,7 @@ const user: Ref<UserResponse> = ref(null);
 const route = useRoute();
 const loading = ref(true);
 onMounted(async () => {
-  user.value = await User.getById(Number(route.params.id));
+  user.value = await User.getById(Number(route.params["id"]));
   loading.value = false;
 });
 </script>

@@ -3,11 +3,13 @@ import type { IArticle } from "./IArticle";
 type ArticleId = number;
 
 export interface IArticlePayloadBase {}
+
 export interface IArticleResponseBase {}
 
 export interface IArticlePayloadCreate extends IArticlePayloadBase {
   title: string;
 }
+
 export interface IArticleResponseCreate extends IArticle {}
 
 export interface IArticlePayloadEdit extends IArticlePayloadBase {
@@ -24,10 +26,13 @@ export interface IArticlePayloadEdit extends IArticlePayloadBase {
   language_id?: number;
   level_id?: number;
   recommended_load?: number;
+  teachers_id?: number[];
 }
+
 export interface IArticleResponseEdit extends IArticle {}
 
 export interface IArticlePayloadGet extends IArticlePayloadBase {
   id: ArticleId;
 }
+
 export interface IArticleResponseGet extends IArticle {}

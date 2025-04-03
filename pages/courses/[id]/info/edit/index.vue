@@ -100,6 +100,7 @@ const getArticle = async () => {
       how_learn_content: response.data.how_learn_content,
       what_give_content: response.data.what_give_content,
       recommended_load: response.data.recommended_load,
+      teachers_id: response.data.teachers.map((item) => item.id),
     };
     article.value = response.data;
     loadingCourse.value = false;
@@ -126,7 +127,7 @@ const levelFillColor = computed(() => {
 
 <template>
   <div>
-    <div v-if="User.store.user && User.store.enums">
+    <div v-if="User.store.user && User.store.enums && article">
       <div
         v-if="loadingCourse"
         class="flex h-screen-minus-70 items-center justify-center"
@@ -226,8 +227,8 @@ const levelFillColor = computed(() => {
               messages="Для публикации нужно больше 100 символов"
             >
               <template #details>
-                {{ data.short_content?.length ?? 0 }}/500</template
-              >
+                {{ data.short_content?.length ?? 0 }}/500
+              </template>
             </v-textarea>
           </div>
           <div class="grid md:grid-cols-3 gap-5">
@@ -306,11 +307,11 @@ const levelFillColor = computed(() => {
               density="comfortable"
             >
               <template #label>
-                Перечислите ожидаемые результаты обучения</template
-              >
+                Перечислите ожидаемые результаты обучения
+              </template>
               <template #details>
-                {{ data.what_learn_content?.length ?? 0 }}/500</template
-              >
+                {{ data.what_learn_content?.length ?? 0 }}/500
+              </template>
             </v-textarea>
           </div>
           <div class="grid gap-3">
@@ -349,8 +350,8 @@ const levelFillColor = computed(() => {
               density="comfortable"
             >
               <template #details>
-                {{ data.for_who_content?.length ?? 0 }}/500</template
-              >
+                {{ data.for_who_content?.length ?? 0 }}/500
+              </template>
             </v-textarea>
           </div>
           <div class="grid gap-3">
@@ -404,12 +405,37 @@ const levelFillColor = computed(() => {
               messages="Каждый пункт с новой строки"
             >
               <template #label>
-                Напишите что получат студенты после обучения</template
-              >
+                Напишите что получат студенты после обучения
+              </template>
               <template #details>
-                {{ data.what_give_content?.length ?? 0 }}/500</template
-              >
+                {{ data.what_give_content?.length ?? 0 }}/500
+              </template>
             </v-textarea>
+          </div>
+          <div class="grid gap-3">
+            <div class="flex gap-3 items-center">
+              <label for="short-description" class="font-bold text-xl">
+                Сертификат
+              </label>
+            </div>
+            <!-- TODO: Выбор и сохранение сертификата к курсу -->
+          </div>
+          <div v-if="article.teachers" class="grid gap-3">
+            <div class="grid gap-3">
+              <h4 class="font-bold text-xl"> Наши преподаватели </h4>
+              <p>
+                Показываются на промостранице, но это не дает им прав на
+                управление курсом. Чтобы выдать права, перейдите в раздел «Права
+                доступа» настроек курса.
+              </p>
+            </div>
+            <div>
+              <ArticleTeacherItem
+                v-for="teacher in article.teachers"
+                :key="teacher.id"
+                :item="teacher"
+              />
+            </div>
           </div>
         </v-form>
       </div>

@@ -4,7 +4,7 @@ definePageMeta({
   layout: "sidebar",
 });
 useHead({
-  title: "Evollt School | Уведомления",
+  title: "Уведомления",
 });
 </script>
 

@@ -1,4 +1,4 @@
-<script script setup lang="ts">
+<script setup lang="ts">
 import { VDateInput } from "vuetify/labs/components";
 import { Requisites } from "~/composables/useRequisites";
 import { DateTime } from "luxon";
@@ -9,7 +9,7 @@ definePageMeta({
   layout: "sidebar",
 });
 useHead({
-  title: "Evollt School | Реквизиты",
+  title: "Реквизиты",
 });
 const insertRequisites = ref(true);
 const initialRequisites = ref({
@@ -53,7 +53,6 @@ const saveRequisites = async () => {
 
     if (valid) {
       loading.value = true;
-      console.log(User.store.user?.date_of_birth);
       User.update({
         _method: "PUT",
         requisites: {
@@ -80,9 +79,9 @@ const validate = () => {
 
 const getCompanyByInn = useDebounceFn(async () => {
   if (
-    requisites.value.inn.length == 12 ||
-    (requisites.value.inn.length == 10 &&
-      requisites.value.nalog_status == Requisites.JURIDICAL)
+    requisites.value.inn.length === 12 ||
+    (requisites.value.inn.length === 10 &&
+      requisites.value.nalog_status === Requisites.JURIDICAL)
   ) {
     switch (requisites.value.nalog_status) {
       case Requisites.JURIDICAL || Requisites.INDIVIDUAL:
@@ -92,29 +91,28 @@ const getCompanyByInn = useDebounceFn(async () => {
               const company = response[0];
               requisites.value = {
                 ...requisites.value,
-                fio: company.data.management.name,
-                legal_address: company.data.address.unrestricted_value,
+                fio: company!.data.management.name,
+                legal_address: company!.data.address.unrestricted_value,
               };
             } else {
               useErrorNotification({
                 message: "Компания с таким ИНН не найдена",
               });
             }
-            console.log(response);
-          }
+          },
         );
     }
   }
 }, User.DEBOUNCE_DELAY);
 
 const getBankByBik = useDebounceFn(async () => {
-  if (requisites.value.bik.length == 9) {
+  if (requisites.value.bik.length === 9) {
     await Requisites.getBankByBik(requisites.value.bik).then((response) => {
       if (response.length > 0) {
         const company = response[0];
         requisites.value = {
           ...requisites.value,
-          bank: company.value,
+          bank: company!.value,
         };
       } else {
         useErrorNotification({
@@ -132,7 +130,7 @@ watch(
       ...initialRequisites.value,
       nalog_status: value,
     };
-  }
+  },
 );
 </script>
 
@@ -180,9 +178,9 @@ watch(
     </p>
     <div>
       <div class="flex justify-center" v-if="!insertRequisites">
-        <MyButton @click="insertRequisites = true"
-          >Заполнить реквизиты</MyButton
-        >
+        <MyButton @click="insertRequisites = true">
+          Заполнить реквизиты
+        </MyButton>
       </div>
       <v-form fast-fail ref="form" v-else @submit.prevent>
         <div
@@ -207,8 +205,8 @@ watch(
           </div>
           <div
             v-if="
-              requisites.nalog_status == Requisites.PHYSICAL ||
-              requisites.nalog_status == Requisites.SELF_EMPLOYED
+              requisites.nalog_status === Requisites.PHYSICAL ||
+              requisites.nalog_status === Requisites.SELF_EMPLOYED
             "
           >
             <div class="flex gap-2 items-center">
@@ -227,7 +225,7 @@ watch(
                 :value="
                   requisites.date_of_birth
                     ? DateTime.fromJSDate(requisites.date_of_birth).toFormat(
-                        'dd.MM.yyyy'
+                        'dd.MM.yyyy',
                       )
                     : ''
                 "
@@ -238,8 +236,8 @@ watch(
           </div>
           <div
             v-if="
-              requisites.nalog_status == Requisites.PHYSICAL ||
-              requisites.nalog_status == Requisites.SELF_EMPLOYED
+              requisites.nalog_status === Requisites.PHYSICAL ||
+              requisites.nalog_status === Requisites.SELF_EMPLOYED
             "
           >
             <v-text-field
@@ -264,7 +262,7 @@ watch(
             <v-text-field
               v-model="requisites.inn"
               v-mask="
-                requisites.nalog_status == Requisites.JURIDICAL
+                requisites.nalog_status === Requisites.JURIDICAL
                   ? ['##########']
                   : ['############']
               "
@@ -373,6 +371,7 @@ watch(
   &-email {
     display: grid;
     grid-template-columns: auto 1fr;
+
     &__title {
       grid-column: 1;
       grid-row: 1 / span 100;

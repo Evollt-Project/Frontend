@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { IArticleCategory } from "~/types/IArticleCategory";
-import type { ISubcategory } from "~/types/ISubcategory";
 import type { ICatalog } from "~/types/ICatalog";
 
 definePageMeta({
@@ -8,11 +7,11 @@ definePageMeta({
 });
 
 useHead({
-  title: "Evollt School | Главная",
+  title: `Главная`,
 });
 
 const onlineCourses: Ref<IArticleCategory[] | null> = ref(
-  await Article.online()
+  await Article.online(),
 );
 const bigCourses: Ref<IArticleCategory[] | null> = ref(await Article.big());
 
@@ -22,7 +21,7 @@ const businessCatalog: Ref<ICatalog> = ref(await Catalog.get(3));
 <template>
   <div class="container mx-auto">
     <div class="grid gap-16">
-      <Intro />
+      <Intro class="mb-5" />
 
       <ArticleCategoryList
         title="Онлайн-курсы"

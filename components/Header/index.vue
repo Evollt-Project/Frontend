@@ -14,6 +14,7 @@ const openAuthModal = (currentTab: TabType) => {
   loginModal.value = true;
 };
 const router = useRouter();
+const config = useRuntimeConfig();
 </script>
 
 <template>
@@ -28,7 +29,9 @@ const router = useRouter();
         <div class="header__logo">
           <IconsLogo />
         </div>
-        <div class="header__title text-3xl">Evollt School</div>
+        <div class="header__title text-3xl">
+          {{ config.public.app_name }}
+        </div>
       </NuxtLink>
       <div class="header__center flex gap-5 items-center">
         <HeaderMenu />
@@ -45,7 +48,7 @@ const router = useRouter();
                 :image="
                   User.store.userPhotoUrl(
                     User.store.user.avatar,
-                    User.store.user.first_name
+                    User.store.user.first_name,
                   )
                 "
               />

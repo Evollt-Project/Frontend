@@ -32,7 +32,7 @@ export class User {
       method: "get",
     }).then((response) => {
       return response.data;
-    })
+    });
   }
 
   static async getEnums() {
@@ -47,22 +47,22 @@ export class User {
 
   static hasPermission(permission: number): boolean {
     if (!this.store.user) {
-      return false
+      return false;
     }
     return (this.store.user.role & permission) === permission;
   }
 
   static getAllPermissions(user?: IUser | null): (1 | 3 | 7 | 15)[] {
-    const selectedUser: IUser | null = user ?? this.store.user
+    const selectedUser: IUser | null = user ?? this.store.user;
     if (selectedUser && this.store.enums) {
-      const role = selectedUser.role
+      const role = selectedUser.role;
       return Object.entries(this.store.enums.roles)
         .filter(([key]) => {
           return (role & Number(key)) > 0 && Number(key) <= role;
         })
         .map(([key]) => Number(key) as 1 | 3 | 7 | 15);
     }
-    return []
+    return [];
   }
 
   static async login(params: ILogin): Promise<IUser> {
@@ -129,13 +129,13 @@ export class User {
 
   static async update(data: object) {
     return await useRequest<IUser>({
-      url: 'api/v1/user/update',
+      url: "api/v1/user/update",
       method: "POST",
-      body: data
+      body: data,
     })
-      .then(response => {
-        this.store.user = response.data
-        return response.data
+      .then((response) => {
+        this.store.user = response.data;
+        return response.data;
       })
       .catch((response) => {
         useErrorNotification(response.response.data.errors);
@@ -144,15 +144,15 @@ export class User {
   }
   static async skills() {
     return await useRequest<ISkill[]>({
-      url: 'api/v1/user/skills',
-    })
+      url: "api/v1/user/skills",
+    });
   }
 
   static async changePassword(data: object) {
-    return await useRequest<{ status: boolean, message: string }>({
-      url: 'api/v1/user/update/password',
+    return await useRequest<{ status: boolean; message: string }>({
+      url: "api/v1/user/update/password",
       method: "POST",
-      body: data
-    })
+      body: data,
+    });
   }
 }

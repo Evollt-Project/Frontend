@@ -2,12 +2,12 @@
 
 <template>
   <div
-    class="support w-8 h-8 rounded-full border !border-black dark:!border-neutral-600 dark:text-neutral-600 flex justify-center items-center cursor-pointer"
+    class="support w-8 h-8 rounded-full border !border-black dark:!border-white flex justify-center items-center cursor-help"
   >
     ?
-    <v-tooltip activator="parent" width="300" location="bottom"
-      ><slot></slot
-    ></v-tooltip>
+    <MyTooltip>
+      <slot></slot>
+    </MyTooltip>
   </div>
 </template>
 

@@ -13,6 +13,7 @@ const emits = defineEmits(["dialog"]);
 
 const dialog: Ref<boolean> = ref(props.dialog);
 const { width } = useWindowSize();
+const config = useRuntimeConfig();
 const state = reactive({
   text: `
 Привет, мир! [Duck Duck Go](https://duckduckgo.com "The best search engine for privacy")
@@ -48,7 +49,7 @@ watch(
         :loading="loading"
       >
         <v-card-title class="d-flex justify-space-between align-center p-0">
-          Новости Evollt School
+          Новости {{ config.public.app_name }}
           <v-btn
             icon="mdi-close"
             :disabled="loading"

@@ -1,0 +1,22 @@
+@mixin mdi-editor-css-vars($isDark) {
+  --md-bk-color: #{if($isDark, var(--background), #fff)} !important; // задний фон
+  --md-scrollbar-bg-color: #{if($isDark, var(--navigation-bg-color), #e2e2e2)} !important;
+  --md-border-color: #{if($isDark, #595959, #e6e6e6)} !important; // цвет границ
+  --md-border-active-color: #{if($isDark, white, black)} !important;
+  --md-border-hover-color: #{if($isDark, white, black)} !important;
+  border-radius: 8px;
+  transition: 0.3s;
+
+  &:hover {
+    border-color: var(--md-border-hover-color);
+  }
+
+  // --md-color: #{if($isDark, white, black)} !important;
+  // --md-hover-color: #{if($isDark, #bbb, #bbb)} !important;
+  // --md-bk-color-outstand: #{if($isDark, white, #f2f2f2)} !important;
+  // --md-bk-hover-color: #{if($isDark, white, white)} !important;
+  // --md-modal-mask: #{if($isDark, white, white)} !important;
+  // --md-scrollbar-thumb-color: #{if($isDark, white, white)} !important;
+  // --md-scrollbar-thumb-hover-color: #{if($isDark, white, white)} !important;
+  // --md-scrollbar-thumb-active-color: #{if($isDark, white, white)} !important;
+}

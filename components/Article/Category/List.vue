@@ -11,7 +11,7 @@ const props = defineProps<{
 const tab = ref(props.articleCategories[0].tab ?? null);
 
 const chunkArticles = computed(() => {
-  for (let articleCategory of props.articleCategories) {
+  for (const articleCategory of props.articleCategories) {
     return lodash.chunk(articleCategory.articles, 6);
   }
 });

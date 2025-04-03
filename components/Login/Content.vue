@@ -7,7 +7,7 @@ const props = defineProps<{
 const emits = defineEmits(["loading", "dialog"]);
 const data: Ref<ILogin> = ref({
   email: "evollt@gmail.com",
-  password: "qwerty12!!",
+  password: "qwerty12!",
 });
 const showPassword: Ref<boolean> = ref(false);
 const form = ref(null);

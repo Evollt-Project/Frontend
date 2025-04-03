@@ -1,14 +1,30 @@
 <script setup lang="ts">
+import { LayoutEnum } from "~/enums/LayoutEnum";
 import type { ICertificateType } from "~/types/ICertificate";
 
-defineProps<{
+const { certificate } = defineProps<{
   certificate: ICertificateType;
+  certificate_type: "my" | "list";
 }>();
+
+const shadowColor: ComputedRef<string> = computed(() => {
+  switch (certificate.state) {
+    case LayoutEnum.MODERATION:
+      return "#ffc900";
+    case LayoutEnum.ACTIVE:
+      return "#00d200";
+    case LayoutEnum.REJECTED:
+      return "#dc143c";
+    default:
+      return "#fff";
+  }
+});
 </script>
 
 <template>
   <NuxtLink
-    class="article rounded-3xl cursor-pointer dark:shadow-white min-w-[350px] transition duration-300 hover:shadow-custom h-full flex flex-col"
+    class="article rounded-3xl cursor-pointer min-w-[350px] transition duration-300 h-full flex flex-col"
+    :style="{ '--custom-shadow-color': shadowColor }"
     :to="{
       name: 'article-page',
       params: {
@@ -20,9 +36,9 @@ defineProps<{
       <div class="article-content_top mb-[-30px]">
         <div class="article-content__cover">
           <img
-            :src="photoUrl(certificate.path)"
+            :src="photoUrl(certificate.preview_image)"
             class="w-full h-72 object-cover rounded-2xl"
-            v-if="certificate.path"
+            v-if="certificate.preview_image"
             alt=""
           />
           <div
@@ -38,12 +54,19 @@ defineProps<{
         class="dark:bg-neutral-900 bg-neutral-100 rounded-3xl p-5 relative flex flex-col justify-between flex-grow"
       >
         <div class="article-content__middle">
-          <div class="flex justify-between items-start gap-5">
+          <div>
             <div>
               <h3 class="article-content__title mb-4 text-lg font-bold">
                 {{ certificate.title }}
               </h3>
-              <p class="article-content__authors text-neutral-500">
+              <strong
+                v-if="User.store.enums && certificate_type == 'my'"
+                class="text-sm"
+                :style="`color: ${shadowColor}`"
+              >
+                {{ User.store.enums.certificate_types[certificate.state] }}
+              </strong>
+              <p class="article-content__authors text-neutral-500 mt-2">
                 Автор:
                 <UserHoverCard :user="certificate.owner">
                   <template #title>
@@ -64,4 +87,10 @@ defineProps<{
   </NuxtLink>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.article {
+  &:hover {
+    box-shadow: 0px 0px 10px var(--custom-shadow-color);
+  }
+}
+</style>

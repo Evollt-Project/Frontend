@@ -10,24 +10,24 @@ const settingsSidebar: Ref<boolean> = ref(false);
 const roles: Ref<ITag[]> = ref([]);
 const route = useRoute();
 
-onMounted(() => {
-  if (User.store.enums) {
+watch(
+  () => User.store.enums,
+  (value) => {
     User.getAllPermissions(props.user).forEach((item) => {
-      if (User.store.enums) {
-        roles.value.push({
-          title: User.store.enums.roles[item],
-        });
-      }
+      if (!value) return;
+      roles.value.push({
+        title: value.roles[item],
+      });
     });
-  }
-});
+  },
+);
 
 const canShow = computed(() => {
   if (route.params?.id) {
     return false;
   }
   if (User.store.user) {
-    if (User.store.user.id == props.user.id) {
+    if (User.store.user.id === props.user.id) {
       return true;
     }
   }
@@ -78,8 +78,8 @@ const canShow = computed(() => {
           v-if="canShow"
           class="flex items-center"
         >
-          <v-icon icon="mdi-account-edit-outline"></v-icon> Редактировать
-          профиль
+          <v-icon icon="mdi-account-edit-outline"></v-icon>
+          Редактировать профиль
         </NuxtLink>
         <div class="profile-content__skills my-5">
           <ProfileTagList :items="user.skills" />

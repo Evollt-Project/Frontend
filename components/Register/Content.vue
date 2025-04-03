@@ -21,7 +21,7 @@ const register = async () => {
 
   if (valid) {
     emits("loading", true);
-    const response = await User.register(data.value);
+    await User.register(data.value);
     emits("loading", false);
   }
 };

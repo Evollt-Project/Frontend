@@ -1,15 +1,16 @@
 services:
-  frontend:
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./.output:/app/.output
+    ports:
+      - "80:80"
+  build:
     build:
       context: .
-      dockerfile: ./docker/frontend.Dockerfile
-    volumes:
-      - ./:/app
-      - ./node_modules/:/app/node_modules
-    ports:
-      - "3000:3000"
-    env_file:
-      - docker/.env
-    command: npm run dev
-    stdin_open: true
-    tty: true
+      dockerfile: ./docker/Dockerfile
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - nginx

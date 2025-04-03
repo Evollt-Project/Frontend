@@ -9,14 +9,9 @@ defineProps<{
 <template>
   <div class="tags__item" :class="{ 'cursor-pointer': item.description }">
     {{ item.title }}
-    <v-tooltip
-      activator="parent"
-      v-if="item.description"
-      max-width="300px"
-      location="bottom"
-    >
+    <MyTooltip v-if="item.description">
       {{ item.description }}
-    </v-tooltip>
+    </MyTooltip>
   </div>
 </template>
 

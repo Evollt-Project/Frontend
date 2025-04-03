@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ICertificate, ICertificateType } from "~/types/ICertificate";
-import type { IPagination } from "~/types/IPagination";
+import type { IPagination } from "~/types/Base/IPagination";
 
 const props = defineProps<{
   certificates:
@@ -9,13 +9,14 @@ const props = defineProps<{
     | null;
   page: number;
   type: "certificate" | "certificate_type";
+  certificate_type?: "my" | "list";
   loading: boolean;
 }>();
 const emits = defineEmits(["search", "changePage"]);
 const observer: Ref<HTMLDivElement | null> = ref(null);
 const router = useRouter();
 
-useIntersectionObserver(observer, ([entry], observerElement) => {
+useIntersectionObserver(observer, ([entry]) => {
   if (
     entry.isIntersecting &&
     props.certificates &&
@@ -75,6 +76,7 @@ const changeSearchField = useDebounceFn((event: InputEvent) => {
             "
             v-for="certificate in certificates.data"
             :certificate="certificate as ICertificateType"
+            :certificate_type="certificate_type ?? 'list'"
           />
           <div v-for="_ in 3" v-if="loading">
             <div class="flex flex-col space-y-3 p-8">

@@ -48,7 +48,7 @@ const saveProfile = async () => {
       Object.keys(data.value).forEach((key) => {
         const typedKey = key as keyof typeof data.value;
         let value = data.value[typedKey];
-        if (typeof value == "boolean") {
+        if (typeof value === "boolean") {
           value = value ? 1 : 0;
         } else if (value instanceof Date) {
           value = DateTime.fromJSDate(value).toFormat("yyyy-MM-dd");
@@ -59,7 +59,7 @@ const saveProfile = async () => {
           formData.append(key, value);
         }
       });
-      await User.update(formData).then((response) => {
+      await User.update(formData).then(() => {
         toast.success("Отредактировано");
       });
       loading.value = false;
@@ -104,8 +104,8 @@ const handleFileChange = (event: Event) => {
               size="100"
               :image="
                 User.store.userPhotoUrl(
-                  String(data.avatar),
-                  User.store.user.first_name
+                  data.avatar as string,
+                  User.store.user.first_name,
                 )
               "
             />

@@ -29,7 +29,7 @@ export const useNoun = (
     return five;
   }
   number %= 10;
-  if (number == 1) {
+  if (number === 1) {
     return one;
   }
   if (number >= 2 && number <= 4) {
@@ -37,7 +37,6 @@ export const useNoun = (
   }
   return five;
 };
-
 
 export const sanitizeValue = (value: any) => {
   if (typeof value === "number") {
@@ -51,7 +50,7 @@ export const sanitizeValue = (value: any) => {
       return !isNaN(value.getTime()) ? value : undefined;
     }
     if (value && Object.keys(value).length > 0) {
-      const hasValidValues = Object.values(value).some(v => {
+      const hasValidValues = Object.values(value).some((v) => {
         if (Array.isArray(v)) return v.length > 0;
         return v !== undefined;
       });
@@ -62,9 +61,8 @@ export const sanitizeValue = (value: any) => {
   return value || undefined;
 };
 
-
 export const photoUrl = (url: string) => {
-  const config = useRuntimeConfig()
+  const config = useRuntimeConfig();
 
   return String(new URL("storage/" + url, config.public.url));
-}
+};

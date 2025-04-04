@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { useWindowSize } from "@vueuse/core";
-import { VDialog, VBottomSheet } from "vuetify/components";
+import { VBottomSheet, VDialog } from "vuetify/components";
 import { MdPreview, type PreviewThemes, type Themes } from "md-editor-v3";
 import "md-editor-v3/lib/style.css";
 import "~/assets/scss/news-markdown.scss";
+import { MOBILE_VERSION_WIDTH } from "~/consts/config";
 
 const props = defineProps<{
   dialog: boolean;
@@ -36,8 +37,8 @@ watch(
 
 <template>
   <component
-    :is="width > 650 ? VDialog : VBottomSheet"
-    :max-width="width > 650 ? '800' : '650'"
+    :is="width > MOBILE_VERSION_WIDTH ? VDialog : VBottomSheet"
+    :max-width="width > MOBILE_VERSION_WIDTH ? 800 : MOBILE_VERSION_WIDTH"
     v-model="dialog"
     :persistent="loading"
   >

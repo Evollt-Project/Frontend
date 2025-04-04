@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useWindowSize } from "@vueuse/core";
-import { VDialog, VBottomSheet } from "vuetify/components";
+import { VBottomSheet, VDialog } from "vuetify/components";
+import { MOBILE_VERSION_WIDTH } from "~/consts/config";
 
 const props = defineProps<{
   dialog: boolean;
@@ -25,8 +26,8 @@ watch(
 
 <template>
   <component
-    :is="width > 650 ? VDialog : VBottomSheet"
-    :max-width="width > 650 ? '500' : '650'"
+    :is="width > MOBILE_VERSION_WIDTH ? VDialog : VBottomSheet"
+    :max-width="width > MOBILE_VERSION_WIDTH ? 500 : MOBILE_VERSION_WIDTH"
     v-model="dialog"
     :persistent="loading"
   >
@@ -48,20 +49,20 @@ watch(
             @click="dialog = false"
           ></v-btn>
         </v-card-title>
-        <v-card-text class="dark:text-white"
-          ><slot name="content"></slot
-        ></v-card-text>
+        <v-card-text class="dark:text-white">
+          <slot name="content"></slot>
+        </v-card-text>
         <v-card-actions>
           <MyButton :disabled="loading" @click="dialog = false"
-            >Отменить</MyButton
-          >
+            >Отменить
+          </MyButton>
           <MyButton
             color="success"
             :disabled="loading"
             :loading="loading"
             @click="emits('action')"
-            >Подтвердить</MyButton
-          >
+            >Подтвердить
+          </MyButton>
         </v-card-actions>
       </v-card>
     </template>

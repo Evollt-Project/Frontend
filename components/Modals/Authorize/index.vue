@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { useWindowSize } from "@vueuse/core";
-import { VDialog, VBottomSheet } from "vuetify/components";
+import { VBottomSheet, VDialog } from "vuetify/components";
 import type { TabType } from "~/types/TabType";
+import { MOBILE_VERSION_WIDTH } from "~/consts/config";
 
 const props = defineProps<{
   dialog: boolean;
@@ -35,8 +36,8 @@ watch(
 
 <template>
   <component
-    :is="width > 650 ? VDialog : VBottomSheet"
-    :max-width="width > 650 ? '500' : '650'"
+    :is="width > MOBILE_VERSION_WIDTH ? VDialog : VBottomSheet"
+    :max-width="width > MOBILE_VERSION_WIDTH ? 500 : MOBILE_VERSION_WIDTH"
     v-model="dialog"
     :persistent="loading"
   >

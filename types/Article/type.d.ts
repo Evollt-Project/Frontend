@@ -13,7 +13,6 @@ export interface IArticlePayloadCreate extends IArticlePayloadBase {
 export interface IArticleResponseCreate extends IArticle {}
 
 export interface IArticlePayloadEdit extends IArticlePayloadBase {
-  id: ArticleId;
   title?: string;
   avatar?: string;
   short_content?: string; // короткое описание

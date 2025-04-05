@@ -1,12 +1,13 @@
 <script lang="ts" setup>
-import { Anchor } from "lucide-vue-next";
 import type { ComponentPublicInstance } from "vue";
 
 const props = defineProps<{
   activator?: Element | "parent" | (string & {}) | ComponentPublicInstance;
   maxWidth?: string | number;
-  location?: typeof Anchor;
+  location?: TooltipLocationType;
 }>();
+
+type TooltipLocationType = "left" | "top" | "bottom" | "right";
 
 const DEFAULT_TOOLTIP_VALUE = {
   activator: "parent",
@@ -22,7 +23,8 @@ const tooltipProps = computed(() => ({
 </script>
 
 <template>
-  <v-tooltip v-bind="tooltipProps">
+  <!-- NOTE: Этот компонент не понимает, что есть props "opwn-on-click", поэтому и возникает ошибка. Не надо пробовать ее исправить! -->
+  <v-tooltip v-bind="tooltipProps" open-on-click>
     <slot />
   </v-tooltip>
 </template>

@@ -17,6 +17,36 @@ export const useFormatAmount = (amount: number) => {
   });
 };
 
+export const useFormatToFormData = (data: object): FormData => {
+  const formData = new FormData();
+
+  const appendFormData = (value: any, key: string) => {
+    if (value === null || value === undefined) {
+      return;
+    }
+
+    if (value instanceof File) {
+      formData.append(key, value);
+    } else if (Array.isArray(value)) {
+      value.forEach((element, index) => {
+        appendFormData(element, `${key}[${index}]`);
+      });
+    } else if (typeof value === "object" && !(value instanceof Date)) {
+      Object.entries(value).forEach(([subKey, subValue]) => {
+        appendFormData(subValue, `${key}[${subKey}]`);
+      });
+    } else {
+      formData.append(key, value.toString());
+    }
+  };
+
+  Object.entries(data).forEach(([key, value]) => {
+    appendFormData(value, key);
+  });
+
+  return formData;
+};
+
 export const useNoun = (
   number: number,
   one: string,

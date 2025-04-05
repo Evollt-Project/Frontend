@@ -36,16 +36,20 @@ const createCourse = () => {
             variant="outlined"
             density="compact"
           >
-            <template #details> {{ course.title.length }}/64 </template>
+            <template #details> {{ course.title.length }}/64</template>
           </v-text-field>
-          <MyButton class="text-lg h-full" type="submit" @click="createCourse">
+          <MyButton
+            class="text-lg h-full w-full sm:w-auto"
+            type="submit"
+            @click="createCourse"
+          >
             Создать курс
           </MyButton>
         </v-form>
         <div class="mt-4">
           Начните работу над черновиком курса, перед публикацией можно будет
-          <NuxtLink class="underline">сделать курс платным</NuxtLink> или
-          оставить бесплатным.
+          <NuxtLink class="underline">сделать курс платным</NuxtLink>
+          или оставить бесплатным.
         </div>
       </div>
       <div class="courses-create__right sm:min-w-80 grid gap-5">

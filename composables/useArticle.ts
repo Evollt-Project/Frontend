@@ -1,4 +1,5 @@
 import type {
+  ArticleId,
   IArticlePayloadCreate,
   IArticlePayloadEdit,
   IArticlePayloadGet,
@@ -56,14 +57,14 @@ export class Article {
     });
   }
 
-  static async edit({ id, ...payload }: IArticlePayloadEdit) {
+  static async edit(id: ArticleId, payload: IArticlePayloadEdit) {
+    const formData = useFormatToFormData(payload); // генерируем formData из payload
+    formData.append("_method", "PUT"); // добавляем метод
+
     return useRequest<IArticleResponseEdit>({
       url: this.BASE_URL + "/" + id,
       method: "POST",
-      body: {
-        _method: "PUT",
-        ...payload,
-      },
+      body: formData,
     });
   }
 }

@@ -8,6 +8,9 @@ export class Rule {
 
   public static required = (value: string) =>
     !!value || "Это поле обязательно для заполнения";
+  public static phone = (value: string) =>
+    (!!value && value.length === 18) ||
+    "Поле с номером телефона должно содержать 11 цифр";
   public static maxLength = (value: string, length: number) =>
     (value && value.length <= length) ||
     `Максимальное значение поля не должно превышать ${length} ${useNoun(

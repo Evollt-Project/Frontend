@@ -1,6 +1,14 @@
 import type { ILogin, IRegister } from "~/types/Auth";
 import type { IEnum } from "~/types/IEnum";
 import type { ISkill, IUser } from "~/types/IUser";
+import type {
+  ICheckCodePayload,
+  ICheckCodeResponse,
+  ICheckEmailExistsPayload,
+  ICheckEmailExistsResponse,
+  ISendCodePayload,
+  ISendCodeResponse,
+} from "~/types/User/type";
 
 export class User {
   static readonly DEBOUNCE_DELAY = 800;
@@ -8,9 +16,11 @@ export class User {
   static readonly TEACHER = 3;
   static readonly MODERATOR = 7;
   static readonly ADMIN = 15;
+
   static get store() {
     return useAuthStore();
   }
+
   static get router() {
     return useRouter();
   }
@@ -98,21 +108,55 @@ export class User {
       body: params,
     })
       .then((response) => {
-        this.store.user = response.data;
-        if (response.data.token) {
-          localStorage.setItem("token", response.data.token);
-
-          this.router.push({
-            name: "profile",
-          });
-        }
-
+        // this.store.user = response.data;
+        // if (response.data.token) {
+        //   localStorage.setItem("token", response.data.token);
+        //
+        //   this.router.push({
+        //     name: "profile",
+        //   });
+        // }
+        //
+        // return response.data;
         return response.data;
       })
       .catch((response) => {
         useErrorNotification(response.response.data.errors);
         return response.response.data;
       });
+  }
+
+  static async sendCode(payload: ISendCodePayload) {
+    return await useRequest<ISendCodeResponse>({
+      url: "api/v1/auth/step/code",
+      method: "POST",
+      body: payload,
+    }).catch((response) => {
+      useErrorNotification(response.response.data.errors);
+      return response.response.data;
+    });
+  }
+
+  static async checkCode(payload: ICheckCodePayload) {
+    return await useRequest<ICheckCodeResponse>({
+      url: "api/v1/auth/step/code-check",
+      method: "GET",
+      params: payload,
+    }).catch((response) => {
+      useErrorNotification(response.response.data.errors);
+      return response.response.data;
+    });
+  }
+
+  static async checkEmailExists(payload: ICheckEmailExistsPayload) {
+    return await useRequest<ICheckEmailExistsResponse>({
+      url: "api/v1/auth/step/email-check-exists",
+      method: "GET",
+      params: payload,
+    }).catch((response) => {
+      useErrorNotification(response.response.data.errors);
+      return response.response.data;
+    });
   }
 
   static async logout() {
@@ -142,6 +186,7 @@ export class User {
         return response.response.data;
       });
   }
+
   static async skills() {
     return await useRequest<ISkill[]>({
       url: "api/v1/user/skills",

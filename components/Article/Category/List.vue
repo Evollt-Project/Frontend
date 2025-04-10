@@ -23,6 +23,7 @@ const chunkArticles = computed(() => {
       <h2 class="text-3xl font-bold">{{ title }}</h2>
       <v-icon icon="mdi-arrow-down" size="35"></v-icon>
     </div>
+
     <div class="mt-5">
       <v-tabs
         v-model="tab"
@@ -66,5 +67,3 @@ const chunkArticles = computed(() => {
     </div>
   </div>
 </template>
-
-<style scoped lang="scss"></style>

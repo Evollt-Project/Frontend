@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Swiper } from "swiper/vue";
-import { Navigation, FreeMode } from "swiper/modules";
+import { FreeMode, Navigation } from "swiper/modules";
 import "swiper/scss";
 import "swiper/css/navigation";
 import "swiper/css/free-mode";
@@ -11,7 +11,8 @@ const modules = ref([Navigation, FreeMode]);
 
 <template>
   <div class="max-w-[1336px]">
-    <Swiper
+    <component
+      :is="Swiper"
       :slidesPerView="1"
       :free-mode="true"
       :spaceBetween="30"
@@ -88,6 +89,6 @@ const modules = ref([Navigation, FreeMode]);
           </svg>
         </div>
       </div>
-    </Swiper>
+    </component>
   </div>
 </template>

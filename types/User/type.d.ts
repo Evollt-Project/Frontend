@@ -21,3 +21,15 @@ export interface ICheckEmailExistsPayload {
 export interface ICheckEmailExistsResponse {
   exists: boolean;
 }
+
+export interface IApproveEmailPayload {
+  id: number;
+  hash: string;
+  expires: string;
+  signature: string;
+}
+
+export interface IApproveEmailResponse {
+  message: string;
+  token: string;
+}

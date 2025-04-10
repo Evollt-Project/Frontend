@@ -2,6 +2,8 @@ import type { ILogin, IRegister } from "~/types/Auth";
 import type { IEnum } from "~/types/IEnum";
 import type { ISkill, IUser } from "~/types/IUser";
 import type {
+  IApproveEmailPayload,
+  IApproveEmailResponse,
   ICheckCodePayload,
   ICheckCodeResponse,
   ICheckEmailExistsPayload,
@@ -46,7 +48,7 @@ export class User {
   }
 
   static async getEnums() {
-    return useRequest<IEnum>({
+    return await useRequest<IEnum>({
       url: "api/v1/enums",
     }).then((response) => {
       this.store.enums = response.data;
@@ -109,13 +111,7 @@ export class User {
     })
       .then((response) => {
         // this.store.user = response.data;
-        // if (response.data.token) {
-        //   localStorage.setItem("token", response.data.token);
-        //
-        //   this.router.push({
-        //     name: "profile",
-        //   });
-        // }
+
         //
         // return response.data;
         return response.data;
@@ -153,6 +149,24 @@ export class User {
       url: "api/v1/auth/step/email-check-exists",
       method: "GET",
       params: payload,
+    }).catch((response) => {
+      useErrorNotification(response.response.data.errors);
+      return response.response.data;
+    });
+  }
+
+  static async approveEmail({
+    id,
+    hash,
+    expires,
+    signature,
+  }: IApproveEmailPayload) {
+    return await useRequest<IApproveEmailResponse>({
+      url: `api/v1/auth/approve/email/${id}/${hash}`,
+      params: {
+        expires,
+        signature,
+      },
     }).catch((response) => {
       useErrorNotification(response.response.data.errors);
       return response.response.data;

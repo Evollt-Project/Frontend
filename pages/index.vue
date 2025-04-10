@@ -10,12 +10,45 @@ useHead({
   title: `Главная`,
 });
 
-const onlineCourses: Ref<IArticleCategory[] | null> = ref(
-  await Article.online(),
+const { data: onlineCourses } = useAsyncData(
+  "online-courses",
+  async () => {
+    return await $fetch<IArticleCategory[]>("/apijs/request", {
+      params: {
+        url: "api/v1/articles/online",
+      },
+    });
+  },
+  {
+    default: () => [],
+  },
 );
-const bigCourses: Ref<IArticleCategory[] | null> = ref(await Article.big());
 
-const businessCatalog: Ref<ICatalog> = ref(await Catalog.get(3));
+const { data: bigCourses } = useAsyncData(
+  "big-courses",
+  async () => {
+    return await $fetch<IArticleCategory[]>("/apijs/request", {
+      params: {
+        url: "api/v1/articles/big",
+      },
+    });
+  },
+  {
+    default: () => [],
+  },
+);
+
+const { data: businessCatalog } = useAsyncData("business-catalog", async () => {
+  const response = await $fetch<ICatalog>("/apijs/request", {
+    params: {
+      url: "api/v1/catalog/3",
+    },
+  });
+
+  response.categories = response.categories.slice(0, 4);
+
+  return response;
+});
 </script>
 
 <template>
@@ -25,19 +58,19 @@ const businessCatalog: Ref<ICatalog> = ref(await Catalog.get(3));
 
       <ArticleCategoryList
         title="Онлайн-курсы"
-        v-if="onlineCourses"
         :article-categories="onlineCourses"
       />
 
       <ArticleCategoryList
+        v-if="bigCourses.length"
         title="Большие курсы"
-        v-if="bigCourses"
         :article-categories="bigCourses"
       />
 
       <CategoryList
+        v-if="businessCatalog"
         :title="businessCatalog.title"
-        :categories="businessCatalog.categories.slice(0, 4)"
+        :categories="businessCatalog.categories"
       />
     </div>
   </div>

@@ -15,18 +15,14 @@ export class Article {
   static readonly BASE_URL = "api/v1/article";
 
   static async online() {
-    return useRequest<IArticleCategory[]>({
+    return await useRequest<IArticleCategory[]>({
       url: "api/v1/articles/online",
-    }).then((response) => {
-      return response.data;
     });
   }
 
-  static async big() {
+  static big() {
     return useRequest<IArticleCategory[]>({
       url: "api/v1/articles/big",
-    }).then((response) => {
-      return response.data;
     });
   }
 

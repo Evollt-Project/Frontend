@@ -50,6 +50,7 @@ export default defineNuxtConfig({
     { src: "~/plugins/vue3-toastify.client.ts", mode: "client" },
     { src: "~/plugins/vue-markdown-preview.ts", mode: "client" },
     { src: "~/plugins/vuedraggable.ts", mode: "client" },
+    { src: "~/plugins/bitrix-chat.client.ts", mode: "client" },
   ],
   vite: {
     css: {

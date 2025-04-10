@@ -1,19 +1,7 @@
-<script setup lang="ts"></script>
-
 <template>
-  <div
-    v-if="Loader.store.loading"
-    class="h-screen flex justify-center items-center"
-  >
-    <div class="w-2/4">
-      <v-progress-linear height="8" rounded indeterminate></v-progress-linear>
-    </div>
-  </div>
-  <div v-else>
+  <div>
     <CourseSidebar>
       <slot></slot>
     </CourseSidebar>
   </div>
 </template>
-
-<style scoped lang="scss"></style>

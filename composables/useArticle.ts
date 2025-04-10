@@ -6,23 +6,21 @@ import type {
   IArticleResponseCreate,
   IArticleResponseEdit,
   IArticleResponseGet,
+  ITeachingCoursePayload,
+  ITeachingCourseResponse,
 } from "~/types/Article/type";
 import type { IArticle } from "~/types/Article/IArticle";
-import type { IArticleCategory } from "~/types/IArticleCategory";
 import type { IPagination } from "~/types/Base/IPagination";
 
 export class Article {
   static readonly BASE_URL = "api/v1/article";
 
-  static async online() {
-    return await useRequest<IArticleCategory[]>({
-      url: "api/v1/articles/online",
-    });
-  }
-
-  static big() {
-    return useRequest<IArticleCategory[]>({
-      url: "api/v1/articles/big",
+  static async teaching(payload: ITeachingCoursePayload) {
+    return await useRequest<ITeachingCourseResponse>({
+      url: "api/v1/articles/teaching",
+      params: payload,
+    }).then((response) => {
+      return response.data;
     });
   }
 

@@ -1,16 +1,26 @@
 import type { IArticle } from "./IArticle";
+import type { IPagination } from "~/types/Base/IPagination";
 
 type ArticleId = number;
 
-export interface IArticlePayloadBase {}
+export interface IArticlePayloadBase {
+  search?: string;
+}
 
-export interface IArticleResponseBase {}
+export interface IArticleResponseBase extends IArticle {}
 
 export interface IArticlePayloadCreate extends IArticlePayloadBase {
   title: string;
 }
 
-export interface IArticleResponseCreate extends IArticle {}
+export interface ITeachingCoursePayload extends IArticlePayloadBase {
+  page: number;
+}
+
+export interface ITeachingCourseResponse
+  extends IPagination<IArticleResponseBase> {}
+
+export interface IArticleResponseCreate extends IArticleResponseBase {}
 
 export interface IArticlePayloadEdit extends IArticlePayloadBase {
   title?: string;
@@ -28,10 +38,10 @@ export interface IArticlePayloadEdit extends IArticlePayloadBase {
   teachers_id?: number[];
 }
 
-export interface IArticleResponseEdit extends IArticle {}
+export interface IArticleResponseEdit extends IArticleResponseBase {}
 
 export interface IArticlePayloadGet extends IArticlePayloadBase {
   id: ArticleId;
 }
 
-export interface IArticleResponseGet extends IArticle {}
+export interface IArticleResponseGet extends IArticleResponseBase {}

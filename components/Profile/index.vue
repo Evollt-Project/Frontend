@@ -23,7 +23,7 @@ watch(
 );
 
 const canShow = computed(() => {
-  if (route.params?.id) {
+  if (route.params["id"]) {
     return false;
   }
   if (User.store.user) {
@@ -85,7 +85,7 @@ const canShow = computed(() => {
           <ProfileTagList :items="user.skills" />
         </div>
         <div class="profile-content__description">
-          {{ user.description ?? "" }}
+          <MyMdPreview :text="user.description" />
         </div>
       </div>
     </div>

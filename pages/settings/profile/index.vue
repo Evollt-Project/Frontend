@@ -14,6 +14,7 @@ const gender = ref([
   { id: 1, title: "Мужской" },
   { id: 2, title: "Женский" },
 ]);
+const isFormValid = ref(false);
 const data = ref({
   first_name: User.store.user?.first_name ?? "",
   surname: User.store.user?.surname ?? "",
@@ -29,7 +30,6 @@ const data = ref({
   avatar: User.store.user?.avatar ?? ("" as string | File),
 });
 const previewImage: Ref<string | null> = ref(null);
-const form = ref(null);
 
 onMounted(async () => {
   await User.skills().then((response) => {
@@ -37,41 +37,28 @@ onMounted(async () => {
   });
 });
 const saveProfile = async () => {
-  if (form.value) {
-    // @ts-ignore
-    const { valid } = await form.value.validate();
-
-    if (valid) {
-      loading.value = true;
-      const formData = new FormData();
-      formData.append("_method", "PUT");
-      Object.keys(data.value).forEach((key) => {
-        const typedKey = key as keyof typeof data.value;
-        let value = data.value[typedKey];
-        if (typeof value === "boolean") {
-          value = value ? 1 : 0;
-        } else if (value instanceof Date) {
-          value = DateTime.fromJSDate(value).toFormat("yyyy-MM-dd");
-        }
-        if (Array.isArray(value)) {
-          formData.append(key, JSON.stringify(value));
-        } else {
-          formData.append(key, value);
-        }
-      });
-      await User.update(formData).then(() => {
-        toast.success("Отредактировано");
-      });
-      loading.value = false;
+  loading.value = true;
+  const formData = new FormData();
+  formData.append("_method", "PUT");
+  Object.keys(data.value).forEach((key) => {
+    const typedKey = key as keyof typeof data.value;
+    let value = data.value[typedKey];
+    if (typeof value === "boolean") {
+      value = value ? 1 : 0;
+    } else if (value instanceof Date) {
+      value = DateTime.fromJSDate(value).toFormat("yyyy-MM-dd");
     }
-  }
-};
-const validate = () => {
-  if (loading.value) {
-    return true;
-  }
-
-  return false;
+    if (Array.isArray(value)) {
+      formData.append(key, JSON.stringify(value));
+    } else {
+      // @ts-ignore
+      formData.append(key, value);
+    }
+  });
+  await User.update(formData).then(() => {
+    toast.success("Отредактировано");
+  });
+  loading.value = false;
 };
 
 const fileInput: Ref<HTMLInputElement | null> = ref(null);
@@ -95,7 +82,12 @@ const handleFileChange = (event: Event) => {
   <div class="settings sidebar-content" v-if="User.store.user">
     <h1 class="text-4xl font-bold mb-4">Редактирование профиля</h1>
     <div>
-      <v-form fast-fail ref="form" class="mt-4 grid gap-5" @submit.prevent>
+      <v-form
+        v-model="isFormValid"
+        fast-fail
+        class="mt-4 grid gap-5"
+        @submit.prevent="saveProfile"
+      >
         <div class="grid grid-cols-2 gap-5">
           <div class="flex items-center gap-5">
             <v-avatar size="100" v-if="previewImage" :image="previewImage" />
@@ -128,9 +120,9 @@ const handleFileChange = (event: Event) => {
           </div>
           <div>
             <v-text-field
-              :rules="Rule.getRequired()"
-              :disabled="loading"
               v-model="data.first_name"
+              :disabled="loading"
+              :rules="Rule.getRequired()"
               rounded="lg"
               label="Имя"
               prepend-inner-icon="mdi-account-circle-outline"
@@ -138,12 +130,13 @@ const handleFileChange = (event: Event) => {
               density="comfortable"
             ></v-text-field>
             <v-text-field
-              :disabled="loading"
               v-model="data.surname"
+              :disabled="loading"
+              :rules="Rule.getRequired()"
               rounded="lg"
               label="Фамилия"
               prepend-inner-icon="mdi-account-circle-outline"
-              hide-details
+              hide-details="auto"
               variant="outlined"
               density="comfortable"
             ></v-text-field>
@@ -151,12 +144,13 @@ const handleFileChange = (event: Event) => {
         </div>
         <div class="grid grid-cols-2 gap-5">
           <v-text-field
-            :disabled="loading"
             v-model="data.job"
+            :disabled="loading"
+            :rules="Rule.getRequired()"
             rounded="lg"
             label="Должность"
             prepend-inner-icon="mdi-shopping-outline"
-            hide-details
+            hide-details="auto"
             variant="outlined"
             density="comfortable"
           ></v-text-field>
@@ -164,6 +158,7 @@ const handleFileChange = (event: Event) => {
             v-model="data.gender"
             :items="gender"
             :disabled="loading"
+            :rules="Rule.getRequired()"
             rounded="lg"
             item-title="title"
             item-value="id"
@@ -171,7 +166,7 @@ const handleFileChange = (event: Event) => {
             :prepend-inner-icon="
               data.gender != 2 ? 'mdi-gender-male' : 'mdi-gender-female'
             "
-            hide-details
+            hide-details="auto"
             variant="outlined"
             density="comfortable"
           ></v-select>
@@ -183,7 +178,7 @@ const handleFileChange = (event: Event) => {
             rounded="lg"
             item-title="title"
             item-value="id"
-            hide-details
+            hide-details="auto"
             label="Умения"
             multiple
             :disabled="loading"
@@ -191,7 +186,7 @@ const handleFileChange = (event: Event) => {
             variant="outlined"
             density="comfortable"
           >
-            <template v-slot:selection="{ item, index }">
+            <template v-slot:selection="{ item }">
               <v-chip>
                 <span>{{ item.title }}</span>
               </v-chip>
@@ -208,7 +203,7 @@ const handleFileChange = (event: Event) => {
             variant="outlined"
             density="comfortable"
             first-day-of-week="1"
-            hide-details
+            hide-details="auto"
             :value="
               data.date_of_birth
                 ? DateTime.fromJSDate(data.date_of_birth).toFormat('dd.MM.yyyy')
@@ -217,20 +212,14 @@ const handleFileChange = (event: Event) => {
             rounded="lg"
           ></v-date-input>
         </div>
-        <v-textarea
-          :disabled="loading"
-          v-model="data.description"
-          rounded="lg"
-          label="О себе"
-          prepend-inner-icon="mdi-image-text"
-          hide-details
-          variant="outlined"
-          no-resize
-          density="comfortable"
-        ></v-textarea>
+        <MyMdEditor
+          :text="data.description"
+          :max-length="500"
+          @update:text="data.description = $event"
+        />
         <v-checkbox
           v-model="data.privacy"
-          hide-details
+          hide-details="auto"
           label="Сделать профиль приватным"
         ></v-checkbox>
 
@@ -238,8 +227,7 @@ const handleFileChange = (event: Event) => {
           size="large"
           type="submit"
           color="success"
-          @click="saveProfile"
-          :disabled="validate()"
+          :disabled="!isFormValid"
           :loading="loading"
           block
         >

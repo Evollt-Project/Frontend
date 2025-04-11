@@ -1,32 +1,17 @@
 <script setup lang="ts">
 import "@vavt/cm-extension/dist/previewTheme/arknights.css";
+import { MdEditor } from "md-editor-v3";
 import "md-editor-v3/lib/style.css";
-import { MdEditor, type Themes } from "md-editor-v3";
-import type { Reactive } from "vue";
 
 const props = defineProps<{
   text?: string;
   maxLength?: number;
 }>();
 const emits = defineEmits(["update:text"]);
-
-type MdEditorConfig = {
-  previewTheme: string;
-  codeTheme: string;
-  language: string;
-  theme: Themes;
-  maxLength?: number;
-};
+const { mdEditorConfig } = useConfigStore();
 
 const text = ref(props.text ?? "");
 const isDark = useDark();
-const mdEditorConfig: Reactive<MdEditorConfig> = reactive({
-  theme: isDark ? "dark" : "light",
-  previewTheme: "arknights",
-  codeTheme: "atom",
-  language: "ru",
-  maxLength: props.maxLength,
-});
 
 watch(text, (value) => emits("update:text", value));
 watch(
@@ -35,9 +20,13 @@ watch(
     text.value = value as string;
   },
 );
-watch(isDark, (value) => {
-  mdEditorConfig.theme = value ? "dark" : "light";
-});
+watch(
+  isDark,
+  (value) => {
+    mdEditorConfig.theme = value ? "dark" : "light";
+  },
+  { immediate: true },
+);
 </script>
 
 <template>

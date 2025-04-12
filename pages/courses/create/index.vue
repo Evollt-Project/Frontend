@@ -26,7 +26,7 @@ const createCourse = () => {
     <h1 class="text-4xl font-bold mb-4">Создание нового курса</h1>
     <div class="courses-create__container md:flex grid gap-5">
       <div class="courses-create__left w-full">
-        <v-form fast-fail v-model="isFormValid" @submit.prevent>
+        <v-form fast-fail v-model="isFormValid" @submit.prevent="createCourse">
           <v-text-field
             v-model="course.title"
             class="mb-6"
@@ -41,7 +41,7 @@ const createCourse = () => {
           <MyButton
             class="text-lg h-full w-full sm:w-auto"
             type="submit"
-            @click="createCourse"
+            :disabled="!isFormValid"
           >
             Создать курс
           </MyButton>

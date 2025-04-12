@@ -1,24 +1,17 @@
 <script setup lang="ts">
 import { SwiperSlide } from "swiper/vue";
 import type { IArticleCategory } from "~/types/IArticleCategory";
-import lodash from "lodash";
 
 const props = defineProps<{
   title: string;
   articleCategories: IArticleCategory[];
 }>();
 
-const tab = ref(props.articleCategories[0].tab ?? null);
-
-const chunkArticles = computed(() => {
-  for (const articleCategory of props.articleCategories) {
-    return lodash.chunk(articleCategory.articles, 6);
-  }
-});
+const tab = ref(props.articleCategories[0]!.tab ?? null);
 </script>
 
 <template>
-  <div>
+  <div class="box-border w-full overflow-hidden">
     <div class="flex gap-3 items-start">
       <h2 class="text-3xl font-bold">{{ title }}</h2>
       <v-icon icon="mdi-arrow-down" size="35"></v-icon>
@@ -41,7 +34,7 @@ const chunkArticles = computed(() => {
         </v-tab>
       </v-tabs>
 
-      <v-window v-model="tab">
+      <v-window v-model="tab" :touch="false">
         <v-window-item
           v-for="articleCategory in articleCategories"
           :value="articleCategory.tab"
@@ -49,16 +42,11 @@ const chunkArticles = computed(() => {
           <ArticleSwiper>
             <template #slides>
               <SwiperSlide
-                v-for="(group, groupIndex) in chunkArticles"
-                :key="groupIndex"
+                v-for="article in articleCategory.articles"
+                :key="article.id"
+                class="max-w-[400px]"
               >
-                <div class="grid gap-5 grid-cols-3 grid-rows-2">
-                  <ArticleCard
-                    v-for="(article, index) in group"
-                    :key="index"
-                    :article="article"
-                  />
-                </div>
+                <ArticleBigCard :article="article" />
               </SwiperSlide>
             </template>
           </ArticleSwiper>

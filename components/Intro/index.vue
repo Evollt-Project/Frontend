@@ -63,8 +63,9 @@ const validate = () => {
               hide-details
               :disabled="validate()"
               :loading="loading"
-              >Искать</MyButton
             >
+              Искать
+            </MyButton>
           </form>
         </div>
       </div>

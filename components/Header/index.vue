@@ -15,6 +15,7 @@ const openAuthModal = (currentTab: TabType) => {
 };
 const router = useRouter();
 const config = useRuntimeConfig();
+const catalogModal = ref(false);
 </script>
 
 <template>
@@ -29,12 +30,12 @@ const config = useRuntimeConfig();
         <div class="header__logo">
           <IconsLogo />
         </div>
-        <div class="header__title text-3xl">
+        <div class="header__title text-xl md:text-3xl">
           {{ config.public.app_name }}
         </div>
       </NuxtLink>
-      <div class="header__center flex gap-5 items-center">
-        <HeaderMenu />
+      <div class="header__center hidden md:flex gap-5 items-center">
+        <HeaderMenu @update:catalog-modal="catalogModal = $event" />
       </div>
       <div class="header__right flex gap-5 items-center">
         <ColorScheme />
@@ -69,6 +70,15 @@ const config = useRuntimeConfig();
                   </DropdownMenuShortcut>
                 </DropdownMenuItem>
                 <DropdownMenuItem
+                  class="cursor-pointer md:hidden"
+                  @click="catalogModal = true"
+                >
+                  <span>Каталог</span>
+                  <DropdownMenuShortcut>
+                    <v-icon icon="mdi-shape-outline"></v-icon>
+                  </DropdownMenuShortcut>
+                </DropdownMenuItem>
+                <DropdownMenuItem
                   class="cursor-pointer"
                   @click="router.push({ name: 'settings' })"
                 >
@@ -83,8 +93,16 @@ const config = useRuntimeConfig();
                     <v-icon icon="mdi-newspaper-variant-outline"></v-icon>
                   </DropdownMenuShortcut>
                 </DropdownMenuItem>
+                <DropdownMenuItem
+                  class="cursor-pointer md:hidden"
+                  @click="router.push({ name: 'blog' })"
+                >
+                  <span>Блог</span>
+                  <DropdownMenuShortcut>
+                    <v-icon icon="mdi-post-outline"></v-icon>
+                  </DropdownMenuShortcut>
+                </DropdownMenuItem>
               </DropdownMenuGroup>
-
               <DropdownMenuSeparator />
               <DropdownMenuItem @click="User.logout()">
                 <span>Выйти</span>
@@ -115,6 +133,7 @@ const config = useRuntimeConfig();
       :dialog="newsListModal"
       @dialog="(e: boolean) => (newsListModal = e)"
     />
+    <ModalsCatalog :dialog="catalogModal" @dialog="(e) => (catalogModal = e)" />
   </header>
 </template>
 

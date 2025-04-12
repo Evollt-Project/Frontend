@@ -2,6 +2,7 @@
 export default defineNuxtConfig({
   app: {
     pageTransition: { name: "page", mode: "out-in" },
+    layoutTransition: { name: "page", mode: "out-in" },
     head: {
       title: process.env["APP_NAME"], // Заголовок по умолчанию
       titleTemplate: `%s | ${process.env["APP_NAME"]}`, // Шаблон для всех страниц

@@ -111,7 +111,7 @@ const createCertificateLayout = async () => {
         :rules="Rule.getRequired()"
         variant="outlined"
         density="comfortable"
-      ></v-text-field>
+      />
       <div class="grid gap-5 grid-cols-2">
         <div
           class="flex items-center gap-4"
@@ -127,7 +127,7 @@ const createCertificateLayout = async () => {
             :label="getLabelName(position)"
             variant="outlined"
             density="comfortable"
-          ></v-text-field>
+          />
           <CertificateColorPicker
             :color="position.color"
             @color="(e: string) => (position.color = e)"

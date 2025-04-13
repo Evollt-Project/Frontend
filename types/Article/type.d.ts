@@ -1,5 +1,5 @@
-import type { IArticle } from "./IArticle";
 import type { IPagination } from "~/types/Base/IPagination";
+import type { IArticle } from "./IArticle";
 
 type ArticleId = number;
 
@@ -45,3 +45,16 @@ export interface IArticlePayloadGet extends IArticlePayloadBase {
 }
 
 export interface IArticleResponseGet extends IArticleResponseBase {}
+
+export interface IArticlePayloadSearch extends IArticlePayloadBase {
+  search: string;
+  certificates?: boolean;
+  discount?: boolean;
+  free?: boolean;
+  min_price?: number;
+  max_price?: number;
+  levels: LevelId[];
+  languages: LanguageId[];
+}
+
+export interface IArticleResponseSearch extends IArticleResponseBase {}

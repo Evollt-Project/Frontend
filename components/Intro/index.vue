@@ -1,20 +1,20 @@
 <script setup lang="ts">
+import type { IArticlePayloadSearch } from "~/types/Article/type";
+
 const loading: Ref<boolean> = ref(false);
-const search = ref({
-  field: "",
-  certificates: false,
-  free: false,
+const search: Ref<IArticlePayloadSearch> = ref({
+  search: "",
+  min_price: 0,
+  levels: [],
+  languages: [],
 });
-
 const searchCourses = () => {};
+const isFormValid = ref(false);
+const articleFiltersModal = ref(false);
 
-const validate = () => {
-  if (loading.value) {
-    return true;
-  }
-
-  return false;
-};
+const validate = computed(() => {
+  return loading.value || !isFormValid;
+});
 </script>
 
 <template>
@@ -31,12 +31,13 @@ const validate = () => {
         class="intro-content__bottom min-h-36 dark:bg-neutral-900 bg-neutral-100 rounded-3xl p-8 relative flex items-center shadow-custom"
       >
         <div class="w-full">
-          <form
-            @submit.prevent
+          <v-form
+            v-model="isFormValid"
+            @submit.prevent="searchCourses"
             class="flex justify-between gap-[20px] items-center"
           >
             <v-text-field
-              v-model="search.field"
+              v-model="search.search"
               :disabled="loading"
               hide-details
               rounded="lg"
@@ -45,31 +46,32 @@ const validate = () => {
               variant="outlined"
               density="comfortable"
             ></v-text-field>
-            <v-checkbox
-              v-model="search.certificates"
-              hide-details
-              label="С сертификатами"
-            ></v-checkbox>
-            <v-checkbox
-              v-model="search.free"
-              hide-details
-              label="Бесплатные"
-            ></v-checkbox>
-
+            <MyButton
+              size="large"
+              prepend-icon="mdi-filter-outline"
+              @click="articleFiltersModal = true"
+            >
+              Фильтры
+            </MyButton>
             <MyButton
               size="large"
               type="submit"
-              @click="searchCourses"
-              hide-details
-              :disabled="validate()"
+              :disabled="validate"
               :loading="loading"
+              prepend-icon="mdi-magnify"
             >
               Искать
             </MyButton>
-          </form>
+          </v-form>
         </div>
       </div>
     </div>
+    <ArticleModalsFilters
+      :dialog="articleFiltersModal"
+      :search="search"
+      :loading="loading"
+      @update:dialog="articleFiltersModal = $event"
+    />
   </div>
 </template>
 

@@ -57,6 +57,14 @@ export class Rule {
   public static min = (value: number, min: number) =>
     value >= min || "Значение должно быть не менее " + min;
 
+  static minPrice = (value: string | number, maxPrice: string | number) => {
+    if (!value || !maxPrice) return true;
+    return (
+      Number(value) <= Number(maxPrice) ||
+      "Минимальная цена не может быть больше максимальной"
+    );
+  };
+
   static getPassword() {
     return [this.required, this.password];
   }

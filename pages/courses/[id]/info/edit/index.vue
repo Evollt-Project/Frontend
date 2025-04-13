@@ -454,7 +454,7 @@ const updateArticlePicture = async (dataAvatarObject: IArticlePayloadEdit) => {
                 </MyButton>
                 <ModalsTeacherAdd
                   :dialog="teacherAddModal"
-                  @dialog="teacherAddModal = $event"
+                  @update:dialog="teacherAddModal = $event"
                 />
               </div>
             </div>

@@ -7,7 +7,7 @@ const props = defineProps<{
   dialog: boolean;
   loading?: boolean;
 }>();
-const emits = defineEmits(["dialog"]);
+const emits = defineEmits(["update:dialog"]);
 
 const dialog: Ref<boolean> = ref(props.dialog);
 const { width } = useWindowSize();
@@ -19,7 +19,7 @@ const isAddTeacherFormValid: Ref<boolean> = ref(false);
 const addTeacher = async () => {};
 
 watch(dialog, (value) => {
-  emits("dialog", value);
+  emits("update:dialog", value);
 });
 
 watch(

@@ -6,6 +6,8 @@ services:
       - ./.output:/app/.output
     ports:
       - "${FRONTEND_PORT}:80"
+    expose:
+      - "3000"
     networks:
       - ${DOCKER_NETWORK}
   build:

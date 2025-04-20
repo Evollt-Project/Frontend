@@ -1,0 +1,53 @@
+name: Evollt Frontend DEV
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  deploy:
+    name: Deploy Frontend to Server
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install SSH client
+        run: sudo apt-get install -y openssh-client
+
+      - name: Add SSH key
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key
+          chmod 600 private_key
+          eval $(ssh-agent -s)
+          ssh-add private_key
+
+      - name: Deploy frontend via SSH
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+        run: |
+          ssh -o StrictHostKeyChecking=no -i private_key ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} <<EOF
+          docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+
+          # Клонируем или обновляем репозиторий фронтенда
+          if [ ! -d "/var/www/dev/frontend" ]; then
+            git clone --branch dev git@github.com:Evollt-Project/Frontend.git /var/www/dev/frontend
+          else
+            cd /var/www/dev/frontend
+            git reset --hard
+            git pull origin dev
+          fi
+
+          cd /var/www/dev/frontend
+
+          export COMPOSE_PROJECT_NAME=evollt-frontend-dev
+          export FRONTEND_PORT=3001
+          export DOCKER_NETWORK=evollt-academy-dev_default
+          envsubst < docker-compose.template.yml > docker-compose.yml
+
+          docker compose down
+          docker compose up -d --build
+          EOF

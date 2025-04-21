@@ -43,11 +43,6 @@ jobs:
 
           cd /var/www/dev/frontend
 
-          export COMPOSE_PROJECT_NAME=evollt-frontend-dev
-          export FRONTEND_PORT=3001
-          export DOCKER_NETWORK=evollt-academy-dev_default
-          envsubst < docker-compose.template.yml > docker-compose.yml
-
           docker compose down
           docker compose up -d --build
           EOF

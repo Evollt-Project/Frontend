@@ -6,8 +6,8 @@ services:
       - ./.output:/app/.output
     ports:
       - "${FRONTEND_PORT}:80"
-    expose:
-      - "3000"
+    networks:
+      - ${FRONTEND_NETWORK}
   build:
     build:
       context: .
@@ -16,3 +16,9 @@ services:
       - NODE_ENV=production
     depends_on:
       - nginx
+    networks:
+      - ${FRONTEND_NETWORK}
+networks:
+  evollt:
+    external: true
+    name: ${FRONTEND_NETWORK}

@@ -2,6 +2,7 @@ import type { ICategory } from "../ICategory";
 import type { ISubcategory } from "../ISubcategory";
 import type { IUser } from "../IUser";
 import type { ArticleId } from "./type";
+import type { ITeacher } from "~/types/Teacher/ITeacher";
 
 export interface IArticle {
   id: ArticleId;
@@ -9,7 +10,8 @@ export interface IArticle {
   owner: IUser;
   avatar: string;
   students: IUser[];
-  teachers: IUser[];
+  admins: IUser[];
+  teachers: ITeacher[];
   has_certificate: boolean;
   subcategories: ISubcategory[];
   categories: ICategory[];

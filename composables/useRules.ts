@@ -8,6 +8,9 @@ export class Rule {
 
   public static required = (value: string) =>
     !!value || "Это поле обязательно для заполнения";
+  public static phone = (value: string) =>
+    (!!value && value.length === 18) ||
+    "Поле с номером телефона должно содержать 11 цифр";
   public static maxLength = (value: string, length: number) =>
     (value && value.length <= length) ||
     `Максимальное значение поля не должно превышать ${length} ${useNoun(
@@ -53,6 +56,14 @@ export class Rule {
   };
   public static min = (value: number, min: number) =>
     value >= min || "Значение должно быть не менее " + min;
+
+  static minPrice = (value: string | number, maxPrice: string | number) => {
+    if (!value || !maxPrice) return true;
+    return (
+      Number(value) <= Number(maxPrice) ||
+      "Минимальная цена не может быть больше максимальной"
+    );
+  };
 
   static getPassword() {
     return [this.required, this.password];

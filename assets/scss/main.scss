@@ -153,3 +153,7 @@
 .md-editor-dark {
   @include mdi-editor-css-vars(true);
 }
+
+.v-switch__thumb {
+  background-color: white !important;
+}

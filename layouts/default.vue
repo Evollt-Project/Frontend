@@ -1,15 +1,13 @@
-<script setup lang="ts"></script>
+<script lang="ts" setup>
+onMounted(() => {
+  if (Catalog.store.catalogs.length === 0) {
+    Catalog.getAll();
+  }
+});
+</script>
 
 <template>
-  <div
-    v-if="Loader.store.loading"
-    class="h-screen flex justify-center items-center"
-  >
-    <div class="w-2/4">
-      <v-progress-linear height="8" rounded indeterminate></v-progress-linear>
-    </div>
-  </div>
-  <div v-else>
+  <div>
     <Header />
     <div class="main-content">
       <slot></slot>

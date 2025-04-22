@@ -10,7 +10,7 @@ defineProps<{
     xmlns="http://www.w3.org/2000/svg"
     width="155.000000pt"
     height="161.000000pt"
-    class="w-14 h-14"
+    class="h-10 w-10 md:w-14 md:h-14"
     viewBox="0 0 155.000000 161.000000"
     preserveAspectRatio="xMidYMid meet"
   >

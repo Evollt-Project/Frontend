@@ -5,13 +5,10 @@ onMounted(async () => {
   if (!User.store.user && localStorage.getItem("token")) {
     await User.get();
   }
-  if (Catalog.store.catalogs.length === 0) {
-    Catalog.getAll();
-  }
+
   if (!User.store.enums) {
-    User.getEnums();
+    await User.getEnums();
   }
-  Loader.changeLoading();
 });
 </script>
 

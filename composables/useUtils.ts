@@ -17,6 +17,36 @@ export const useFormatAmount = (amount: number) => {
   });
 };
 
+export const useFormatToFormData = (data: object): FormData => {
+  const formData = new FormData();
+
+  const appendFormData = (value: any, key: string) => {
+    if (value === null || value === undefined) {
+      return;
+    }
+
+    if (value instanceof File) {
+      formData.append(key, value);
+    } else if (Array.isArray(value)) {
+      value.forEach((element, index) => {
+        appendFormData(element, `${key}[${index}]`);
+      });
+    } else if (typeof value === "object" && !(value instanceof Date)) {
+      Object.entries(value).forEach(([subKey, subValue]) => {
+        appendFormData(subValue, `${key}[${subKey}]`);
+      });
+    } else {
+      formData.append(key, value.toString());
+    }
+  };
+
+  Object.entries(data).forEach(([key, value]) => {
+    appendFormData(value, key);
+  });
+
+  return formData;
+};
+
 export const useNoun = (
   number: number,
   one: string,
@@ -60,6 +90,31 @@ export const sanitizeValue = (value: any) => {
   }
   return value || undefined;
 };
+
+export function usePhoneFormat(
+  phone: string,
+  type: "delete" | "restore" = "delete",
+): string {
+  if (type === "delete") {
+    return phone
+      .replace("+", "")
+      .replaceAll(" ", "")
+      .replaceAll("-", "")
+      .replaceAll("(", "")
+      .replaceAll(")", "");
+  }
+  if (type === "restore") {
+    const digits = phone.replace(/\D/g, "");
+
+    if (digits.length === 11 && digits.startsWith("7")) {
+      const formatted = `+7 (${digits.slice(1, 4)}) ${digits.slice(4, 7)} ${digits.slice(7, 9)}-${digits.slice(9, 11)}`;
+      return formatted;
+    } else {
+      return "Неверный формат номера";
+    }
+  }
+  return "Выберите правильный тип";
+}
 
 export const photoUrl = (url: string) => {
   const config = useRuntimeConfig();

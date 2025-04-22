@@ -1,21 +1,24 @@
 <script setup lang="ts">
 import type { IArticle } from "~/types/Article/IArticle";
-import type { IArticlePayloadEdit } from "~/types/Article/type";
+import type { ArticleId, IArticlePayloadEdit } from "~/types/Article/type";
 import { LevelEnum } from "~/types/Level/LevelEnum";
 
 definePageMeta({
   layout: "course-sidebar",
   name: "course-info-edit",
 });
-const previewImage: Ref<string | null> = ref(null);
 const loading = ref(false);
 const loadingCourse = ref(false);
 const route = useRoute();
+const router = useRouter();
+const isCourseEditFormValid: Ref<boolean> = ref(false);
+const articleId: Ref<ArticleId> = ref(0);
 const data: Ref<IArticlePayloadEdit> = ref({
   id: Number(route.params["id"]),
   level_id: 1,
   language_id: 1,
 });
+const teacherAddModal = ref(false);
 const article: Ref<IArticle | null> = ref(null);
 const placeholder = ref({
   short_content:
@@ -75,9 +78,10 @@ const handleFileChange = (event: Event) => {
   const file = target.files?.[0];
 
   if (file) {
-    previewImage.value = URL.createObjectURL(file);
-    // @ts-ignore
-    data.value.avatar = file;
+    updateArticlePicture({
+      // @ts-ignore
+      avatar: file,
+    });
   }
 };
 
@@ -86,8 +90,8 @@ const getArticle = async () => {
   await Article.get({ id: Number(route.params["id"]) }).then((response) => {
     if (!response) return;
 
+    articleId.value = response.data.id;
     data.value = {
-      id: response.data.id,
       title: response.data.title,
       avatar: response.data.avatar,
       level_id: response.data.level.id,
@@ -100,6 +104,7 @@ const getArticle = async () => {
       how_learn_content: response.data.how_learn_content,
       what_give_content: response.data.what_give_content,
       recommended_load: response.data.recommended_load,
+      teachers_id: response.data.teachers.map((item) => item.id),
     };
     article.value = response.data;
     loadingCourse.value = false;
@@ -122,11 +127,21 @@ const levelFillColor = computed(() => {
       return "#5cda48";
   }
 });
+
+const editCourse = async () => {
+  await Article.edit(articleId.value, data.value).then(() => {});
+};
+
+const updateArticlePicture = async (dataAvatarObject: IArticlePayloadEdit) => {
+  await Article.edit(articleId.value, dataAvatarObject).then((response) => {
+    data.value.avatar = response.data.avatar;
+  });
+};
 </script>
 
 <template>
   <div>
-    <div v-if="User.store.user && User.store.enums">
+    <div v-if="User.store.user && User.store.enums && article">
       <div
         v-if="loadingCourse"
         class="flex h-screen-minus-70 items-center justify-center"
@@ -139,12 +154,10 @@ const levelFillColor = computed(() => {
       </div>
       <div v-else class="sidebar-content mb-16">
         <h1 class="text-4xl font-bold mb-5">О курсе</h1>
-        <v-form class="grid gap-5">
+        <v-form v-model="isCourseEditFormValid" class="grid gap-5">
           <label class="flex justify-center">
             <div class="avatar flex">
-              <v-avatar size="144" v-if="previewImage" :image="previewImage" />
               <v-avatar
-                v-else
                 size="144"
                 :image="
                   User.store.userPhotoUrl(data.avatar as string, data.title)
@@ -226,8 +239,8 @@ const levelFillColor = computed(() => {
               messages="Для публикации нужно больше 100 символов"
             >
               <template #details>
-                {{ data.short_content?.length ?? 0 }}/500</template
-              >
+                {{ data.short_content?.length ?? 0 }}/500
+              </template>
             </v-textarea>
           </div>
           <div class="grid md:grid-cols-3 gap-5">
@@ -306,11 +319,11 @@ const levelFillColor = computed(() => {
               density="comfortable"
             >
               <template #label>
-                Перечислите ожидаемые результаты обучения</template
-              >
+                Перечислите ожидаемые результаты обучения
+              </template>
               <template #details>
-                {{ data.what_learn_content?.length ?? 0 }}/500</template
-              >
+                {{ data.what_learn_content?.length ?? 0 }}/500
+              </template>
             </v-textarea>
           </div>
           <div class="grid gap-3">
@@ -349,8 +362,8 @@ const levelFillColor = computed(() => {
               density="comfortable"
             >
               <template #details>
-                {{ data.for_who_content?.length ?? 0 }}/500</template
-              >
+                {{ data.for_who_content?.length ?? 0 }}/500
+              </template>
             </v-textarea>
           </div>
           <div class="grid gap-3">
@@ -404,12 +417,55 @@ const levelFillColor = computed(() => {
               messages="Каждый пункт с новой строки"
             >
               <template #label>
-                Напишите что получат студенты после обучения</template
-              >
+                Напишите что получат студенты после обучения
+              </template>
               <template #details>
-                {{ data.what_give_content?.length ?? 0 }}/500</template
-              >
+                {{ data.what_give_content?.length ?? 0 }}/500
+              </template>
             </v-textarea>
+          </div>
+          <div class="grid gap-3">
+            <div class="flex gap-3 items-center">
+              <label for="short-description" class="font-bold text-xl">
+                Сертификат
+              </label>
+            </div>
+            <!-- TODO: Выбор и сохранение сертификата к курсу -->
+
+            <div v-if="article.teachers" class="grid gap-3">
+              <div class="grid gap-3">
+                <h4 class="font-bold text-xl"> Наши преподаватели </h4>
+                <p>
+                  Показываются на промостранице, но это не дает им прав на
+                  управление курсом. Чтобы выдать права, перейдите в раздел
+                  «Права доступа» настроек курса.
+                </p>
+              </div>
+              <div>
+                <ArticleTeacherItem
+                  v-for="teacher in article.teachers"
+                  :key="teacher.id"
+                  :item="teacher"
+                />
+              </div>
+              <div class="flex gap-3">
+                <MyButton @click="teacherAddModal = true">
+                  Добавить преподавателя
+                </MyButton>
+                <ModalsTeacherAdd
+                  :dialog="teacherAddModal"
+                  @update:dialog="teacherAddModal = $event"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            class="mt-5 flex flex-col-reverse sm:flex-row sm:justify-end gap-4"
+          >
+            <MyButton @click="router.push({ name: 'course-info' })">
+              Отмена
+            </MyButton>
+            <MyButton color="success" @click="editCourse"> Сохранить</MyButton>
           </div>
         </v-form>
       </div>

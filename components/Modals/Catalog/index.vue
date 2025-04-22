@@ -2,6 +2,7 @@
 import { useWindowSize } from "@vueuse/core";
 import { VBottomSheet, VDialog } from "vuetify/components";
 import type { ICatalog } from "~/types/ICatalog";
+import { MOBILE_VERSION_WIDTH } from "~/consts/config";
 
 const props = defineProps<{
   dialog: boolean;
@@ -41,8 +42,8 @@ watch(
 
 <template>
   <component
-    :is="width > 650 ? VDialog : VBottomSheet"
-    :max-width="width > 650 ? '1500' : '650'"
+    :is="width > MOBILE_VERSION_WIDTH ? VDialog : VBottomSheet"
+    :max-width="width > MOBILE_VERSION_WIDTH ? 1500 : MOBILE_VERSION_WIDTH"
     v-model="dialog"
     :persistent="loading"
   >

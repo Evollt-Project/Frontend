@@ -26,7 +26,7 @@ const createCourse = () => {
     <h1 class="text-4xl font-bold mb-4">Создание нового курса</h1>
     <div class="courses-create__container md:flex grid gap-5">
       <div class="courses-create__left w-full">
-        <v-form fast-fail v-model="isFormValid" @submit.prevent>
+        <v-form fast-fail v-model="isFormValid" @submit.prevent="createCourse">
           <v-text-field
             v-model="course.title"
             class="mb-6"
@@ -36,16 +36,20 @@ const createCourse = () => {
             variant="outlined"
             density="compact"
           >
-            <template #details> {{ course.title.length }}/64 </template>
+            <template #details> {{ course.title.length }}/64</template>
           </v-text-field>
-          <MyButton class="text-lg h-full" type="submit" @click="createCourse">
+          <MyButton
+            class="text-lg h-full w-full sm:w-auto"
+            type="submit"
+            :disabled="!isFormValid"
+          >
             Создать курс
           </MyButton>
         </v-form>
         <div class="mt-4">
           Начните работу над черновиком курса, перед публикацией можно будет
-          <NuxtLink class="underline">сделать курс платным</NuxtLink> или
-          оставить бесплатным.
+          <NuxtLink class="underline">сделать курс платным</NuxtLink>
+          или оставить бесплатным.
         </div>
       </div>
       <div class="courses-create__right sm:min-w-80 grid gap-5">

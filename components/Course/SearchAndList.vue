@@ -12,6 +12,7 @@ const observer: Ref<HTMLDivElement | null> = ref(null);
 
 useIntersectionObserver(observer, ([entry]) => {
   if (
+    entry &&
     entry.isIntersecting &&
     props.articles &&
     props.page < props.articles.meta.last_page
@@ -44,6 +45,7 @@ const changeSearchField = useDebounceFn((event: InputEvent) => {
     </v-form>
     <div class="my-[20px]">
       <div>
+        <!-- TODO: Сделать отображение иконки редактирования для курсов с полем is_owner: true -->
         <div class="courses__list">
           <ArticleBigCard
             v-if="articles && articles.data.length > 0"

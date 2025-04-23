@@ -1,24 +1,14 @@
 <script setup lang="ts">
-const props = defineProps({
-  lightImgSrc: {
-    type: String,
-    required: true,
-  },
-  DarkImgSrc: {
-    type: String,
-    required: false,
-  },
-});
-
-const isDark = useDark();
+defineProps<{
+  img: string;
+}>();
 </script>
 
 <template>
   <div class="w-1/3 rounded-xl p-7 gradient">
     <div class="flex flex-col gap-16">
       <div class=" ">
-        <img :src="lightImgSrc" alt="" class="dark:hidden" v-if="">
-        <img :src="DarkImgSrc" alt="" class="hidden dark:block">
+        <img :src="img" alt="" class="dark:hidden" />
       </div>
       <div class="flex flex-col gap-3">
         <div class="font-bold dark:color-white">

@@ -72,6 +72,8 @@ const { data: businessCatalog } = useAsyncData("business-catalog", async () => {
         :title="businessCatalog.title"
         :categories="businessCatalog.categories"
       />
+
+      <AboutCoursesCardList/>
     </div>
   </div>
 </template>

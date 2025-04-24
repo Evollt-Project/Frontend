@@ -7,17 +7,17 @@ const isDark = useDark();
 </script>
 
 <template>
-  <div class="lg:w-1/3 sm:flex-row flex-col rounded-xl p-7" :class="isDark ? 'gradient-dark' : 'gradient-light'">
-    <div class="flex flex-col gap-16">
-      <div class="">
-        <img :src="img" alt="" class="h-[325px] justify-items-center m-auto" />
+  <div class="hover:scale-[1.05] duration-300 hover:-translate-y-1 rounded-xl p-7" :class="isDark ? 'gradient-dark' : 'gradient-light'">
+    <div class="grid gap-16">
+      <div class="flex justify-center">
+        <img :src="img" alt="" class="h-[325px]" />
       </div>
-      <div class="flex flex-col gap-3">
-        <div class="font-extrabold dark:color-white">
-          <slot name="title"></slot>
+      <div class="grid grid-rows-[50px,1fr] gap-3">
+        <div class="font-extrabold">
+          <slot name="title" />
         </div>
         <div class="text-xs font-semibold">
-          <slot name="text"></slot>
+          <slot name="text" />
         </div>
       </div>
     </div>
@@ -32,6 +32,4 @@ const isDark = useDark();
 .gradient-light{
   background: linear-gradient(to top right, #A0A0A0, #F5F5F5, #F5F5F5, #A0A0A0);
 }
-
-
 </style>

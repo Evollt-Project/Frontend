@@ -7,10 +7,10 @@ const isDark = useDark();
 </script>
 
 <template>
-  <div class="w-1/3 rounded-xl p-7" :class="isDark ? 'gradient-dark' : 'gradient-light'">
+  <div class="lg:w-1/3 sm:flex-row flex-col rounded-xl p-7" :class="isDark ? 'gradient-dark' : 'gradient-light'">
     <div class="flex flex-col gap-16">
-      <div class=" ">
-        <img :src="img" alt="" class="h-[325px]" />
+      <div class="">
+        <img :src="img" alt="" class="h-[325px] justify-items-center m-auto" />
       </div>
       <div class="flex flex-col gap-3">
         <div class="font-extrabold dark:color-white">
@@ -26,11 +26,11 @@ const isDark = useDark();
 
 <style scoped lang="scss">
 .gradient-dark {
-  background: linear-gradient(to top right, #343131, #121212, #121212, #353232);
+  background: linear-gradient(to top right, #343131, #171717, #171717, #353232);
 }
 
 .gradient-light{
-  background: linear-gradient(to top right, #A0A0A0, #FFFFFF, #FFFFFF, #A0A0A0);
+  background: linear-gradient(to top right, #A0A0A0, #F5F5F5, #F5F5F5, #A0A0A0);
 }
 
 

@@ -11,7 +11,7 @@ const isDark = useDark();
 </script>
 
 <template>
-  <div class="flex gap-5">
+  <div class="flex gap-5 flex-col md:flex-row">
     <AboutCoursesCardItem
       :img="isDark ? darkCard1 : lightCard1"
     >

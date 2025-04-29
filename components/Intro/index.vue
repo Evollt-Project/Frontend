@@ -47,7 +47,7 @@ const validate = computed(() => {
               density="comfortable"
               class="w-full"
             ></v-text-field>
-            <div class="flex gap-[20px] w-full *:flex-1">
+            <div class="flex gap-[20px] max-sm:w-full max-sm:*:flex-1">
               <MyButton
                 size="large"
                 prepend-icon="mdi-filter-outline"

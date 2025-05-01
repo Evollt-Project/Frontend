@@ -1,12 +1,14 @@
 <script setup lang="ts">
 
 const search: Object = ref("");
-
+definePageMeta({
+  layout: "academy-support",
+});
 </script>
 
 <template>
-<div class="pt-12">
-  <div class="lg:mx12">
+<div class="pt-12 px-[32px] ">
+  <div class="mx-auto">
     <v-text-field
       v-model="search"
       label="Search"
@@ -16,8 +18,15 @@ const search: Object = ref("");
       single-line
       rounded="lg"
     />
+    <div class="mt-12 flex flex-wrap gap-10 justify-center">
+      <instructions-card/>
+      <instructions-card/>
+      <instructions-card/>
+      <instructions-card/>
+      <instructions-card/>
+      <instructions-card/>
+    </div>
   </div>
-
 </div>
 </template>
 

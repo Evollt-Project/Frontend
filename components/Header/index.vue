@@ -123,10 +123,16 @@ const catalogModal = ref(false);
               </DropdownMenuTrigger>
               <DropdownMenuContent class="w-20">
                 <DropdownMenuGroup>
-                  <DropdownMenuItem class="cursor-pointer">
+                  <DropdownMenuItem
+                    class="cursor-pointer"
+                    @click="openAuthModal('login')"
+                  >
                     <span>Вход</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem class="cursor-pointer md:hidden">
+                  <DropdownMenuItem
+                    class="cursor-pointer"
+                    @click="openAuthModal('register')"
+                  >
                     <span>Регистрация</span>
                   </DropdownMenuItem>
                 </DropdownMenuGroup>

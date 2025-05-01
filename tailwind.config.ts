@@ -17,7 +17,10 @@ module.exports = {
   theme: {
     container: {
       center: true,
-      padding: "2rem",
+      padding: {
+        DEFAULT: "10px",
+        sm: "32px",
+      },
     },
     extend: {
       boxShadow: {

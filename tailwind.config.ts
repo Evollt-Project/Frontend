@@ -18,13 +18,13 @@ module.exports = {
     container: {
       center: true,
       padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
     },
     extend: {
       boxShadow: {
         custom: "0px 0px 10px",
+      },
+      screens: {
+        xs: "550px",
       },
       height: {
         "screen-minus-70": "calc(100vh - 70px)",

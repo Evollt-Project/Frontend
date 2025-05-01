@@ -23,7 +23,7 @@ const shadowColor: ComputedRef<string> = computed(() => {
 
 <template>
   <NuxtLink
-    class="article rounded-3xl cursor-pointer min-w-[350px] transition duration-300 h-full flex flex-col"
+    class="article rounded-3xl cursor-pointer mmax-w-[400px] transition duration-300 h-full flex flex-col"
     :style="{ '--custom-shadow-color': shadowColor }"
     :to="{
       name: 'article-page',

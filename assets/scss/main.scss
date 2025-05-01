@@ -111,7 +111,9 @@
     @apply bg-background text-foreground;
   }
 }
-
+body {
+  padding-right: 0 !important;
+}
 .v-overlay.v-overlay--active.v-dialog {
   backdrop-filter: blur(10px);
 }

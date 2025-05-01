@@ -39,9 +39,7 @@ const catalogModal = ref(false);
       </div>
       <div class="header__right flex gap-5 items-center">
         <ColorScheme />
-
         <NotificationsList />
-
         <div v-if="User.store.user">
           <DropdownMenu>
             <DropdownMenuTrigger as-child>
@@ -55,9 +53,13 @@ const catalogModal = ref(false);
               />
             </DropdownMenuTrigger>
             <DropdownMenuContent class="w-56">
-              <DropdownMenuLabel class="flex justify-center">{{
-                [User.store.user.surname, User.store.user.first_name].join(" ")
-              }}</DropdownMenuLabel>
+              <DropdownMenuLabel class="flex justify-center"
+                >{{
+                  [User.store.user.surname, User.store.user.first_name].join(
+                    " ",
+                  )
+                }}
+              </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
                 <DropdownMenuItem
@@ -106,20 +108,39 @@ const catalogModal = ref(false);
               <DropdownMenuSeparator />
               <DropdownMenuItem @click="User.logout()">
                 <span>Выйти</span>
-                <DropdownMenuShortcut
-                  ><v-icon icon="mdi-logout"></v-icon
-                ></DropdownMenuShortcut>
+                <DropdownMenuShortcut>
+                  <v-icon icon="mdi-logout"></v-icon>
+                </DropdownMenuShortcut>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <div class="flex gap-5 items-center" v-else>
-          <MyButton @click="openAuthModal('login')" class="text-lg">
-            Вход
-          </MyButton>
-          <MyButton @click="openAuthModal('register')" class="text-lg">
-            Регистрация
-          </MyButton>
+        <div v-else>
+          <div class="sm:hidden flex">
+            <DropdownMenu>
+              <DropdownMenuTrigger as-child>
+                <v-icon icon="mdi-account-outline" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent class="w-20">
+                <DropdownMenuGroup>
+                  <DropdownMenuItem class="cursor-pointer">
+                    <span>Вход</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem class="cursor-pointer md:hidden">
+                    <span>Регистрация</span>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+          <div class="gap-5 items-center hidden sm:flex">
+            <MyButton @click="openAuthModal('login')" class="text-lg">
+              Вход
+            </MyButton>
+            <MyButton @click="openAuthModal('register')" class="text-lg">
+              Регистрация
+            </MyButton>
+          </div>
         </div>
       </div>
     </div>

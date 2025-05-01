@@ -119,7 +119,7 @@ const catalogModal = ref(false);
           <div class="sm:hidden flex">
             <DropdownMenu>
               <DropdownMenuTrigger as-child>
-                <v-icon icon="mdi-account-outline" />
+                <v-icon icon="mdi-account-outline" size="30" />
               </DropdownMenuTrigger>
               <DropdownMenuContent class="w-20">
                 <DropdownMenuGroup>

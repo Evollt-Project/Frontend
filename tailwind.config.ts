@@ -17,14 +17,17 @@ module.exports = {
   theme: {
     container: {
       center: true,
-      padding: "2rem",
-      screens: {
-        "2xl": "1400px",
+      padding: {
+        DEFAULT: "10px",
+        sm: "32px",
       },
     },
     extend: {
       boxShadow: {
         custom: "0px 0px 10px",
+      },
+      screens: {
+        xs: "550px",
       },
       height: {
         "screen-minus-70": "calc(100vh - 70px)",

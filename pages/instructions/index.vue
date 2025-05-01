@@ -7,8 +7,8 @@ definePageMeta({
 </script>
 
 <template>
-<div class="pt-12 px-[32px] ">
-  <div class="mx-auto">
+<div class="pt-12 container">
+  <div class="">
     <v-text-field
       v-model="search"
       label="Search"
@@ -18,7 +18,7 @@ definePageMeta({
       single-line
       rounded="lg"
     />
-    <div class="mt-12 flex flex-wrap gap-10 justify-center">
+    <div class="mt-12 grid grid-cols-[repeat(auto-fit,minmax(min(100%,400px),1fr))] gap-6">
       <instructions-card/>
       <instructions-card/>
       <instructions-card/>

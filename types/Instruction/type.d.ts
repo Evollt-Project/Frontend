@@ -20,6 +20,8 @@ export interface IInstructionResponseUpdate extends IInstructionResponseBase {}
 
 export interface IInstructionResponseSearch extends IPagination<IInstructionResponseBase> {}
 
-export interface IInstructionResponseDelete extends IInstructionPayloadBase {
+export interface IInstructionPayloadDelete extends IInstructionPayloadBase {
   message: string
 }
+
+export interface IInstructionResponseDelete extends IInstructionResponseBase {}

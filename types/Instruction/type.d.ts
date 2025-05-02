@@ -15,7 +15,9 @@ export interface IInstructionPayloadCreate extends IInstructionPayloadBase {
 
 export interface IInstructionResponseCreate extends IInstructionResponseBase {}
 
-export interface IInstructionPayloadGet extends IInstructionPayloadBase {}
+export interface IInstructionPayloadGet extends IInstructionPayloadBase {
+  id: InstructionId;
+}
 
 export interface IInstructionResponseGet
   extends IPagination<IInstructionResponseBase> {}
@@ -29,12 +31,16 @@ export interface IInstructionPayloadUpdate extends IInstructionPayloadBase {
 
 export interface IInstructionResponseUpdate extends IInstructionResponseBase {}
 
-export interface IInstructionPayloadSearch extends IInstructionPayloadBase {}
+export interface IInstructionPayloadSearch extends IInstructionPayloadBase {
+  search: string;
+}
 
 export interface IInstructionResponseSearch
   extends IPagination<IInstructionResponseBase> {}
 
-export interface IInstructionPayloadDelete extends IInstructionPayloadBase {}
+export interface IInstructionPayloadDelete extends IInstructionPayloadBase {
+  id: InstructionId;
+}
 
 export interface IInstructionResponseDelete extends IInstructionResponseBase {
   message: string;

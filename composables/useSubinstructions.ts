@@ -11,69 +11,48 @@ import type {
   ISubinstructionResponseSearch,
   ISubinstructionResponseDelete,
 } from "~/types/Subinstruction/type";
-import type { ISubinstruction } from "~/types/Subinstruction/ISubinstruction";
-import type { IPagination } from "~/types/Base/IPagination";
 
-export class Instruction {
-  static readonly BASE_URL = "api/v1/subinstruction";
-
-  static async getAll(params: object) {
-    return useRequest<IPagination<ISubinstruction>>({
-      url: this.BASE_URL,
-      params: params,
-    }).then((response) => {
-      return response.data;
+export class Subinstruction {
+  static async get(params: ISubinstructionPayloadGet) {
+    return await useRequest<ISubinstructionResponseGet[]>({
+      url: "/api/v1/Subinstruction",
+      params,
     });
   }
 
   static async create(params: ISubinstructionPayloadCreate) {
-    return useRequest<ISubinstructionResponseCreate>({
-      url: this.BASE_URL,
+    return await useRequest<ISubinstructionResponseCreate>({
+      url: "/api/v1/Subinstruction",
       method: "POST",
       body: params,
     });
   }
 
-  static async get({ id, ...payload }: ISubinstructionPayloadGet) {
-    return useRequest<ISubinstructionResponseGet>({
-      url: this.BASE_URL + "/" + id,
-      params: payload,
-    }).catch((response) => {
-      useErrorNotification(response.response.data);
-      return null;
-    });
-  }
-
-  static async update(
+  static async edit(
     id: SubinstructionId,
-    payload: ISubinstructionPayloadUpdate,
+    params: ISubinstructionPayloadUpdate,
   ) {
-    const formData = useFormatToFormData(payload); // генерируем formData из payload
-    formData.append("_method", "PUT"); // добавляем метод
-
-    return useRequest<ISubinstructionResponseUpdate>({
-      url: this.BASE_URL + "/" + id,
+    return await useRequest<ISubinstructionResponseUpdate>({
+      url: `/api/v1/Subinstruction/` + id,
       method: "POST",
-      body: formData,
+      body: {
+        _method: "PUT",
+        ...params,
+      },
     });
   }
 
-  static async search({ search }: ISubinstructionPayloadSearch) {
-    return useRequest<ISubinstructionResponseSearch>({
-      url: this.BASE_URL + "/search",
-      params: search,
-    }).catch((response) => {
-      useErrorNotification(response.response.data);
-      return null;
+  static async search(params: ISubinstructionPayloadSearch) {
+    return await useRequest<ISubinstructionResponseSearch[]>({
+      url: "/api/v1/Subinstruction/search",
+      params,
     });
   }
 
-  static async delete({ id }: ISubinstructionPayloadDelete) {
-    return useRequest<ISubinstructionResponseDelete>({
-      url: this.BASE_URL + "/" + id,
-    }).catch((response) => {
-      useErrorNotification(response.response.data);
-      return null;
+  static async delete(params: ISubinstructionPayloadDelete) {
+    return await useRequest<ISubinstructionResponseDelete>({
+      url: `/api/v1/Subinstruction/${params.id}`,
+      method: "DELETE",
     });
   }
 }

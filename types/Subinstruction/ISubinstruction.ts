@@ -1,4 +1,5 @@
 import type { IInstruction } from "~/types/Instruction/IInstruction";
+import type { SubinstructionId } from "~/types/Subinstruction/type";
 
 export interface ISubinstruction {
   id: SubinstructionId;

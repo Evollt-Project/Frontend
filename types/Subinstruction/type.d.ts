@@ -18,7 +18,9 @@ export interface ISubinstructionPayloadCreate
 export interface ISubinstructionResponseCreate
   extends ISubinstructionResponseBase {}
 
-export interface ISubinstructionPayloadGet extends ISubinstructionPayloadBase {}
+export interface ISubinstructionPayloadGet extends ISubinstructionPayloadBase {
+  id: SubinstructionId;
+}
 
 export interface ISubinstructionResponseGet
   extends IPagination<ISubinstructionResponseBase> {}
@@ -35,13 +37,17 @@ export interface ISubinstructionResponseUpdate
   extends ISubinstructionResponseBase {}
 
 export interface ISubinstructionPayloadSearch
-  extends ISubinstructionPayloadBase {}
+  extends ISubinstructionPayloadBase {
+  search: string;
+}
 
 export interface IInstructionResponseSearch
   extends IPagination<ISubinstructionResponseBase> {}
 
 export interface ISubinstructionPayloadDelete
-  extends ISubinstructionPayloadBase {}
+  extends ISubinstructionPayloadBase {
+  id: SubinstructionId;
+}
 
 export interface ISubinstructionResponseDelete
   extends ISubinstructionResponseBase {

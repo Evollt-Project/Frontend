@@ -41,7 +41,7 @@ export interface ISubinstructionPayloadSearch
   search: string;
 }
 
-export interface IInstructionResponseSearch
+export interface ISubinstructionResponseSearch
   extends IPagination<ISubinstructionResponseBase> {}
 
 export interface ISubinstructionPayloadDelete

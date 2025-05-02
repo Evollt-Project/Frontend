@@ -12,9 +12,10 @@ import type {
 } from "~/types/Instruction/type";
 
 export class Instruction {
+  static readonly BASE_URL = "/api/v1/instruction";
   static async getAll(params: IInstructionPayloadGetAll) {
     return await useRequest<IInstructionResponseGetAll>({
-      url: "/api/v1/instruction",
+      url: this.BASE_URL,
       params,
     })
       .then((response) => response.data)
@@ -26,7 +27,7 @@ export class Instruction {
 
   static async create(params: IInstructionPayloadCreate) {
     return await useRequest<IInstructionResponseCreate>({
-      url: "/api/v1/instruction",
+      url: this.BASE_URL,
       method: "POST",
       body: params,
     });
@@ -34,7 +35,7 @@ export class Instruction {
 
   static async update({ id, ...params }: IInstructionPayloadUpdate) {
     return await useRequest<IInstructionResponseUpdate>({
-      url: `/api/v1/instruction/` + id,
+      url: this.BASE_URL + "/" + id,
       method: "POST",
       body: {
         _method: "PUT",
@@ -45,7 +46,7 @@ export class Instruction {
 
   static async search(params: IInstructionPayloadSearch) {
     return await useRequest<IInstructionResponseSearch>({
-      url: "/api/v1/instruction/search",
+      url: this.BASE_URL + "/search",
       params,
     })
       .then((response) => response.data)
@@ -57,7 +58,7 @@ export class Instruction {
 
   static async delete({ id }: IInstructionPayloadDelete) {
     return await useRequest<IInstructionResponseDelete>({
-      url: `/api/v1/instruction/${id}`,
+      url: this.BASE_URL + `/${id}`,
       method: "DELETE",
     });
   }

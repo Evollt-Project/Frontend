@@ -12,9 +12,11 @@ import type {
 } from "~/types/Subinstruction/type";
 
 export class Subinstruction {
+  static readonly BASE_URL = "/api/v1/instruction";
+
   static async getAll(params: ISubinstructionPayloadGetAll) {
     return await useRequest<ISubinstructionResponseGetAll>({
-      url: "/api/v1/subinstruction",
+      url: this.BASE_URL,
       params,
     })
       .then((response) => response.data)
@@ -26,7 +28,7 @@ export class Subinstruction {
 
   static async create(params: ISubinstructionPayloadCreate) {
     return await useRequest<ISubinstructionResponseCreate>({
-      url: "/api/v1/subinstruction",
+      url: this.BASE_URL,
       method: "POST",
       body: params,
     });
@@ -34,7 +36,7 @@ export class Subinstruction {
 
   static async update({ id, ...params }: ISubinstructionPayloadUpdate) {
     return await useRequest<ISubinstructionResponseUpdate>({
-      url: `/api/v1/subinstruction/` + id,
+      url: this.BASE_URL + "/" + id,
       method: "POST",
       body: {
         _method: "PUT",
@@ -45,7 +47,7 @@ export class Subinstruction {
 
   static async search(params: ISubinstructionPayloadSearch) {
     return await useRequest<ISubinstructionResponseSearch>({
-      url: "/api/v1/subinstruction/search",
+      url: this.BASE_URL + "/search",
       params,
     })
       .then((response) => response.data)
@@ -57,7 +59,7 @@ export class Subinstruction {
 
   static async delete({ id }: ISubinstructionPayloadDelete) {
     return await useRequest<ISubinstructionResponseDelete>({
-      url: `/api/v1/subinstruction/${id}`,
+      url: this.BASE_URL + `/${id}`,
       method: "DELETE",
     });
   }

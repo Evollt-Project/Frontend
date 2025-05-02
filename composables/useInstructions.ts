@@ -13,16 +13,15 @@ import type {
 
 export class Instruction {
   static readonly BASE_URL = "/api/v1/instruction";
+
   static async getAll(params: IInstructionPayloadGetAll) {
     return await useRequest<IInstructionResponseGetAll>({
       url: this.BASE_URL,
       params,
-    })
-      .then((response) => response.data)
-      .catch((response) => {
-        useErrorNotification(response.response.data);
-        return null;
-      });
+    }).catch((response) => {
+      useErrorNotification(response.response.data);
+      return null;
+    });
   }
 
   static async create(params: IInstructionPayloadCreate) {
@@ -48,17 +47,15 @@ export class Instruction {
     return await useRequest<IInstructionResponseSearch>({
       url: this.BASE_URL + "/search",
       params,
-    })
-      .then((response) => response.data)
-      .catch((response) => {
-        useErrorNotification(response.response.data);
-        return null;
-      });
+    }).catch((response) => {
+      useErrorNotification(response.response.data);
+      return null;
+    });
   }
 
   static async delete({ id }: IInstructionPayloadDelete) {
     return await useRequest<IInstructionResponseDelete>({
-      url: this.BASE_URL + `/${id}`,
+      url: this.BASE_URL + "/" + id,
       method: "DELETE",
     });
   }

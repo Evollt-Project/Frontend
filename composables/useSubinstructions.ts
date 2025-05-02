@@ -12,18 +12,16 @@ import type {
 } from "~/types/Subinstruction/type";
 
 export class Subinstruction {
-  static readonly BASE_URL = "/api/v1/instruction";
+  static readonly BASE_URL = "/api/v1/subinstruction";
 
   static async getAll(params: ISubinstructionPayloadGetAll) {
     return await useRequest<ISubinstructionResponseGetAll>({
       url: this.BASE_URL,
       params,
-    })
-      .then((response) => response.data)
-      .catch((response) => {
-        useErrorNotification(response.response.data);
-        return null;
-      });
+    }).catch((response) => {
+      useErrorNotification(response.response.data);
+      return null;
+    });
   }
 
   static async create(params: ISubinstructionPayloadCreate) {
@@ -49,17 +47,15 @@ export class Subinstruction {
     return await useRequest<ISubinstructionResponseSearch>({
       url: this.BASE_URL + "/search",
       params,
-    })
-      .then((response) => response.data)
-      .catch((response) => {
-        useErrorNotification(response.response.data);
-        return null;
-      });
+    }).catch((response) => {
+      useErrorNotification(response.response.data);
+      return null;
+    });
   }
 
   static async delete({ id }: ISubinstructionPayloadDelete) {
     return await useRequest<ISubinstructionResponseDelete>({
-      url: this.BASE_URL + `/${id}`,
+      url: this.BASE_URL + "/" + id,
       method: "DELETE",
     });
   }

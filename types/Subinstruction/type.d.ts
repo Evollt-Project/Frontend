@@ -19,9 +19,7 @@ export interface ISubinstructionResponseCreate
   extends ISubinstructionResponseBase {}
 
 export interface ISubinstructionPayloadGetAll
-  extends ISubinstructionPayloadBase {
-  id: SubinstructionId;
-}
+  extends ISubinstructionPayloadBase {}
 
 export interface ISubinstructionResponseGetAll
   extends IPagination<ISubinstructionResponseBase> {}
@@ -51,7 +49,6 @@ export interface ISubinstructionPayloadDelete
   id: SubinstructionId;
 }
 
-export interface ISubinstructionResponseDelete
-  extends ISubinstructionResponseBase {
+export interface ISubinstructionResponseDelete {
   message: string;
 }

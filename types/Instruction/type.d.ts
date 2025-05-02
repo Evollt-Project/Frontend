@@ -15,9 +15,7 @@ export interface IInstructionPayloadCreate extends IInstructionPayloadBase {
 
 export interface IInstructionResponseCreate extends IInstructionResponseBase {}
 
-export interface IInstructionPayloadGetAll extends IInstructionPayloadBase {
-  id: InstructionId;
-}
+export interface IInstructionPayloadGetAll extends IInstructionPayloadBase {}
 
 export interface IInstructionResponseGetAll
   extends IPagination<IInstructionResponseBase> {}
@@ -43,6 +41,6 @@ export interface IInstructionPayloadDelete extends IInstructionPayloadBase {
   id: InstructionId;
 }
 
-export interface IInstructionResponseDelete extends IInstructionResponseBase {
+export interface IInstructionResponseDelete {
   message: string;
 }

@@ -17,7 +17,8 @@ export interface IInstructionResponseCreate extends IInstructionResponseBase {}
 
 export interface IInstructionPayloadGet extends IInstructionPayloadBase {}
 
-export interface IInstructionResponseGet extends IPagination<IInstructionResponseBase> {}
+export interface IInstructionResponseGet
+  extends IPagination<IInstructionResponseBase> {}
 
 export interface IInstructionPayloadUpdate extends IInstructionPayloadBase {
   title?: string;
@@ -30,10 +31,11 @@ export interface IInstructionResponseUpdate extends IInstructionResponseBase {}
 
 export interface IInstructionPayloadSearch extends IInstructionPayloadBase {}
 
-export interface IInstructionResponseSearch extends IPagination<IInstructionResponseBase> {}
+export interface IInstructionResponseSearch
+  extends IPagination<IInstructionResponseBase> {}
 
 export interface IInstructionPayloadDelete extends IInstructionPayloadBase {}
 
 export interface IInstructionResponseDelete extends IInstructionResponseBase {
-  message: string
+  message: string;
 }

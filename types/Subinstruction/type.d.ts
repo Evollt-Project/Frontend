@@ -10,27 +10,29 @@ export interface ISubinstructionPayloadCreate
   extends ISubinstructionPayloadBase {
   title: string;
   logo: string;
-  short_description: string;
-  description: string;
+  short_content: string;
+  content: string;
   instruction_id: string;
 }
 
 export interface ISubinstructionResponseCreate
   extends ISubinstructionResponseBase {}
 
-export interface ISubinstructionPayloadGet extends ISubinstructionPayloadBase {
+export interface ISubinstructionPayloadGetAll
+  extends ISubinstructionPayloadBase {
   id: SubinstructionId;
 }
 
-export interface ISubinstructionResponseGet
+export interface ISubinstructionResponseGetAll
   extends IPagination<ISubinstructionResponseBase> {}
 
 export interface ISubinstructionPayloadUpdate
   extends ISubinstructionPayloadBase {
+  id: number;
   title?: string;
   logo?: string;
-  short_description?: string;
-  description?: string;
+  short_content?: string;
+  content?: string;
 }
 
 export interface ISubinstructionResponseUpdate

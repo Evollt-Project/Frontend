@@ -1,23 +1,27 @@
 import type {
-  InstructionId,
   IInstructionPayloadCreate,
   IInstructionPayloadUpdate,
-  IInstructionPayloadGet,
+  IInstructionPayloadGetAll,
   IInstructionPayloadSearch,
   IInstructionPayloadDelete,
   IInstructionResponseCreate,
-  IInstructionResponseGet,
+  IInstructionResponseGetAll,
   IInstructionResponseUpdate,
   IInstructionResponseSearch,
   IInstructionResponseDelete,
 } from "~/types/Instruction/type";
 
 export class Instruction {
-  static async getInstructions(params: IInstructionPayloadGet) {
-    return await useRequest<IInstructionResponseGet[]>({
+  static async getAll(params: IInstructionPayloadGetAll) {
+    return await useRequest<IInstructionResponseGetAll>({
       url: "/api/v1/instruction",
       params,
-    });
+    })
+      .then((response) => response.data)
+      .catch((response) => {
+        useErrorNotification(response.response.data);
+        return null;
+      });
   }
 
   static async create(params: IInstructionPayloadCreate) {
@@ -28,7 +32,7 @@ export class Instruction {
     });
   }
 
-  static async edit(id: InstructionId, params: IInstructionPayloadUpdate) {
+  static async update({ id, ...params }: IInstructionPayloadUpdate) {
     return await useRequest<IInstructionResponseUpdate>({
       url: `/api/v1/instruction/` + id,
       method: "POST",
@@ -40,15 +44,20 @@ export class Instruction {
   }
 
   static async search(params: IInstructionPayloadSearch) {
-    return await useRequest<IInstructionResponseSearch[]>({
+    return await useRequest<IInstructionResponseSearch>({
       url: "/api/v1/instruction/search",
       params,
-    });
+    })
+      .then((response) => response.data)
+      .catch((response) => {
+        useErrorNotification(response.response.data);
+        return null;
+      });
   }
 
-  static async delete(params: IInstructionPayloadDelete) {
+  static async delete({ id }: IInstructionPayloadDelete) {
     return await useRequest<IInstructionResponseDelete>({
-      url: `/api/v1/instruction/${params.id}`,
+      url: `/api/v1/instruction/${id}`,
       method: "DELETE",
     });
   }

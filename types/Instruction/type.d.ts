@@ -15,14 +15,15 @@ export interface IInstructionPayloadCreate extends IInstructionPayloadBase {
 
 export interface IInstructionResponseCreate extends IInstructionResponseBase {}
 
-export interface IInstructionPayloadGet extends IInstructionPayloadBase {
+export interface IInstructionPayloadGetAll extends IInstructionPayloadBase {
   id: InstructionId;
 }
 
-export interface IInstructionResponseGet
+export interface IInstructionResponseGetAll
   extends IPagination<IInstructionResponseBase> {}
 
 export interface IInstructionPayloadUpdate extends IInstructionPayloadBase {
+  id: number;
   title?: string;
   logo?: string;
   short_description?: string;

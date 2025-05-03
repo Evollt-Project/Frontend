@@ -18,7 +18,11 @@ export interface IInstructionResponseCreate extends IInstructionResponseBase {}
 export interface IInstructionPayloadGetAll extends IInstructionPayloadBase {}
 
 export interface IInstructionResponseGetAll
-  extends IPagination<IInstructionResponseBase> {}
+  extends IPagination<IInstructionResponseBase> {
+  page: number;
+  search?: string;
+  per_page: number;
+}
 
 export interface IInstructionPayloadUpdate extends IInstructionPayloadBase {
   id: number;
@@ -29,13 +33,6 @@ export interface IInstructionPayloadUpdate extends IInstructionPayloadBase {
 }
 
 export interface IInstructionResponseUpdate extends IInstructionResponseBase {}
-
-export interface IInstructionPayloadSearch extends IInstructionPayloadBase {
-  search: string;
-}
-
-export interface IInstructionResponseSearch
-  extends IPagination<IInstructionResponseBase> {}
 
 export interface IInstructionPayloadDelete extends IInstructionPayloadBase {
   id: InstructionId;

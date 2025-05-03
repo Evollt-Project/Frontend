@@ -2,12 +2,10 @@ import type {
   IInstructionPayloadCreate,
   IInstructionPayloadUpdate,
   IInstructionPayloadGetAll,
-  IInstructionPayloadSearch,
   IInstructionPayloadDelete,
   IInstructionResponseCreate,
   IInstructionResponseGetAll,
   IInstructionResponseUpdate,
-  IInstructionResponseSearch,
   IInstructionResponseDelete,
 } from "~/types/Instruction/type";
 
@@ -40,16 +38,6 @@ export class Instruction {
         _method: "PUT",
         ...params,
       },
-    });
-  }
-
-  static async search(params: IInstructionPayloadSearch) {
-    return await useRequest<IInstructionResponseSearch>({
-      url: this.BASE_URL + "/search",
-      params,
-    }).catch((response) => {
-      useErrorNotification(response.response.data);
-      return null;
     });
   }
 

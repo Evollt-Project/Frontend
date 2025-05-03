@@ -94,8 +94,11 @@ onMounted(() => {
         :key="index"
         :instruction="item"
       />
+
+      <div v-if="isLoading" class="text-center py-4" v-for="_ in 12">
+        <InstructionsCardSkeleton />
+      </div>
     </div>
-    <div v-if="isLoading" class="text-center py-4">Загрузка...</div>
-    <div ref="observer" class="observer"></div>
+    <div ref="observer" class="observer bottom-[-540px]"></div>
   </div>
 </template>

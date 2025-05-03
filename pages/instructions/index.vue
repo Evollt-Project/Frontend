@@ -4,7 +4,6 @@ import type {
   IInstructionResponseGetAll,
 } from "~/types/Instruction/type";
 
-const search = ref<string>("");
 const isLoading = ref<boolean>(false);
 
 const params = ref<IInstructionPayloadGetAll>({
@@ -34,14 +33,13 @@ const getInstructionsHandle = async () => {
   const res = await Instruction.getAll(params.value);
 
   if (res) {
-    // Явно создаем новый объект для реактивности
     if (params.value.page === 1) {
       instructions.value = { ...res };
     } else {
       instructions.value = {
         data: {
           ...instructions.value.data,
-          data: [...instructions.value.data.data, ...res.data.data], // Сохраняем вашу структуру
+          data: [...instructions.value.data.data, ...res.data.data],
         },
         meta: { ...res.meta },
       };
@@ -79,7 +77,6 @@ onMounted(() => {
 <template>
   <div class="pt-12 container">
     <v-text-field
-      v-model="search"
       hide-details="auto"
       single-line
       rounded="lg"

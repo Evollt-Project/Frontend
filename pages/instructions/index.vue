@@ -87,7 +87,7 @@ onMounted(() => {
       density="comfortable"
     />
     <div
-      class="mt-12 grid grid-cols-[repeat(auto-fit,minmax(400px,1fr))] gap-6"
+      class="mt-12 grid grid-cols-[repeat(auto-fit,minmax(293px,1fr))] sm:grid-cols-[repeat(auto-fit,minmax(400px,1fr))] gap-6"
     >
       <instructions-card
         v-for="(item, index) in instructions.data.data"

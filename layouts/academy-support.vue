@@ -8,7 +8,7 @@ onMounted(() => {
 
 <template>
   <div>
-    <SupportHeader />
+    <HeaderSupport />
     <div class="main-content">
       <slot></slot>
     </div>

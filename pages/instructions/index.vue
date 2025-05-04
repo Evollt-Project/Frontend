@@ -9,22 +9,12 @@ const isLoading = ref<boolean>(false);
 const params = ref<IInstructionPayloadGetAll>({
   search: "",
   page: 1,
-  per_page: 12,
+  per_page: 10000,
 });
 
 definePageMeta({
   layout: "academy-support",
 });
-
-const instructions = ref<IInstructionResponseGetAll>({
-  data: [],
-  meta: {
-    current_page: 1,
-    last_page: 1,
-  },
-});
-
-const observer: Ref<HTMLDivElement | null> = ref(null);
 
 const getInstructionsHandle = async () => {
   if (isLoading.value) return;
@@ -33,32 +23,11 @@ const getInstructionsHandle = async () => {
   const res = await Instruction.getAll(params.value);
 
   if (res) {
-    if (params.value.page === 1) {
-      instructions.value = { ...res };
-    } else {
-      instructions.value = {
-        data: {
-          ...instructions.value.data,
-          data: [...instructions.value.data.data, ...res.data.data],
-        },
-        meta: { ...res.meta },
-      };
-    }
+    instructions.value = { ...res.data };
   }
 
   isLoading.value = false;
 };
-
-useIntersectionObserver(observer, ([entry]) => {
-  if (
-    entry?.isIntersecting &&
-    params.value.page < instructions.value.data.meta.last_page &&
-    !isLoading.value
-  ) {
-    params.value.page += 1;
-    getInstructionsHandle();
-  }
-});
 
 const changeSearchField = useDebounceFn((event: InputEvent) => {
   const target = event.target as HTMLInputElement;
@@ -69,9 +38,20 @@ const changeSearchField = useDebounceFn((event: InputEvent) => {
   }
 }, User.DEBOUNCE_DELAY);
 
-onMounted(() => {
-  getInstructionsHandle();
-});
+const { data: instructions } = useAsyncData(
+  "instructions-data",
+  async () => {
+    return await $fetch<IInstructionResponseGetAll>("/apijs/request", {
+      params: {
+        url: "/api/v1/instruction",
+        ...params,
+      },
+    });
+  },
+  {
+    default: () => {},
+  },
+);
 </script>
 
 <template>
@@ -90,7 +70,7 @@ onMounted(() => {
       class="mt-12 grid grid-cols-[repeat(auto-fit,minmax(293px,1fr))] sm:grid-cols-[repeat(auto-fit,minmax(400px,1fr))] gap-6"
     >
       <instructions-card
-        v-for="(item, index) in instructions.data.data"
+        v-for="(item, index) in instructions.data"
         :key="index"
         :instruction="item"
       />
@@ -99,6 +79,5 @@ onMounted(() => {
         <InstructionsCardSkeleton />
       </div>
     </div>
-    <div ref="observer" class="observer bottom-[-540px]"></div>
   </div>
 </template>

@@ -15,14 +15,14 @@ export interface IInstructionPayloadCreate extends IInstructionPayloadBase {
 
 export interface IInstructionResponseCreate extends IInstructionResponseBase {}
 
-export interface IInstructionPayloadGetAll extends IInstructionPayloadBase {}
+export interface IInstructionPayloadGetAll extends IInstructionPayloadBase {
+  page?: number;
+  search?: string;
+  per_page?: number;
+}
 
 export interface IInstructionResponseGetAll
-  extends IPagination<IInstructionResponseBase> {
-  page: number;
-  search?: string;
-  per_page: number;
-}
+  extends IPagination<IInstructionResponseBase> {}
 
 export interface IInstructionPayloadUpdate extends IInstructionPayloadBase {
   id: number;

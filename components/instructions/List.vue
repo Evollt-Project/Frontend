@@ -3,7 +3,6 @@ defineProps<{
   list: Array<Object>;
   isLoading: boolean;
   path: string;
-  query: object;
 }>();
 </script>
 

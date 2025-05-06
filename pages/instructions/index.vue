@@ -4,26 +4,20 @@ import type {
   IInstructionResponseGetAll,
 } from "~/types/Instruction/type";
 
-const isLoading = ref<boolean>(false);
-
-const params = ref<IInstructionPayloadGetAll>({
-  search: "",
-  page: 1,
-  per_page: 10000,
-});
-
 definePageMeta({
   layout: "academy-support",
 });
 
-const getInstructionsHandle = async () => {
+const isLoading = ref<boolean>(false);
+
+const getInstructionsHandle = async (params: IInstructionPayloadGetAll) => {
   if (isLoading.value) return;
 
   isLoading.value = true;
-  const res = await Instruction.getAll(params.value);
+  const res = await Instruction.getAll(params);
 
   if (res) {
-    instructions.value = { ...res.data };
+    instructions.value = res.data;
   }
 
   isLoading.value = false;
@@ -32,26 +26,22 @@ const getInstructionsHandle = async () => {
 const changeSearchField = useDebounceFn((event: InputEvent) => {
   const target = event.target as HTMLInputElement;
   if (target) {
-    params.value.search = target.value;
-    params.value.page = 1;
-    getInstructionsHandle();
+    getInstructionsHandle({
+      search: target.value,
+    });
   }
 }, User.DEBOUNCE_DELAY);
 
-const { data: instructions } = useAsyncData(
-  "instructions-data",
-  async () => {
-    return await $fetch<IInstructionResponseGetAll>("/apijs/request", {
+const { data: instructions } = useAsyncData("instructions-data", async () => {
+  return await $fetch<IInstructionResponseGetAll>("/apijs/request", {
+    params: {
+      url: "/api/v1/instruction",
       params: {
-        url: "/api/v1/instruction",
-        ...params,
+        per_page: 10000,
       },
-    });
-  },
-  {
-    default: () => {},
-  },
-);
+    },
+  });
+});
 </script>
 
 <template>
@@ -66,18 +56,10 @@ const { data: instructions } = useAsyncData(
       variant="outlined"
       density="comfortable"
     />
-    <div
-      class="mt-12 grid grid-cols-[repeat(auto-fit,minmax(293px,1fr))] sm:grid-cols-[repeat(auto-fit,minmax(400px,1fr))] gap-6"
-    >
-      <instructions-card
-        v-for="(item, index) in instructions.data"
-        :key="index"
-        :instruction="item"
-      />
-
-      <div v-if="isLoading" class="text-center py-4" v-for="_ in 12">
-        <InstructionsCardSkeleton />
-      </div>
-    </div>
+    <InstructionsList
+      :is-loading="isLoading"
+      :list="instructions.data"
+      path="/subinstructions"
+    />
   </div>
 </template>

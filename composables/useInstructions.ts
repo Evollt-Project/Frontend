@@ -24,10 +24,9 @@ export class Instruction {
     });
   }
 
-  static async getById(params: IInstructionPayloadGetById) {
+  static async getById({ id }: IInstructionPayloadGetById) {
     return await useRequest<IInstructionResponseGetById>({
-      url: this.BASE_URL,
-      params,
+      url: this.BASE_URL + "/" + id,
     }).catch((response) => {
       useErrorNotification(response.response.data);
       return null;

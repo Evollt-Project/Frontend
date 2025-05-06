@@ -5,7 +5,7 @@ export interface ISubinstruction {
   id: SubinstructionId;
   title: string;
   logo: string;
-  short_description: string;
-  description: string;
+  short_content: string;
+  content: string;
   instruction: IInstruction[];
 }

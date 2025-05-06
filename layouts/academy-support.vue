@@ -7,12 +7,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
+  <div class="min-h-screen flex flex-col">
     <HeaderSupport />
-    <div class="main-content">
+    <div class="main-content flex-grow">
       <slot></slot>
     </div>
-    <Footer />
+    <FooterSupport />
   </div>
 </template>
 

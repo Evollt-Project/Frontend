@@ -10,16 +10,19 @@ export interface ISubinstructionPayloadCreate
   extends ISubinstructionPayloadBase {
   title: string;
   logo: string;
-  short_content: string;
-  content: string;
-  instruction_id: string;
+  short_description: string;
+  description: string;
 }
 
 export interface ISubinstructionResponseCreate
   extends ISubinstructionResponseBase {}
 
 export interface ISubinstructionPayloadGetAll
-  extends ISubinstructionPayloadBase {}
+  extends ISubinstructionPayloadBase {
+  page?: number;
+  search?: string;
+  per_page?: number;
+}
 
 export interface ISubinstructionResponseGetAll
   extends IPagination<ISubinstructionResponseBase> {}
@@ -29,20 +32,12 @@ export interface ISubinstructionPayloadUpdate
   id: number;
   title?: string;
   logo?: string;
-  short_content?: string;
-  content?: string;
+  short_description?: string;
+  description?: string;
 }
 
 export interface ISubinstructionResponseUpdate
   extends ISubinstructionResponseBase {}
-
-export interface ISubinstructionPayloadSearch
-  extends ISubinstructionPayloadBase {
-  search: string;
-}
-
-export interface ISubinstructionResponseSearch
-  extends IPagination<ISubinstructionResponseBase> {}
 
 export interface ISubinstructionPayloadDelete
   extends ISubinstructionPayloadBase {

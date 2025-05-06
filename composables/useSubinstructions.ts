@@ -2,12 +2,10 @@ import type {
   ISubinstructionPayloadCreate,
   ISubinstructionPayloadUpdate,
   ISubinstructionPayloadGetAll,
-  ISubinstructionPayloadSearch,
   ISubinstructionPayloadDelete,
   ISubinstructionResponseCreate,
   ISubinstructionResponseGetAll,
   ISubinstructionResponseUpdate,
-  ISubinstructionResponseSearch,
   ISubinstructionResponseDelete,
 } from "~/types/Subinstruction/type";
 
@@ -40,16 +38,6 @@ export class Subinstruction {
         _method: "PUT",
         ...params,
       },
-    });
-  }
-
-  static async search(params: ISubinstructionPayloadSearch) {
-    return await useRequest<ISubinstructionResponseSearch>({
-      url: this.BASE_URL + "/search",
-      params,
-    }).catch((response) => {
-      useErrorNotification(response.response.data);
-      return null;
     });
   }
 

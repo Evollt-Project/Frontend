@@ -24,6 +24,13 @@ export interface IInstructionPayloadGetAll extends IInstructionPayloadBase {
 export interface IInstructionResponseGetAll
   extends IPagination<IInstructionResponseBase> {}
 
+export interface IInstructionPayloadGetById extends IInstructionPayloadBase {
+  id: number;
+}
+
+export interface IInstructionResponseGetById
+  extends IPagination<IInstructionResponseBase> {}
+
 export interface IInstructionPayloadUpdate extends IInstructionPayloadBase {
   id: number;
   title?: string;

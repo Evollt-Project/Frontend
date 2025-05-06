@@ -2,9 +2,11 @@ import type {
   IInstructionPayloadCreate,
   IInstructionPayloadUpdate,
   IInstructionPayloadGetAll,
+  IInstructionPayloadGetById,
   IInstructionPayloadDelete,
   IInstructionResponseCreate,
   IInstructionResponseGetAll,
+  IInstructionResponseGetById,
   IInstructionResponseUpdate,
   IInstructionResponseDelete,
 } from "~/types/Instruction/type";
@@ -14,6 +16,16 @@ export class Instruction {
 
   static async getAll(params: IInstructionPayloadGetAll) {
     return await useRequest<IInstructionResponseGetAll>({
+      url: this.BASE_URL,
+      params,
+    }).catch((response) => {
+      useErrorNotification(response.response.data);
+      return null;
+    });
+  }
+
+  static async getById(params: IInstructionPayloadGetById) {
+    return await useRequest<IInstructionResponseGetById>({
       url: this.BASE_URL,
       params,
     }).catch((response) => {

@@ -7,16 +7,16 @@
         <div class="font-bold">
           <Skeleton class="w-full h-4" />
         </div>
-        <div class="font-semibold size-">
+        <div class="font-semibold">
           <Skeleton class="w-full h-4" />
         </div>
       </div>
       <div>
-        <Skeleton class="w-full h-4" />
+        <Skeleton class="w-full h-4 size-[44px]" />
       </div>
     </div>
     <div class="absolute bottom-1 right-1 mr-[35px] mb-2.5"
-      ><Skeleton class="w-full h-4"
+      ><Skeleton class="w-[100px] h-4"
     /></div>
   </div>
 </template>

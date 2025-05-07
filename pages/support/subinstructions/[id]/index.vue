@@ -5,6 +5,7 @@ const instructionsId = useRoute().params.id;
 
 definePageMeta({
   layout: "academy-support",
+  name: "support-subinstruction",
 });
 
 const { data: subinstruction } = await useAsyncData(

@@ -1,21 +1,23 @@
 <script setup lang="ts">
-import type { IInstruction } from "~/types/Instruction/IInstruction";
+import type { LocationQuery } from "#vue-router";
 
 defineProps<{
-  instruction: IInstruction;
-  path: string;
+  instruction: {
+    id: number;
+    title: string;
+    logo: string;
+    short_description: string;
+    description: string;
+  };
+  toLink: {
+    path: string;
+    query?: LocationQuery; // Используем встроенный тип query
+  };
 }>();
 </script>
 
 <template>
-  <NuxtLink
-    :to="{
-      path: `${path}`,
-      query: {
-        id: instruction.id,
-      },
-    }"
-  >
+  <NuxtLink :to="toLink">
     <div
       class="relative rounded-2xl w-full h-[230px] hover:cursor-pointer bg-[#F5F5F5] duration-500 hover:scale-[101%] dark:bg-[#171717] hover:shadow-[0_0_5px_0_#000000] hover:dark:shadow-[0_0_5px_0_#FFFFFF]"
     >

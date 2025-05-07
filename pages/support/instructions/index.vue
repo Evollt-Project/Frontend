@@ -6,6 +6,7 @@ import type {
 
 definePageMeta({
   layout: "academy-support",
+  name: "support-instructions",
 });
 
 const isLoading = ref<boolean>(false);
@@ -56,10 +57,18 @@ const { data: instructions } = useAsyncData("instructions-data", async () => {
       variant="outlined"
       density="comfortable"
     />
-    <InstructionsList
-      :is-loading="isLoading"
-      :list="instructions.data"
-      path="/subinstructions"
-    />
+    <InstructionsList :is-loading="isLoading">
+      <InstructionsCard
+        v-for="(item, index) in instructions?.data ?? []"
+        :key="index"
+        :instruction="item"
+        :to-link="{
+          path: `/support/subinstructions`,
+          query: {
+            id: item.id,
+          },
+        }"
+      />
+    </InstructionsList>
   </div>
 </template>

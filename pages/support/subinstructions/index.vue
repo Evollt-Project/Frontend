@@ -73,7 +73,6 @@ const { data: subinstructions } = await useAsyncData(
 
 const createSubnstruction = async (data: ISubinstructionPayloadCreate) => {
   const res = await Subinstruction.create(data);
-  console.log(res);
   if (res) {
     subinstructions.value = [...subinstructions.value, res.data];
   }

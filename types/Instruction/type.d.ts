@@ -1,5 +1,5 @@
-import type { IInstruction } from "~/types/Instruction/IInstruction";
 import type { IPagination } from "~/types/Base/IPagination";
+import type { IInstruction } from "~/types/Instruction/IInstruction";
 
 type InstructionId = number;
 
@@ -28,8 +28,7 @@ export interface IInstructionPayloadGetById extends IInstructionPayloadBase {
   id: number;
 }
 
-export interface IInstructionResponseGetById
-  extends IPagination<IInstructionResponseBase> {}
+export interface IInstructionResponseGetById extends IInstructionResponseBase {}
 
 export interface IInstructionPayloadUpdate extends IInstructionPayloadBase {
   id: number;

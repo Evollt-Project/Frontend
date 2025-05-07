@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import type { LocationQuery } from "#vue-router";
-
-defineProps<{
+const { type, instruction } = defineProps<{
   instruction: {
     id: number;
     title: string;
@@ -9,11 +7,28 @@ defineProps<{
     short_description: string;
     description: string;
   };
-  toLink: {
-    path: string;
-    query?: LocationQuery; // Используем встроенный тип query
-  };
+  type: "subinstruction" | "instruction";
 }>();
+
+const toLink = computed(() => {
+  switch (type) {
+    case "instruction":
+      return {
+        name: "support-subinstructions",
+        query: {
+          instruction_id: instruction.id,
+        },
+      };
+
+    case "subinstruction":
+      return {
+        name: "support-subinstruction",
+        params: {
+          id: instruction.id,
+        },
+      };
+  }
+});
 </script>
 
 <template>

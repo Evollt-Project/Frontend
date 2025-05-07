@@ -1,21 +1,24 @@
 <script setup lang="ts">
+import { Subinstruction } from "~/composables/useSubinstructions";
+import type { IInstructionResponseGetById } from "~/types/Instruction/type";
 import type {
   ISubinstructionPayloadGetAll,
   ISubinstructionResponseGetAll,
 } from "~/types/Subinstruction/type";
-import { Subinstruction } from "~/composables/useSubinstructions";
-import type { IInstructionResponseGetById } from "~/types/Instruction/type";
 
 definePageMeta({
   layout: "academy-support",
   name: "support-subinstructions",
 });
 
-const route = useRoute();
-const instructionsId = route.query["id"] as string;
-const isLoading = ref<boolean>(false);
+useHead({
+  title: "Подинструкции",
+});
 
-const isInstructionsId: boolean = instructionsId === undefined;
+const route = useRoute();
+const instructionId = ref(route.query["instruction_id"]);
+const isLoading = ref<boolean>(false);
+const instructionTitle = ref("");
 
 const getInstructionsHandle = async (params: ISubinstructionPayloadGetAll) => {
   if (isLoading.value) return;
@@ -24,12 +27,11 @@ const getInstructionsHandle = async (params: ISubinstructionPayloadGetAll) => {
   const res = await Subinstruction.getAll(params);
 
   if (res) {
-    subinstructions.value = res.data;
+    subinstructions.value = res.data.data;
   }
 
   isLoading.value = false;
 };
-console.log("log", isInstructionsId);
 const changeSearchField = useDebounceFn((event: InputEvent) => {
   const target = event.target as HTMLInputElement;
   if (target) {
@@ -39,64 +41,58 @@ const changeSearchField = useDebounceFn((event: InputEvent) => {
   }
 }, User.DEBOUNCE_DELAY);
 
-// const { data: subinstructions } = await useAsyncData(
-//   "subinstructions-data",
-//   async () => {
-//     const url = isHasInstruction
-//       ? `/api/v1/instruction/${instructionsId}`
-//       : "/api/v1/subinstruction";
-//
-//     return await $fetch<
-//       ISubinstructionResponseGetAll | IInstructionResponseGetById
-//     >(url, {
-//       params: {
-//         id: instructionsId,
-//       },
-//     });
-//   },
-// );
-
-const { data: subinstructions } = useAsyncData(
+const { data: subinstructions } = await useAsyncData(
   "subinstructions-data",
   async () => {
-    return await $fetch<
-      IInstructionResponseGetById | ISubinstructionResponseGetAll
-    >("/apijs/request", {
+    if (instructionId.value) {
+      await $fetch<IInstructionResponseGetById>("/apijs/request", {
+        params: {
+          url: `/api/v1/instruction/${instructionId.value}`,
+          params: {
+            per_page: 10000,
+          },
+        },
+      }).then((response) => {
+        instructionTitle.value = response.title;
+
+        return response.subinstructions;
+      });
+    }
+
+    return await $fetch<ISubinstructionResponseGetAll>("/apijs/request", {
       params: {
-        url: !isInstructionsId
-          ? `/api/v1/instruction/${instructionsId}`
-          : `/api/v1/subinstruction`,
-        per_page: 10000,
+        url: "/api/v1/subinstruction",
+        params: {
+          per_page: 10000,
+        },
       },
-    });
+    }).then((response) => response.data);
   },
 );
 </script>
 
 <template>
-  <div class="pt-12 container">
-    <v-text-field
-      hide-details="auto"
-      single-line
-      rounded="lg"
-      @input="changeSearchField"
-      label="Поиск"
-      prepend-inner-icon="mdi-text-box-search"
-      variant="outlined"
-      density="comfortable"
-    />
-
-    <InstructionsList :is-loading="isLoading">
-      <InstructionsCard
-        v-for="(item, index) in !isInstructionsId
-          ? subinstructions.subinstructions
-          : subinstructions.data"
-        :key="index"
-        :instruction="item"
-        :to-link="{
-          path: `/support/subinstructions/${item.id}`,
-        }"
+  <div class="container">
+    <div v-if="instructionId" class="flex justify-center mb-5">
+      <h1 class="text-3xl">{{ subinstructions![0]?.title }}</h1>
+    </div>
+    <div>
+      <v-text-field
+        hide-details="auto"
+        single-line
+        rounded="lg"
+        @input="changeSearchField"
+        label="Поиск"
+        prepend-inner-icon="mdi-text-box-search"
+        variant="outlined"
+        density="comfortable"
       />
-    </InstructionsList>
+
+      <InstructionsList
+        type="subinstruction"
+        :instructions="subinstructions!"
+        :is-loading="isLoading"
+      />
+    </div>
   </div>
 </template>

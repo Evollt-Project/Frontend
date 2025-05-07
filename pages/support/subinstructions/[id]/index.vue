@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import type { IInstructionResponseGetAll } from "~/types/Instruction/type";
+import type { ISubinstructionResponseBase } from "~/types/Subinstruction/type";
 
-const instructionsId = useRoute().params.id;
+const route = useRoute();
+const subinstructionsId = route.params["id"];
 
 definePageMeta({
   layout: "academy-support",
@@ -9,19 +10,24 @@ definePageMeta({
 });
 
 const { data: subinstruction } = await useAsyncData(
-  `subinstruction-${instructionsId}`,
-  () =>
-    $fetch<IInstructionResponseGetAll>("/apijs/request", {
+  `subinstruction-${subinstructionsId}`,
+  async () => {
+    return await $fetch<ISubinstructionResponseBase>("/apijs/request", {
       params: {
-        url: `/api/v1/subinstruction/${instructionsId}`,
+        url: `/api/v1/subinstruction/${subinstructionsId}`,
       },
-    }),
+    });
+  },
 );
+
+useHead({
+  title: "Подинструкция: " + subinstruction.value?.title,
+});
 </script>
 
 <template>
-  <div class="pt-12 container px-[100px]">
-    <div class="text-center text-[24px] mb-12">{{ subinstruction.title }}</div>
-    <MyMdPreview :text="subinstruction.description" />
+  <div class="container">
+    <div class="text-center text-[24px] mb-12">{{ subinstruction?.title }}</div>
+    <MyMdPreview :text="subinstruction?.description" />
   </div>
 </template>

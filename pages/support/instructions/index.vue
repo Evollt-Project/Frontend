@@ -9,6 +9,10 @@ definePageMeta({
   name: "support-instructions",
 });
 
+useHead({
+  title: "Инструкции",
+});
+
 const isLoading = ref<boolean>(false);
 
 const getInstructionsHandle = async (params: IInstructionPayloadGetAll) => {
@@ -46,7 +50,7 @@ const { data: instructions } = useAsyncData("instructions-data", async () => {
 </script>
 
 <template>
-  <div class="pt-12 container">
+  <div class="container">
     <v-text-field
       hide-details="auto"
       single-line
@@ -57,18 +61,10 @@ const { data: instructions } = useAsyncData("instructions-data", async () => {
       variant="outlined"
       density="comfortable"
     />
-    <InstructionsList :is-loading="isLoading">
-      <InstructionsCard
-        v-for="(item, index) in instructions?.data ?? []"
-        :key="index"
-        :instruction="item"
-        :to-link="{
-          path: `/support/subinstructions`,
-          query: {
-            id: item.id,
-          },
-        }"
-      />
-    </InstructionsList>
+    <InstructionsList
+      type="instruction"
+      :instructions="instructions!.data"
+      :is-loading="isLoading"
+    />
   </div>
 </template>

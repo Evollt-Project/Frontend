@@ -12,6 +12,7 @@ export interface ISubinstructionPayloadCreate
   logo: string;
   short_description: string;
   description: string;
+  instruction_id: number;
 }
 
 export interface ISubinstructionResponseCreate

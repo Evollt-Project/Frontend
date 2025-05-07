@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type {
+  IInstructionPayloadCreate,
   IInstructionPayloadGetAll,
   IInstructionResponseGetAll,
 } from "~/types/Instruction/type";
@@ -13,6 +14,7 @@ useHead({
   title: "Инструкции",
 });
 
+const isCrate = ref<boolean>(true);
 const isLoading = ref<boolean>(false);
 
 const getInstructionsHandle = async (params: IInstructionPayloadGetAll) => {
@@ -47,20 +49,34 @@ const { data: instructions } = useAsyncData("instructions-data", async () => {
     },
   });
 });
+
+const createInstruction = async (data: IInstructionPayloadCreate) => {
+  const res = await Instruction.create(data);
+
+  if (res) {
+    instructions.value.data = [...instructions.value.data, res.data];
+  }
+};
 </script>
 
 <template>
   <div class="container">
-    <v-text-field
-      hide-details="auto"
-      single-line
-      rounded="lg"
-      @input="changeSearchField"
-      label="Поиск"
-      prepend-inner-icon="mdi-text-box-search"
-      variant="outlined"
-      density="comfortable"
-    />
+    <div class="flex items-center gap-4">
+      <v-text-field
+        hide-details="auto"
+        single-line
+        rounded="lg"
+        @input="changeSearchField"
+        label="Поиск"
+        prepend-inner-icon="mdi-text-box-search"
+        variant="outlined"
+        density="comfortable"
+      />
+      <div class="h-full">
+        <ModalsInstructions @submit="createInstruction" />
+      </div>
+    </div>
+
     <InstructionsList
       type="instruction"
       :instructions="instructions!.data"

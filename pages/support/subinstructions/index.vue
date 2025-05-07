@@ -2,6 +2,7 @@
 import { Subinstruction } from "~/composables/useSubinstructions";
 import type { IInstructionResponseGetById } from "~/types/Instruction/type";
 import type {
+  ISubinstructionPayloadCreate,
   ISubinstructionPayloadGetAll,
   ISubinstructionResponseGetAll,
 } from "~/types/Subinstruction/type";
@@ -69,6 +70,14 @@ const { data: subinstructions } = await useAsyncData(
     }).then((response) => response.data);
   },
 );
+
+const createSubnstruction = async (data: ISubinstructionPayloadCreate) => {
+  const res = await Subinstruction.create(data);
+  console.log(res);
+  if (res) {
+    subinstructions.value = [...subinstructions.value, res.data];
+  }
+};
 </script>
 
 <template>
@@ -77,16 +86,21 @@ const { data: subinstructions } = await useAsyncData(
       <h1 class="text-3xl">{{ subinstructions![0]?.title }}</h1>
     </div>
     <div>
-      <v-text-field
-        hide-details="auto"
-        single-line
-        rounded="lg"
-        @input="changeSearchField"
-        label="Поиск"
-        prepend-inner-icon="mdi-text-box-search"
-        variant="outlined"
-        density="comfortable"
-      />
+      <div class="flex items-center gap-4">
+        <v-text-field
+          hide-details="auto"
+          single-line
+          rounded="lg"
+          @input="changeSearchField"
+          label="Поиск"
+          prepend-inner-icon="mdi-text-box-search"
+          variant="outlined"
+          density="comfortable"
+        />
+        <div class="h-full">
+          <ModalsSubinstructions @submit="createSubnstruction" />
+        </div>
+      </div>
 
       <InstructionsList
         type="subinstruction"

@@ -15,11 +15,3 @@ onMounted(() => {
     <FooterSupport />
   </div>
 </template>
-
-<style scoped lang="scss">
-.main-content {
-  display: flex;
-  flex: 1 0 auto;
-  flex-direction: column;
-}
-</style>

@@ -4,6 +4,7 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
   const query = getQuery(event);
   const url = query.url as string;
+  const params = query.params ? JSON.parse(query.params as string) : {};
 
   if (!url) {
     return {
@@ -15,6 +16,7 @@ export default defineEventHandler(async (event) => {
   try {
     const { data } = await axios.get(url, {
       baseURL: config.public.url,
+      params,
     });
     return data;
   } catch (error) {

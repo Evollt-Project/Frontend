@@ -34,7 +34,7 @@ const validate = computed(() => {
           <v-form
             v-model="isFormValid"
             @submit.prevent="searchCourses"
-            class="flex justify-between gap-[20px] items-center"
+            class="flex sm:justify-between gap-[20px] sm:items-center flex-col sm:flex-row"
           >
             <v-text-field
               v-model="search.search"
@@ -45,23 +45,27 @@ const validate = computed(() => {
               prepend-inner-icon="mdi-text-box-search"
               variant="outlined"
               density="comfortable"
-            ></v-text-field>
-            <MyButton
-              size="large"
-              prepend-icon="mdi-filter-outline"
-              @click="articleFiltersModal = true"
-            >
-              Фильтры
-            </MyButton>
-            <MyButton
-              size="large"
-              type="submit"
-              :disabled="validate"
-              :loading="loading"
-              prepend-icon="mdi-magnify"
-            >
-              Искать
-            </MyButton>
+              class="w-full"
+            />
+            <div class="sm:flex grid grid-cols-2 gap-[20px]">
+              <MyButton size="large" @click="articleFiltersModal = true">
+                <div class="flex justify-center items-center gap-2">
+                  <v-icon icon="mdi-filter-outline"></v-icon>
+                  <span class="hidden xs:block"> Фильтры </span>
+                </div>
+              </MyButton>
+              <MyButton
+                size="large"
+                type="submit"
+                :disabled="validate"
+                :loading="loading"
+              >
+                <div class="flex justify-center items-center gap-2">
+                  <v-icon icon="mdi-magnify"></v-icon>
+                  <span class="hidden xs:block"> Искать </span>
+                </div>
+              </MyButton>
+            </div>
           </v-form>
         </div>
       </div>

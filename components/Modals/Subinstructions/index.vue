@@ -1,14 +1,19 @@
 <script lang="ts" setup>
 import type { ISubinstructionPayloadCreate } from "~/types/Subinstruction/type";
+import type { IInstructionResponseGetAll } from "~/types/Instruction/type";
 
 const dialog = shallowRef(false);
+
+const props = defineProps<{
+  instructionId: number | null;
+}>();
 
 const params = ref<ISubinstructionPayloadCreate>({
   title: "",
   logo: "",
   short_description: "",
   description: "",
-  instruction_id: 1,
+  instruction_id: props.instructionId ? props.instructionId : null,
 });
 
 const emit = defineEmits(["submit"]);
@@ -16,6 +21,19 @@ const emit = defineEmits(["submit"]);
 const submitData = (data: ISubinstructionPayloadCreate) => {
   data ? emit("submit", data) : null;
 };
+
+const { data: instructions } = useAsyncData("instructions-data", async () => {
+  return await $fetch<IInstructionResponseGetAll>("/apijs/request", {
+    params: {
+      url: "/api/v1/instruction",
+      params: {
+        per_page: 10000,
+      },
+    },
+  }).then((res) => {
+    return res.data;
+  });
+});
 </script>
 
 <template>
@@ -78,6 +96,21 @@ const submitData = (data: ISubinstructionPayloadCreate) => {
                 :rules="Rule.getRequired()"
                 variant="outlined"
                 v-model="params.short_description"
+              />
+            </div>
+            <div>
+              <v-select
+                v-model="params.instruction_id"
+                :items="instructions"
+                :rules="Rule.getRequired()"
+                rounded="lg"
+                item-title="title"
+                item-value="id"
+                label="Инструкция"
+                hide-details="auto"
+                variant="outlined"
+                density="comfortable"
+                :disabled="instructionId"
               />
             </div>
             <div>

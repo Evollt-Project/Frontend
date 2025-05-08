@@ -97,7 +97,10 @@ const createSubnstruction = async (data: ISubinstructionPayloadCreate) => {
           density="comfortable"
         />
         <div class="h-full">
-          <ModalsSubinstructions @submit="createSubnstruction" />
+          <ModalsSubinstructions
+            @submit="createSubnstruction"
+            :instruction-id="instructionId ? instructionId : null"
+          />
         </div>
       </div>
 

@@ -14,7 +14,6 @@ useHead({
   title: "Инструкции",
 });
 
-const isCrate = ref<boolean>(true);
 const isLoading = ref<boolean>(false);
 
 const getInstructionsHandle = async (params: IInstructionPayloadGetAll) => {
@@ -79,7 +78,7 @@ const createInstruction = async (data: IInstructionPayloadCreate) => {
 
     <InstructionsList
       type="instruction"
-      :instructions="instructions!.data"
+      :instructions="instructions?.data ?? []"
       :is-loading="isLoading"
     />
   </div>

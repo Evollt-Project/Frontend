@@ -82,7 +82,7 @@ const createSubnstruction = async (data: ISubinstructionPayloadCreate) => {
 <template>
   <div class="container">
     <div v-if="instructionId" class="flex justify-center mb-5">
-      <h1 class="text-3xl">{{ subinstructions![0]?.title }}</h1>
+      <h1 class="text-3xl">{{ instructionTitle }}</h1>
     </div>
     <div>
       <div class="flex items-center gap-4">
@@ -103,7 +103,7 @@ const createSubnstruction = async (data: ISubinstructionPayloadCreate) => {
 
       <InstructionsList
         type="subinstruction"
-        :instructions="subinstructions!"
+        :instructions="subinstructions ?? []"
         :is-loading="isLoading"
       />
     </div>

@@ -45,7 +45,7 @@ const { data: subinstructions } = await useAsyncData(
   "subinstructions-data",
   async () => {
     if (instructionId.value) {
-      await $fetch<IInstructionResponseGetById>("/apijs/request", {
+      return await $fetch<IInstructionResponseGetById>("/apijs/request", {
         params: {
           url: `/api/v1/instruction/${instructionId.value}`,
           params: {

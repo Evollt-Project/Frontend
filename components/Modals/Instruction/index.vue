@@ -18,7 +18,6 @@ const data = ref<IInstructionPayloadCreate>({
   title: "",
   logo: "",
   short_description: "",
-  description: "",
 });
 
 watch(dialog, (value) => {
@@ -49,7 +48,7 @@ const createInstruction = () => {
 <template>
   <component
     :is="width > MOBILE_VERSION_WIDTH ? VDialog : VBottomSheet"
-    :max-width="width > MOBILE_VERSION_WIDTH ? 1500 : MOBILE_VERSION_WIDTH"
+    :max-width="width > MOBILE_VERSION_WIDTH ? 800 : MOBILE_VERSION_WIDTH"
     v-model="dialog"
     :persistent="loading"
   >
@@ -77,27 +76,25 @@ const createInstruction = () => {
 
         <v-card-text class="dark:text-white scrollable-content">
           <v-form v-model="isFormValid" class="grid gap-5">
-            <div class="grid grid-cols-2 gap-5">
-              <div>
-                <v-text-field
-                  hide-details="auto"
-                  rounded="lg"
-                  label="Название"
-                  :rules="Rule.getRequired()"
-                  variant="outlined"
-                  v-model="data.title"
-                />
-              </div>
-              <div>
-                <v-text-field
-                  hide-details="auto"
-                  rounded="lg"
-                  label="Картинка"
-                  :rules="Rule.getRequired()"
-                  variant="outlined"
-                  v-model="data.logo"
-                />
-              </div>
+            <div>
+              <v-text-field
+                hide-details="auto"
+                rounded="lg"
+                label="Название"
+                :rules="Rule.getRequired()"
+                variant="outlined"
+                v-model="data.title"
+              />
+            </div>
+            <div>
+              <v-text-field
+                hide-details="auto"
+                rounded="lg"
+                label="Картинка"
+                :rules="Rule.getRequired()"
+                variant="outlined"
+                v-model="data.logo"
+              />
             </div>
             <div>
               <v-textarea
@@ -115,12 +112,6 @@ const createInstruction = () => {
                   {{ data.short_description?.length ?? 0 }}/500
                 </template>
               </v-textarea>
-            </div>
-            <div>
-              <MyMdEditor
-                :text="data.description"
-                @update:text="data.description = $event"
-              />
             </div>
             <div class="flex justify-end gap-5">
               <MyButton size="large" color="danger" @click="dialog = false">

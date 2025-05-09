@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Subinstruction } from "~/composables/useSubinstructions";
+import { Subinstruction } from "~/composables/useSubinstruction";
 import type { IInstructionResponseGetById } from "~/types/Instruction/type";
 import type {
   ISubinstructionPayloadGetAll,

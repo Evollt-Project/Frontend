@@ -14,12 +14,16 @@ useHead({
 });
 
 const isLoading = ref<boolean>(false);
+const createInstructionModal = ref(false);
 
 const getInstructionsHandle = async (params: IInstructionPayloadGetAll) => {
   if (isLoading.value) return;
 
   isLoading.value = true;
-  const res = await Instruction.getAll(params);
+  const res = await Instruction.getAll({
+    per_page: 10000,
+    ...params,
+  });
 
   if (res) {
     instructions.value = res.data;
@@ -51,20 +55,38 @@ const { data: instructions } = useAsyncData("instructions-data", async () => {
 
 <template>
   <div class="container">
-    <v-text-field
-      hide-details="auto"
-      single-line
-      rounded="lg"
-      @input="changeSearchField"
-      label="Поиск"
-      prepend-inner-icon="mdi-text-box-search"
-      variant="outlined"
-      density="comfortable"
-    />
+    <div class="flex items-center gap-4">
+      <v-text-field
+        hide-details="auto"
+        single-line
+        rounded="lg"
+        @input="changeSearchField"
+        label="Поиск"
+        prepend-inner-icon="mdi-text-box-search"
+        variant="outlined"
+        density="comfortable"
+      />
+      <div v-if="User.hasPermission(User.ADMIN)">
+        <MyButton
+          prepend-icon="mdi-plus"
+          size="large"
+          @click="createInstructionModal = true"
+        >
+          Создать
+        </MyButton>
+      </div>
+    </div>
+
     <InstructionsList
       type="instruction"
-      :instructions="instructions!.data"
+      :instructions="instructions?.data ?? []"
       :is-loading="isLoading"
+    />
+    <ModalsInstruction
+      v-if="createInstructionModal"
+      :dialog="createInstructionModal"
+      @update:dialog="createInstructionModal = $event"
+      @on-create="getInstructionsHandle"
     />
   </div>
 </template>

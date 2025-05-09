@@ -10,7 +10,6 @@ export interface IInstructionPayloadCreate extends IInstructionPayloadBase {
   title: string;
   logo: string;
   short_description: string;
-  description: string;
 }
 
 export interface IInstructionResponseCreate extends IInstructionResponseBase {}

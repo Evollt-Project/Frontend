@@ -9,6 +9,22 @@ const { type, instruction } = defineProps<{
   };
   type: "subinstruction" | "instruction";
 }>();
+const editInstructionModal = ref(false);
+const editSubinstructionModal = ref(false);
+const route = useRoute();
+const instructionId = ref(
+  route.query["instruction_id"]
+    ? Number(route.query["instruction_id"])
+    : undefined,
+);
+
+const handleClick = () => {
+  if (type === "instruction") {
+    editInstructionModal.value = true;
+  } else {
+    editSubinstructionModal.value = true;
+  }
+};
 
 const toLink = computed(() => {
   switch (type) {
@@ -50,9 +66,29 @@ const toLink = computed(() => {
         </div>
       </div>
       <div class="absolute right-[35px] bottom-[20px]">
-        Подробнее
-        <v-icon icon="mdi-chevron-right" />
+        <div class="flex items-center gap-5">
+          <div @click.prevent="handleClick">
+            <v-icon icon="mdi-pencil" />
+          </div>
+          <div>
+            Подробнее
+            <v-icon icon="mdi-chevron-right" />
+          </div>
+        </div>
       </div>
     </div>
   </NuxtLink>
+  <ModalsInstruction
+    v-if="editInstructionModal"
+    :dialog="editInstructionModal"
+    :instruction="instruction"
+    @update:dialog="editInstructionModal = $event"
+  />
+  <ModalsSubinstruction
+    v-if="editSubinstructionModal"
+    :dialog="editSubinstructionModal"
+    :subinstruction="instruction"
+    :instruction-id="instructionId"
+    @update:dialog="editSubinstructionModal = $event"
+  />
 </template>

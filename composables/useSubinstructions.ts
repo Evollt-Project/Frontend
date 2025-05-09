@@ -1,12 +1,12 @@
 import type {
   ISubinstructionPayloadCreate,
-  ISubinstructionPayloadUpdate,
-  ISubinstructionPayloadGetAll,
   ISubinstructionPayloadDelete,
+  ISubinstructionPayloadGetAll,
+  ISubinstructionPayloadUpdate,
   ISubinstructionResponseCreate,
+  ISubinstructionResponseDelete,
   ISubinstructionResponseGetAll,
   ISubinstructionResponseUpdate,
-  ISubinstructionResponseDelete,
 } from "~/types/Subinstruction/type";
 
 export class Subinstruction {

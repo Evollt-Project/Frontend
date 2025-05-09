@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type {
-  IInstructionPayloadCreate,
   IInstructionPayloadGetAll,
   IInstructionResponseGetAll,
 } from "~/types/Instruction/type";
@@ -15,12 +14,16 @@ useHead({
 });
 
 const isLoading = ref<boolean>(false);
+const createInstructionModal = ref(false);
 
 const getInstructionsHandle = async (params: IInstructionPayloadGetAll) => {
   if (isLoading.value) return;
 
   isLoading.value = true;
-  const res = await Instruction.getAll(params);
+  const res = await Instruction.getAll({
+    per_page: 10000,
+    ...params,
+  });
 
   if (res) {
     instructions.value = res.data;
@@ -48,14 +51,6 @@ const { data: instructions } = useAsyncData("instructions-data", async () => {
     },
   });
 });
-
-const createInstruction = async (data: IInstructionPayloadCreate) => {
-  const res = await Instruction.create(data);
-
-  if (res) {
-    instructions.value.data = [...instructions.value.data, res.data];
-  }
-};
 </script>
 
 <template>
@@ -72,7 +67,13 @@ const createInstruction = async (data: IInstructionPayloadCreate) => {
         density="comfortable"
       />
       <div class="h-full">
-        <ModalsInstructions @submit="createInstruction" />
+        <MyButton
+          prepend-icon="mdi-plus"
+          size="large"
+          @click="createInstructionModal = true"
+        >
+          Создать
+        </MyButton>
       </div>
     </div>
 
@@ -80,6 +81,12 @@ const createInstruction = async (data: IInstructionPayloadCreate) => {
       type="instruction"
       :instructions="instructions?.data ?? []"
       :is-loading="isLoading"
+    />
+    <ModalsInstruction
+      v-if="createInstructionModal"
+      :dialog="createInstructionModal"
+      @update:dialog="createInstructionModal = $event"
+      @on-create="getInstructionsHandle"
     />
   </div>
 </template>

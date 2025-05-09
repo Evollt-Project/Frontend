@@ -1,5 +1,5 @@
-import type { ISubinstruction } from "~/types/Subinstruction/ISubinstruction";
 import type { IPagination } from "~/types/Base/IPagination";
+import type { ISubinstruction } from "~/types/Subinstruction/ISubinstruction";
 
 type SubinstructionId = number;
 
@@ -12,7 +12,7 @@ export interface ISubinstructionPayloadCreate
   logo: string;
   short_description: string;
   description: string;
-  instruction_id: number;
+  instruction_id?: number;
 }
 
 export interface ISubinstructionResponseCreate

@@ -2,7 +2,6 @@
 import { Subinstruction } from "~/composables/useSubinstructions";
 import type { IInstructionResponseGetById } from "~/types/Instruction/type";
 import type {
-  ISubinstructionPayloadCreate,
   ISubinstructionPayloadGetAll,
   ISubinstructionResponseGetAll,
 } from "~/types/Subinstruction/type";
@@ -17,15 +16,25 @@ useHead({
 });
 
 const route = useRoute();
-const instructionId = ref(route.query["instruction_id"]);
+const instructionId = ref(
+  route.query["instruction_id"]
+    ? Number(route.query["instruction_id"])
+    : undefined,
+);
 const isLoading = ref<boolean>(false);
 const instructionTitle = ref("");
+const createSubinstructionModal = ref(false);
 
-const getInstructionsHandle = async (params: ISubinstructionPayloadGetAll) => {
+const getSubinstructionsHandle = async (
+  params: ISubinstructionPayloadGetAll = {},
+) => {
   if (isLoading.value) return;
 
   isLoading.value = true;
-  const res = await Subinstruction.getAll(params);
+  const res = await Subinstruction.getAll({
+    per_page: 10000,
+    ...params,
+  });
 
   if (res) {
     subinstructions.value = res.data.data;
@@ -36,7 +45,7 @@ const getInstructionsHandle = async (params: ISubinstructionPayloadGetAll) => {
 const changeSearchField = useDebounceFn((event: InputEvent) => {
   const target = event.target as HTMLInputElement;
   if (target) {
-    getInstructionsHandle({
+    getSubinstructionsHandle({
       search: target.value,
     });
   }
@@ -70,13 +79,6 @@ const { data: subinstructions } = await useAsyncData(
     }).then((response) => response.data);
   },
 );
-
-const createSubnstruction = async (data: ISubinstructionPayloadCreate) => {
-  const res = await Subinstruction.create(data);
-  if (res) {
-    subinstructions.value = [...subinstructions.value, res.data];
-  }
-};
 </script>
 
 <template>
@@ -96,11 +98,14 @@ const createSubnstruction = async (data: ISubinstructionPayloadCreate) => {
           variant="outlined"
           density="comfortable"
         />
-        <div class="h-full">
-          <ModalsSubinstructions
-            @submit="createSubnstruction"
-            :instruction-id="instructionId ? instructionId : null"
-          />
+        <div>
+          <MyButton
+            prepend-icon="mdi-plus"
+            size="large"
+            @click="createSubinstructionModal = true"
+          >
+            Создать
+          </MyButton>
         </div>
       </div>
 
@@ -108,6 +113,13 @@ const createSubnstruction = async (data: ISubinstructionPayloadCreate) => {
         type="subinstruction"
         :instructions="subinstructions ?? []"
         :is-loading="isLoading"
+      />
+      <ModalsSubinstruction
+        v-if="createSubinstructionModal"
+        :dialog="createSubinstructionModal"
+        :instruction-id="instructionId"
+        @update:dialog="createSubinstructionModal = $event"
+        @on-create="getSubinstructionsHandle"
       />
     </div>
   </div>

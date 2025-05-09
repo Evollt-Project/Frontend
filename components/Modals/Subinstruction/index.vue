@@ -130,7 +130,7 @@ onMounted(() => {
               <v-textarea
                 v-model="data.short_description"
                 id="short-content"
-                :rules="Rule.getMinAndMaxLengthAndRequired(500, 100)"
+                :rules="Rule.getMinAndMaxLengthAndRequired(255, 100)"
                 :disabled="loading"
                 rounded="lg"
                 label="Краткое описание"

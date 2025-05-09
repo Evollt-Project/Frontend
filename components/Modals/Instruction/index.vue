@@ -3,10 +3,12 @@ import { useWindowSize } from "@vueuse/core";
 import { toast } from "vue3-toastify";
 import { VBottomSheet, VDialog } from "vuetify/components";
 import { MOBILE_VERSION_WIDTH } from "~/consts/config";
+import type { IInstruction } from "~/types/Instruction/IInstruction";
 import type { IInstructionPayloadCreate } from "~/types/Instruction/type";
 
 const props = defineProps<{
   dialog: boolean;
+  instruction?: IInstruction;
 }>();
 const emits = defineEmits(["update:dialog", "on-create"]);
 
@@ -15,9 +17,9 @@ const { width } = useWindowSize();
 const loading = ref(false);
 const isFormValid = ref(false);
 const data = ref<IInstructionPayloadCreate>({
-  title: "",
-  logo: "",
-  short_description: "",
+  title: props.instruction?.title ?? "",
+  logo: props.instruction?.logo ?? "",
+  short_description: props.instruction?.short_description ?? "",
 });
 
 watch(dialog, (value) => {
@@ -31,8 +33,23 @@ watch(
   },
 );
 
-const createInstruction = () => {
-  Instruction.create(data.value)
+const submitInstruction = () => {
+  if (props.instruction) {
+    return Instruction.update({
+      id: props.instruction.id,
+      ...data.value,
+    })
+      .then(() => {
+        toast.success("Инструкция изменена");
+        emits("on-create");
+
+        dialog.value = false;
+      })
+      .catch((response) => {
+        useErrorNotification(response.response.data.errors);
+      });
+  }
+  return Instruction.create(data.value)
     .then(() => {
       toast.success("Инструкция создана");
       emits("on-create");
@@ -75,7 +92,11 @@ const createInstruction = () => {
         </v-card-title>
 
         <v-card-text class="dark:text-white scrollable-content">
-          <v-form v-model="isFormValid" class="grid gap-5">
+          <v-form
+            v-model="isFormValid"
+            class="grid gap-5"
+            @submit.prevent="submitInstruction"
+          >
             <div>
               <v-text-field
                 hide-details="auto"
@@ -118,10 +139,10 @@ const createInstruction = () => {
                 Закрыть
               </MyButton>
               <MyButton
+                type="submit"
                 size="large"
                 :disabled="!isFormValid"
                 color="success"
-                @click="createInstruction"
               >
                 Сохранить
               </MyButton>

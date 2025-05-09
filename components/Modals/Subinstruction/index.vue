@@ -4,11 +4,13 @@ import { toast } from "vue3-toastify";
 import { VBottomSheet, VDialog } from "vuetify/components";
 import { MOBILE_VERSION_WIDTH } from "~/consts/config";
 import type { IInstruction } from "~/types/Instruction/IInstruction";
+import type { ISubinstruction } from "~/types/Subinstruction/ISubinstruction";
 import type { ISubinstructionPayloadCreate } from "~/types/Subinstruction/type";
 
 const props = defineProps<{
   dialog: boolean;
   instructionId?: number;
+  subinstruction?: ISubinstruction;
 }>();
 const emits = defineEmits(["update:dialog", "on-create"]);
 
@@ -18,11 +20,11 @@ const loading = ref(false);
 const isFormValid = ref(false);
 const instructions: Ref<IInstruction[]> = ref([]);
 const data = ref<ISubinstructionPayloadCreate>({
-  title: "",
-  logo: "",
-  short_description: "",
-  description: "",
-  instruction_id: undefined,
+  title: props.subinstruction?.title ?? "",
+  logo: props.subinstruction?.logo ?? "",
+  short_description: props.subinstruction?.short_description ?? "",
+  description: props.subinstruction?.description ?? "",
+  instruction_id: props.instructionId ?? undefined,
 });
 
 watch(dialog, (value) => {
@@ -36,8 +38,23 @@ watch(
   },
 );
 
-const createSubinstruction = () => {
-  Subinstruction.create(data.value)
+const submitSubinstruction = () => {
+  if (props.subinstruction) {
+    return Subinstruction.update({
+      id: props.subinstruction.id,
+      ...data.value,
+    })
+      .then(() => {
+        toast.success("Подинструкция изменена");
+        emits("on-create");
+
+        dialog.value = false;
+      })
+      .catch((response) => {
+        useErrorNotification(response.response.data.errors);
+      });
+  }
+  return Subinstruction.create(data.value)
     .then(() => {
       toast.success("Подинструкция создана");
       emits("on-create");
@@ -89,7 +106,11 @@ onMounted(() => {
         </v-card-title>
 
         <v-card-text class="dark:text-white scrollable-content">
-          <v-form v-model="isFormValid" class="grid gap-5">
+          <v-form
+            v-model="isFormValid"
+            class="grid gap-5"
+            @submit.prevent="submitSubinstruction"
+          >
             <div class="grid grid-cols-2 gap-5">
               <div>
                 <v-text-field
@@ -154,10 +175,10 @@ onMounted(() => {
                 Закрыть
               </MyButton>
               <MyButton
+                type="submit"
                 size="large"
                 :disabled="!isFormValid"
                 color="success"
-                @click="createSubinstruction"
               >
                 Сохранить
               </MyButton>

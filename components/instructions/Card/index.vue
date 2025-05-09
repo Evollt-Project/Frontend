@@ -11,6 +11,12 @@ const { type, instruction } = defineProps<{
 }>();
 const editInstructionModal = ref(false);
 const editSubinstructionModal = ref(false);
+const route = useRoute();
+const instructionId = ref(
+  route.query["instruction_id"]
+    ? Number(route.query["instruction_id"])
+    : undefined,
+);
 
 const handleClick = () => {
   if (type === "instruction") {
@@ -72,14 +78,17 @@ const toLink = computed(() => {
       </div>
     </div>
   </NuxtLink>
-  <ModalsInstructionEdit
+  <ModalsInstruction
+    v-if="editInstructionModal"
     :dialog="editInstructionModal"
     :instruction="instruction"
-    v-if="editInstructionModal"
+    @update:dialog="editInstructionModal = $event"
   />
-  <ModalsSubinstructionEdit
+  <ModalsSubinstruction
+    v-if="editSubinstructionModal"
     :dialog="editSubinstructionModal"
     :subinstruction="instruction"
-    v-if="editSubinstructionModal"
+    :instruction-id="instructionId"
+    @update:dialog="editSubinstructionModal = $event"
   />
 </template>

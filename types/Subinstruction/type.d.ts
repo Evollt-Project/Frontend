@@ -22,6 +22,7 @@ export interface ISubinstructionPayloadGetAll
   extends ISubinstructionPayloadBase {
   page?: number;
   search?: string;
+  instruction_id?: number;
   per_page?: number;
 }
 

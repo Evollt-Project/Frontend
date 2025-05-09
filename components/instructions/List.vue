@@ -14,7 +14,7 @@ defineProps<{
 
 <template>
   <div
-    v-if="!isLoading && instructions.length > 0"
+    v-if="isLoading || instructions.length > 0"
     class="mt-12 grid grid-cols-[repeat(auto-fit,minmax(293px,1fr))] sm:grid-cols-[repeat(auto-fit,minmax(400px,1fr))] gap-6"
   >
     <div v-if="isLoading" v-for="_ in 3">

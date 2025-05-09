@@ -16,9 +16,6 @@ export class Subinstruction {
     return await useRequest<ISubinstructionResponseGetAll>({
       url: this.BASE_URL,
       params,
-    }).catch((response) => {
-      useErrorNotification(response.response.data);
-      return null;
     });
   }
 

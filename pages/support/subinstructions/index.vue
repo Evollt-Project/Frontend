@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { Subinstruction } from "~/composables/useSubinstruction";
-import type { IInstructionResponseGetById } from "~/types/Instruction/type";
 import type {
   ISubinstructionPayloadGetAll,
   ISubinstructionResponseGetAll,
@@ -31,14 +29,14 @@ const getSubinstructionsHandle = async (
   if (isLoading.value) return;
 
   isLoading.value = true;
-  const res = await Subinstruction.getAll({
-    per_page: 10000,
-    ...params,
-  });
 
-  if (res) {
-    subinstructions.value = res.data.data;
-  }
+  await Subinstruction.getAll({
+    per_page: 10000,
+    instruction_id: instructionId.value,
+    ...params,
+  }).then((response) => {
+    subinstructions.value = response.data.data;
+  });
 
   isLoading.value = false;
 };
@@ -54,29 +52,21 @@ const changeSearchField = useDebounceFn((event: InputEvent) => {
 const { data: subinstructions } = await useAsyncData(
   "subinstructions-data",
   async () => {
-    if (instructionId.value) {
-      return await $fetch<IInstructionResponseGetById>("/apijs/request", {
-        params: {
-          url: `/api/v1/instruction/${instructionId.value}`,
-          params: {
-            per_page: 10000,
-          },
-        },
-      }).then((response) => {
-        instructionTitle.value = response.title;
-
-        return response.subinstructions;
-      });
-    }
-
     return await $fetch<ISubinstructionResponseGetAll>("/apijs/request", {
       params: {
         url: "/api/v1/subinstruction",
         params: {
           per_page: 10000,
+          instruction_id: instructionId.value,
         },
       },
-    }).then((response) => response.data);
+    }).then((response) => {
+      if (instructionId.value && response.data[0]) {
+        instructionTitle.value = response.data[0].instruction.title;
+      }
+
+      return response.data;
+    });
   },
 );
 </script>

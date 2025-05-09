@@ -98,7 +98,7 @@ const { data: subinstructions } = await useAsyncData(
           variant="outlined"
           density="comfortable"
         />
-        <div>
+        <div v-if="User.hasPermission(User.ADMIN)">
           <MyButton
             prepend-icon="mdi-plus"
             size="large"

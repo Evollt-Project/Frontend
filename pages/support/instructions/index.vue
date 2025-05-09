@@ -66,7 +66,7 @@ const { data: instructions } = useAsyncData("instructions-data", async () => {
         variant="outlined"
         density="comfortable"
       />
-      <div class="h-full">
+      <div v-if="User.hasPermission(User.ADMIN)">
         <MyButton
           prepend-icon="mdi-plus"
           size="large"

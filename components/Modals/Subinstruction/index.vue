@@ -139,7 +139,7 @@ onMounted(() => {
                 messages="Для публикации нужно больше 100 символов"
               >
                 <template #details>
-                  {{ data.short_description?.length ?? 0 }}/500
+                  {{ data.short_description?.length ?? 0 }}/255
                 </template>
               </v-textarea>
             </div>

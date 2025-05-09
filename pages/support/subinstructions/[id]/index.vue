@@ -27,7 +27,23 @@ useHead({
 
 <template>
   <div class="container">
-    <div class="text-center text-[24px] mb-12">{{ subinstruction?.title }}</div>
+    <div class="flex items-center justify-between my-[30px]">
+      <MyBackButton
+        :to="{
+          name: 'support-subinstructions',
+          query: {
+            instruction_id: subinstructionsId,
+          },
+        }"
+        class="flex-shrink-0"
+      />
+      <div class="text-center text-[24px] flex-grow mx-4">
+        {{ subinstruction?.title }}
+      </div>
+
+      <div class="flex-shrink-0 w-[40px]"></div>
+    </div>
+
     <MyMdPreview :text="subinstruction?.description" />
   </div>
 </template>

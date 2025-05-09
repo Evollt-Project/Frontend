@@ -50,7 +50,7 @@ const { data: instructions } = useAsyncData("instructions-data", async () => {
 </script>
 
 <template>
-  <div class="container">
+  <div class="container mt-[30px]">
     <v-text-field
       hide-details="auto"
       single-line

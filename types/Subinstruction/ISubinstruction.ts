@@ -7,5 +7,5 @@ export interface ISubinstruction {
   logo: string;
   short_description: string;
   description: string;
-  instruction: IInstruction;
+  instruction?: IInstruction;
 }

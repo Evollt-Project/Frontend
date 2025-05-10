@@ -81,7 +81,7 @@ onMounted(() => {
     :is="width > MOBILE_VERSION_WIDTH ? VDialog : VBottomSheet"
     :max-width="width > MOBILE_VERSION_WIDTH ? 1500 : MOBILE_VERSION_WIDTH"
     v-model="dialog"
-    :persistent="loading"
+    persistent
   >
     <template v-if="dialog">
       <v-card
@@ -151,13 +151,12 @@ onMounted(() => {
               <v-textarea
                 v-model="data.short_description"
                 id="short-content"
-                :rules="Rule.getMinAndMaxLengthAndRequired(255, 100)"
+                :rules="Rule.getRequired()"
                 :disabled="loading"
                 rounded="lg"
                 label="Краткое описание"
                 variant="outlined"
                 density="comfortable"
-                messages="Для публикации нужно больше 100 символов"
               >
                 <template #details>
                   {{ data.short_description?.length ?? 0 }}/255

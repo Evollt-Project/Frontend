@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { toast } from "vue3-toastify";
+
 const { type, instruction } = defineProps<{
   instruction: {
     id: number;
@@ -9,9 +11,12 @@ const { type, instruction } = defineProps<{
   };
   type: "subinstruction" | "instruction";
 }>();
+const emits = defineEmits(["update:instructions"]);
 const editInstructionModal = ref(false);
 const editSubinstructionModal = ref(false);
 const route = useRoute();
+const loading = ref(false);
+const deleteInstructionModal = ref(false);
 const instructionId = ref(
   route.query["instruction_id"]
     ? Number(route.query["instruction_id"])
@@ -45,6 +50,21 @@ const toLink = computed(() => {
       };
   }
 });
+
+const deleteInstruction = async () => {
+  if (type === "instruction") {
+    await Instruction.delete({ id: instruction.id }).then(() => {
+      toast.success("Инструкция удалена");
+    });
+  } else {
+    await Subinstruction.delete({ id: instruction.id }).then(() => {
+      toast.success("Подинструкция удалена");
+    });
+  }
+
+  emits("update:instructions");
+  deleteInstructionModal.value = false;
+};
 </script>
 
 <template>
@@ -67,7 +87,16 @@ const toLink = computed(() => {
       </div>
       <div class="absolute right-[35px] bottom-[20px]">
         <div class="flex items-center gap-5">
-          <div @click.prevent="handleClick">
+          <div
+            v-if="User.hasPermission(User.ADMIN)"
+            @click.prevent="deleteInstructionModal = true"
+          >
+            <v-icon icon="mdi-delete-outline" />
+          </div>
+          <div
+            v-if="User.hasPermission(User.ADMIN)"
+            @click.prevent="handleClick"
+          >
             <v-icon icon="mdi-pencil" />
           </div>
           <div>
@@ -78,6 +107,17 @@ const toLink = computed(() => {
       </div>
     </div>
   </NuxtLink>
+  <ModalsConfirmAction
+    :dialog="deleteInstructionModal"
+    :loading="loading"
+    @action="deleteInstruction"
+    @dialog="deleteInstructionModal = $event"
+  >
+    <template #content>
+      Вы уверены, что хотите удалить <strong>{{ instruction.title }}</strong>
+    </template>
+  </ModalsConfirmAction>
+
   <ModalsInstruction
     v-if="editInstructionModal"
     :dialog="editInstructionModal"

@@ -61,7 +61,7 @@ const { data: subinstructions } = await useAsyncData(
         },
       },
     }).then((response) => {
-      if (instructionId.value && response.data[0]) {
+      if (instructionId.value && response.data[0]?.instruction) {
         instructionTitle.value = response.data[0].instruction.title;
       }
 
@@ -113,6 +113,7 @@ const { data: subinstructions } = await useAsyncData(
         type="subinstruction"
         :instructions="subinstructions ?? []"
         :is-loading="isLoading"
+        @update:instructions="getSubinstructionsHandle"
       />
       <ModalsSubinstruction
         v-if="createSubinstructionModal"

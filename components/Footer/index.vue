@@ -1,10 +1,6 @@
 <script setup lang="ts">
-const socialLinks = computed(() => ({
-  vk: process.env.VK_COMMUNITY || "https://vk.com",
-  reddit: process.env.REDDIT_COMMUNITY || "https://reddit.com",
-  telegram: process.env.TELEGRAM_COMMUNITY || "https://telegram.org",
-  discord: process.env.DISCORD_COMMUNITY || "https://discord.com/",
-}));
+const config = useRuntimeConfig();
+const year = new Date().getFullYear();
 </script>
 
 <template>
@@ -22,7 +18,7 @@ const socialLinks = computed(() => ({
       </div>
       <div class="flex flex-col gap-2 whitespace-nowrap">
         <div class="font-semibold mb-2 text-xl">О компании</div>
-        <div>© 2025 Evollt Academy</div>
+        <div>© {{ year }} Evollt Academy</div>
         <div>
           <a href="" target="_blank">Пользовательское соглашение</a>
         </div>
@@ -53,18 +49,18 @@ const socialLinks = computed(() => ({
           >Свяжитесь с нами</div
         >
         <div>
-          <div class="flex gap-2 w-full flex-shrink-0">
-            <a :href="socialLinks.vk" target="_blank">
-              <IconsVk height="26px" width="26px" class="flex-shrink-0" />
+          <div class="flex gap-2 w-full">
+            <a :href="config.public.vk" target="_blank">
+              <IconsVk height="26px" width="26px" />
             </a>
-            <a :href="socialLinks.reddit" target="_blank">
-              <IconsReddit height="26px" width="26px" class="flex-shrink-0" />
+            <a :href="config.public.reddit" target="_blank">
+              <IconsReddit height="26px" width="26px" />
             </a>
-            <a :href="socialLinks.telegram" target="_blank">
-              <IconsTelegram height="26px" width="26px" class="flex-shrink-0" />
+            <a :href="config.public.telegram" target="_blank">
+              <IconsTelegram height="26px" width="26px" />
             </a>
-            <a :href="socialLinks.discord" target="_blank">
-              <IconsDiscord height="26px" width="26px" class="flex-shrink-0" />
+            <a :href="config.public.discord" target="_blank">
+              <IconsDiscord height="26px" width="26px" />
             </a>
           </div>
         </div>

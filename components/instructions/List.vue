@@ -10,6 +10,7 @@ defineProps<{
   }[];
   type: "subinstruction" | "instruction";
 }>();
+const emits = defineEmits(["update:instructions"]);
 </script>
 
 <template>
@@ -26,6 +27,7 @@ defineProps<{
       :key="item.id"
       :instruction="item"
       :type="type"
+      @update:instructions="emits('update:instructions')"
     />
   </div>
   <div v-else class="flex justify-center mt-5">

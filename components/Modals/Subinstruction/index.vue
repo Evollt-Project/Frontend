@@ -81,7 +81,7 @@ onMounted(() => {
     :is="width > MOBILE_VERSION_WIDTH ? VDialog : VBottomSheet"
     :max-width="width > MOBILE_VERSION_WIDTH ? 1500 : MOBILE_VERSION_WIDTH"
     v-model="dialog"
-    :persistent="loading"
+    persistent
   >
     <template v-if="dialog">
       <v-card

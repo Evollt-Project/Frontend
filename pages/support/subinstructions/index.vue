@@ -103,6 +103,7 @@ const { data: subinstructions } = await useAsyncData(
         type="subinstruction"
         :instructions="subinstructions ?? []"
         :is-loading="isLoading"
+        @update:instructions="getSubinstructionsHandle"
       />
       <ModalsSubinstruction
         v-if="createSubinstructionModal"

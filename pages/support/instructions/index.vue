@@ -81,6 +81,7 @@ const { data: instructions } = useAsyncData("instructions-data", async () => {
       type="instruction"
       :instructions="instructions?.data ?? []"
       :is-loading="isLoading"
+      @update:instructions="getInstructionsHandle"
     />
     <ModalsInstruction
       v-if="createInstructionModal"

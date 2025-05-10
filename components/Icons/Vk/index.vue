@@ -1,9 +1,7 @@
-<script setup lang="ts"></script>
-
 <template>
   <svg
-    height="36px"
-    width="36px"
+    height="26px"
+    width="26px"
     version="1.1"
     class="fill-black dark:fill-white"
     id="Layer_1"

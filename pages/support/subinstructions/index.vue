@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { Subinstruction } from "~/composables/useSubinstructions";
-import type { IInstructionResponseGetById } from "~/types/Instruction/type";
 import type {
   ISubinstructionPayloadGetAll,
   ISubinstructionResponseGetAll,
@@ -16,26 +14,36 @@ useHead({
 });
 
 const route = useRoute();
-const instructionId = ref(route.query["instruction_id"]);
+const instructionId = ref(
+  route.query["instruction_id"]
+    ? Number(route.query["instruction_id"])
+    : undefined,
+);
 const isLoading = ref<boolean>(false);
 const instructionTitle = ref("");
+const createSubinstructionModal = ref(false);
 
-const getInstructionsHandle = async (params: ISubinstructionPayloadGetAll) => {
+const getSubinstructionsHandle = async (
+  params: ISubinstructionPayloadGetAll = {},
+) => {
   if (isLoading.value) return;
 
   isLoading.value = true;
-  const res = await Subinstruction.getAll(params);
 
-  if (res) {
-    subinstructions.value = res.data.data;
-  }
+  await Subinstruction.getAll({
+    per_page: 10000,
+    instruction_id: instructionId.value,
+    ...params,
+  }).then((response) => {
+    subinstructions.value = response.data.data;
+  });
 
   isLoading.value = false;
 };
 const changeSearchField = useDebounceFn((event: InputEvent) => {
   const target = event.target as HTMLInputElement;
   if (target) {
-    getInstructionsHandle({
+    getSubinstructionsHandle({
       search: target.value,
     });
   }
@@ -44,61 +52,74 @@ const changeSearchField = useDebounceFn((event: InputEvent) => {
 const { data: subinstructions } = await useAsyncData(
   "subinstructions-data",
   async () => {
-    if (instructionId.value) {
-      return await $fetch<IInstructionResponseGetById>("/apijs/request", {
-        params: {
-          url: `/api/v1/instruction/${instructionId.value}`,
-          params: {
-            per_page: 10000,
-          },
-        },
-      }).then((response) => {
-        instructionTitle.value = response.title;
-
-        return response.subinstructions;
-      });
-    }
-
     return await $fetch<ISubinstructionResponseGetAll>("/apijs/request", {
       params: {
         url: "/api/v1/subinstruction",
         params: {
           per_page: 10000,
+          instruction_id: instructionId.value,
         },
       },
-    }).then((response) => response.data);
+    }).then((response) => {
+      if (instructionId.value && response.data[0]) {
+        instructionTitle.value = response.data[0].instruction.title;
+      }
+
+      return response.data;
+    });
   },
 );
 </script>
 
 <template>
-  <div class="container mt-[30px]">
-    <div class="mb-[10px]" v-if="instructionId">
-      <MyBackButton
-        :to="{
-          name: 'support-instructions',
-        }"
-      />
-    </div>
-    <div v-if="instructionId" class="flex justify-center mb-5">
-      <h1 class="text-3xl">{{ subinstructions![0]?.title }}</h1>
+  <div class="container">
+    <div class="mb-[40px] flex justify-between items-center">
+      <div v-if="instructionId">
+        <MyBackButton
+          :to="{
+            name: 'support-instructions',
+          }"
+        />
+      </div>
+      <div v-if="instructionId" class="">
+        <h1 class="text-3xl">{{ instructionTitle }}</h1>
+      </div>
+      <div class="flex-shrink-0 w-[40px]"></div>
     </div>
     <div>
-      <v-text-field
-        hide-details="auto"
-        single-line
-        rounded="lg"
-        @input="changeSearchField"
-        label="Поиск"
-        prepend-inner-icon="mdi-text-box-search"
-        variant="outlined"
-        density="comfortable"
-      />
+      <div class="flex items-center gap-4">
+        <v-text-field
+          hide-details="auto"
+          single-line
+          rounded="lg"
+          @input="changeSearchField"
+          label="Поиск"
+          prepend-inner-icon="mdi-text-box-search"
+          variant="outlined"
+          density="comfortable"
+        />
+        <div v-if="User.hasPermission(User.ADMIN)">
+          <MyButton
+            prepend-icon="mdi-plus"
+            size="large"
+            @click="createSubinstructionModal = true"
+          >
+            Создать
+          </MyButton>
+        </div>
+      </div>
 
       <InstructionsList
         type="subinstruction"
-        :instructions="subinstructions!"
+        :instructions="subinstructions ?? []"
         :is-loading="isLoading"
+      />
+      <ModalsSubinstruction
+        v-if="createSubinstructionModal"
+        :dialog="createSubinstructionModal"
+        :instruction-id="instructionId"
+        @update:dialog="createSubinstructionModal = $event"
+        @on-create="getSubinstructionsHandle"
       />
     </div>
   </div>

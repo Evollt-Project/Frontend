@@ -9,7 +9,7 @@
     xmlns:xlink="http://www.w3.org/1999/xlink"
     viewBox="0 0 512 512"
     xml:space="preserve"
-    class="color-black dark:fill-white"
+    class="color-black dark:fill-white fill-black"
   >
     <g>
       <g>

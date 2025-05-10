@@ -2,7 +2,7 @@
 import type {
   RouteLocationAsPathGeneric,
   RouteLocationAsRelativeGeneric,
-} from "#vue-router";
+} from "vue-router";
 
 const props = defineProps<{
   to: string | RouteLocationAsRelativeGeneric | RouteLocationAsPathGeneric;
@@ -10,7 +10,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <NuxtLink v-bind="props" class="flex gap-3 items-center">
+  <NuxtLink v-bind="props" class="flex gap-1 items-center">
     <IconsBack />
     Назад
   </NuxtLink>

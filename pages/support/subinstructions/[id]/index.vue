@@ -27,7 +27,7 @@ useHead({
 
 <template>
   <div class="container">
-    <div class="flex items-center justify-between my-[30px]">
+    <div class="flex items-center justify-between mb-5">
       <MyBackButton
         :to="{
           name: 'support-subinstructions',
@@ -37,11 +37,10 @@ useHead({
         }"
         class="flex-shrink-0"
       />
-      <div class="text-center text-[24px] flex-grow mx-4">
+      <div class="text-2xl">
         {{ subinstruction?.title }}
       </div>
-
-      <div class="flex-shrink-0 w-[40px]"></div>
+      <div></div>
     </div>
 
     <MyMdPreview :text="subinstruction?.description" />

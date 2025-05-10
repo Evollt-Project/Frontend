@@ -1,20 +1,20 @@
 import type {
   IInstructionPayloadCreate,
-  IInstructionPayloadUpdate,
+  IInstructionPayloadDelete,
   IInstructionPayloadGetAll,
   IInstructionPayloadGetById,
-  IInstructionPayloadDelete,
+  IInstructionPayloadUpdate,
   IInstructionResponseCreate,
+  IInstructionResponseDelete,
   IInstructionResponseGetAll,
   IInstructionResponseGetById,
   IInstructionResponseUpdate,
-  IInstructionResponseDelete,
 } from "~/types/Instruction/type";
 
 export class Instruction {
   static readonly BASE_URL = "/api/v1/instruction";
 
-  static async getAll(params: IInstructionPayloadGetAll) {
+  static async getAll(params: IInstructionPayloadGetAll = {}) {
     return await useRequest<IInstructionResponseGetAll>({
       url: this.BASE_URL,
       params,
@@ -27,9 +27,6 @@ export class Instruction {
   static async getById({ id }: IInstructionPayloadGetById) {
     return await useRequest<IInstructionResponseGetById>({
       url: this.BASE_URL + "/" + id,
-    }).catch((response) => {
-      useErrorNotification(response.response.data);
-      return null;
     });
   }
 

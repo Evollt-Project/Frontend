@@ -5,8 +5,6 @@
     xmlns:xlink="http://www.w3.org/1999/xlink"
     width="24"
     height="24"
-    x="0"
-    y="0"
     viewBox="0 0 128 128"
     style="enable-background: new 0 0 512 512"
     xml:space="preserve"
@@ -21,4 +19,3 @@
     </g>
   </svg>
 </template>
-<script setup lang="ts"></script>

@@ -1,12 +1,12 @@
 import type {
   ISubinstructionPayloadCreate,
-  ISubinstructionPayloadUpdate,
-  ISubinstructionPayloadGetAll,
   ISubinstructionPayloadDelete,
+  ISubinstructionPayloadGetAll,
+  ISubinstructionPayloadUpdate,
   ISubinstructionResponseCreate,
+  ISubinstructionResponseDelete,
   ISubinstructionResponseGetAll,
   ISubinstructionResponseUpdate,
-  ISubinstructionResponseDelete,
 } from "~/types/Subinstruction/type";
 
 export class Subinstruction {
@@ -16,9 +16,6 @@ export class Subinstruction {
     return await useRequest<ISubinstructionResponseGetAll>({
       url: this.BASE_URL,
       params,
-    }).catch((response) => {
-      useErrorNotification(response.response.data);
-      return null;
     });
   }
 

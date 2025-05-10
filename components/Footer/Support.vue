@@ -38,5 +38,3 @@ const year = new Date().getFullYear();
     </div>
   </div>
 </template>
-
-<style scoped lang="scss"></style>

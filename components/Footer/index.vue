@@ -55,28 +55,16 @@ const socialLinks = computed(() => ({
         <div>
           <div class="flex gap-2 w-full flex-shrink-0">
             <a :href="socialLinks.vk" target="_blank">
-              <IconsVk height="1.60rem" width="1.60rem" class="flex-shrink-0" />
+              <IconsVk height="26px" width="26px" class="flex-shrink-0" />
             </a>
             <a :href="socialLinks.reddit" target="_blank">
-              <IconsReddit
-                height="1.60rem"
-                width="1.60rem"
-                class="flex-shrink-0"
-              />
+              <IconsReddit height="26px" width="26px" class="flex-shrink-0" />
             </a>
             <a :href="socialLinks.telegram" target="_blank">
-              <IconsTelegram
-                height="1.60rem"
-                width="1.60rem"
-                class="flex-shrink-0"
-              />
+              <IconsTelegram height="26px" width="26px" class="flex-shrink-0" />
             </a>
             <a :href="socialLinks.discord" target="_blank">
-              <IconsDiscord
-                height="1.60rem"
-                width="1.60rem"
-                class="flex-shrink-0"
-              />
+              <IconsDiscord height="26px" width="26px" class="flex-shrink-0" />
             </a>
           </div>
         </div>

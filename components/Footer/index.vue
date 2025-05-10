@@ -53,16 +53,16 @@ const year = new Date().getFullYear();
         <div>
           <div class="flex gap-2 w-full">
             <a :href="config.public.vk" target="_blank">
-              <IconsVk height="26px" width="26px" />
+              <IconsVk />
             </a>
             <a :href="config.public.reddit" target="_blank">
-              <IconsReddit height="26px" width="26px" />
+              <IconsReddit />
             </a>
             <a :href="config.public.telegram" target="_blank">
-              <IconsTelegram height="26px" width="26px" />
+              <IconsTelegram />
             </a>
             <a :href="config.public.discord" target="_blank">
-              <IconsDiscord height="26px" width="26px" />
+              <IconsDiscord />
             </a>
           </div>
         </div>

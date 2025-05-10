@@ -81,7 +81,7 @@ const { data: subinstructions } = await useAsyncData(
           }"
         />
       </div>
-      <div v-if="instructionId" class="">
+      <div v-if="instructionId">
         <h1 class="text-3xl">{{ instructionTitle }}</h1>
       </div>
       <div class="flex-shrink-0 w-[40px]"></div>

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 const config = useRuntimeConfig();
-const year = new Date().getFullYear();
 </script>
 
 <template>
@@ -28,7 +27,7 @@ const year = new Date().getFullYear();
       </a>
     </div>
     <div>
-      © {{ year }}
+      © {{ new Date().getFullYear() }}
       <a
         href="https://academy.evollt.ru/"
         class="underline hover:text-blue-400 transition-all"

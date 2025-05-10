@@ -1,6 +1,5 @@
 <script setup lang="ts">
 const config = useRuntimeConfig();
-const year = new Date().getFullYear();
 </script>
 
 <template>
@@ -14,13 +13,15 @@ const year = new Date().getFullYear();
             <IconsLogo />
           </div>
           <div class="header__title text-xl md:text-3xl">
-            {{ $config.public.app_name }}
+            {{ config.public.app_name }}
           </div>
         </div>
       </div>
       <div class="flex flex-col gap-2 whitespace-nowrap">
         <div class="font-semibold mb-2 text-xl">О компании</div>
-        <div>© {{ year }} Evollt Academy</div>
+        <div
+          >© {{ new Date().getFullYear() }} {{ config.public.app_name }}</div
+        >
         <div>
           <a href="" target="_blank">Пользовательское соглашение</a>
         </div>

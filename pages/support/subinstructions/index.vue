@@ -72,16 +72,19 @@ const { data: subinstructions } = await useAsyncData(
 </script>
 
 <template>
-  <div class="container mt-[30px]">
-    <div class="mb-[10px]" v-if="instructionId">
-      <MyBackButton
-        :to="{
-          name: 'support-instructions',
-        }"
-      />
-    </div>
-    <div v-if="instructionId" class="flex justify-center mb-5">
-      <h1 class="text-3xl">{{ instructionTitle }}</h1>
+  <div class="container">
+    <div class="mb-[40px] flex justify-between items-center">
+      <div v-if="instructionId">
+        <MyBackButton
+          :to="{
+            name: 'support-instructions',
+          }"
+        />
+      </div>
+      <div v-if="instructionId" class="">
+        <h1 class="text-3xl">{{ instructionTitle }}</h1>
+      </div>
+      <div class="flex-shrink-0 w-[40px]"></div>
     </div>
     <div>
       <div class="flex items-center gap-4">

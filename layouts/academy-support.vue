@@ -9,7 +9,7 @@ onMounted(() => {
 <template>
   <div class="min-h-screen flex flex-col">
     <Header />
-    <div class="main-content flex-grow">
+    <div class="main-content flex-grow pt-[40px]">
       <slot></slot>
     </div>
     <FooterSupport />

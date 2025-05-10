@@ -1,20 +1,39 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const config = useRuntimeConfig();
+</script>
 
 <template>
   <div
-    class="flex flex-col gap-3 bg-[#f5f5f5] dark:bg-[#171717] py-[20px] text-[13px] mt-12 align-center"
+    class="flex flex-col gap-3 dark:bg-neutral-900 bg-neutral-100 py-[20px] text-[13px] mt-12 align-center"
   >
-    <a class="underline hover:text-blue-400 transition-all" href="">
+    <a
+      class="underline hover:text-blue-400 transition-all"
+      href="mailto:support@evollt.ru"
+    >
       Отправить запрос в поддержку
     </a>
-    <div>сотсети</div>
+    <div class="flex gap-2 w-full justify-center">
+      <a :href="config.public.vk" target="_blank">
+        <IconsVk />
+      </a>
+      <a :href="config.public.reddit" target="_blank">
+        <IconsReddit />
+      </a>
+      <a :href="config.public.telegram" target="_blank">
+        <IconsTelegram />
+      </a>
+      <a :href="config.public.discord" target="_blank">
+        <IconsDiscord />
+      </a>
+    </div>
     <div>
-      © 2025
-      <a href="" class="underline hover:text-blue-400 transition-all">
+      © {{ new Date().getFullYear() }}
+      <a
+        href="https://academy.evollt.ru/"
+        class="underline hover:text-blue-400 transition-all"
+      >
         Evollt Academy
       </a>
     </div>
   </div>
 </template>
-
-<style scoped lang="scss"></style>

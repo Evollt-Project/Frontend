@@ -61,7 +61,7 @@ const { data: subinstructions } = await useAsyncData(
         },
       },
     }).then((response) => {
-      if (instructionId.value && response.data[0]) {
+      if (instructionId.value && response.data[0]?.instruction) {
         instructionTitle.value = response.data[0].instruction.title;
       }
 

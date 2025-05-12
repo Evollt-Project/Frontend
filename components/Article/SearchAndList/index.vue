@@ -3,16 +3,36 @@ import type {
   IArticlePayloadSearch,
   IArticleResponseGet,
 } from "~/types/Article/type";
+import { Article } from "~/composables/useArticle";
 
 const loading = ref<boolean>(false);
 const isFiltersOpen = ref<boolean>(false);
 
-const search: Ref<IArticlePayloadSearch> = ref({
+const filters = ref<IArticlePayloadSearch>({
   search: "",
-  min_price: 0,
+  has_certificate: false,
+  only_free: false,
+  price: { min: undefined, max: undefined }, // Явно задаём структуру
   levels: [],
   languages: [],
 });
+
+const page = ref(1);
+
+const getArticles = async () => {
+  loading.value = true;
+  try {
+    const response = await Article.getAll({
+      page: page.value,
+      ...sanitizeValue(filters.value),
+    });
+    if (response) {
+      articles.value = response;
+    }
+  } finally {
+    loading.value = false;
+  }
+};
 
 const { data: articles } = useAsyncData("articles-data", async () => {
   return await $fetch<IArticleResponseGet>("/apijs/request", {
@@ -25,8 +45,17 @@ const { data: articles } = useAsyncData("articles-data", async () => {
 const changeSearchField = useDebounceFn((event: InputEvent) => {
   const target = event.target as HTMLInputElement;
   if (target) {
+    getArticles(filters.value);
   }
 }, User.DEBOUNCE_DELAY);
+
+watch(
+  () => filters.value,
+  (newFilters) => {
+    getArticles();
+  },
+  { deep: true },
+);
 </script>
 
 <template>
@@ -40,6 +69,7 @@ const changeSearchField = useDebounceFn((event: InputEvent) => {
         prepend-inner-icon="mdi-text-box-search"
         variant="outlined"
         density="comfortable"
+        v-model="filters.search"
       ></v-text-field>
       <div class="sm:flex grid grid-cols-2 gap-[20px]">
         <MyButton size="large" @click="isFiltersOpen = true">
@@ -89,7 +119,7 @@ const changeSearchField = useDebounceFn((event: InputEvent) => {
   </div>
   <ArticleModalsFilters
     :dialog="isFiltersOpen"
-    :search="search"
+    :search="filters"
     :loading="loading"
     @update:dialog="isFiltersOpen = $event"
   />

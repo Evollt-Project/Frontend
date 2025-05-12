@@ -9,14 +9,20 @@ const props = defineProps<{
   search: IArticlePayloadSearch;
   loading?: boolean;
 }>();
+
 const emits = defineEmits(["update:dialog", "update:search"]);
 
-const dialog: Ref<boolean> = ref(props.dialog);
+const dialog = ref<boolean>(props.dialog);
 const { width } = useWindowSize();
-const isFormValid: Ref<boolean> = ref(false);
-const search = ref(props.search);
+const isFormValid = ref<boolean>(false);
+const search = ref<IArticlePayloadSearch>({
+  ...props.search,
+});
 
-const addTeacher = async () => {};
+const addTeacher = async () => {
+  emits("update:search", search.value);
+  dialog.value = false;
+};
 
 watch(dialog, (value) => {
   emits("update:dialog", value);
@@ -29,20 +35,28 @@ watch(
   },
 );
 
-watch(search, (value) => {
-  emits("update:dialog", value);
-});
+watch(
+  search,
+  (value) => {
+    emits("update:search", value); // Исправлено с update:dialog на update:search
+  },
+  { deep: true },
+);
 
 watch(
   () => props.search,
   (value) => {
-    search.value = value;
+    search.value = {
+      ...value,
+      price: value.price || { min: undefined, max: undefined },
+    };
   },
+  { deep: true },
 );
 
 const minMaxPriceText = computed(() => {
-  const minPrice = props.search.min_price;
-  const maxPrice = props.search.max_price;
+  const minPrice = search.value.price?.min; // Используем search.value вместо props.search
+  const maxPrice = search.value.price?.max;
 
   if (minPrice && maxPrice) {
     return `с ${minPrice} по ${maxPrice}`;
@@ -113,7 +127,7 @@ const languageText = computed(() => {
                 <template #panelContent>
                   <div class="flex gap-5">
                     <v-text-field
-                      v-model="search.min_price"
+                      v-model="search.price.min"
                       v-mask="['######']"
                       type="number"
                       rounded="lg"
@@ -123,7 +137,7 @@ const languageText = computed(() => {
                       density="comfortable"
                     />
                     <v-text-field
-                      v-model="search.max_price"
+                      v-model="search.price.max"
                       v-mask="['######']"
                       type="number"
                       rounded="lg"
@@ -169,12 +183,12 @@ const languageText = computed(() => {
               <ArticleModalsFiltersExpansion title="Дополнительно">
                 <template #panelContent>
                   <MySwitcher
-                    v-model="search.certificates"
-                    label="Только с сертификтом"
+                    v-model="search.has_certificate"
+                    label="Только с сертификатом"
                   />
                   <MySwitcher
-                    v-model="search.discount"
-                    label="Только со скидкой"
+                    v-model="search.only_free"
+                    label="Только бесплатные"
                   />
                 </template>
               </ArticleModalsFiltersExpansion>

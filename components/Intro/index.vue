@@ -4,7 +4,9 @@ import type { IArticlePayloadSearch } from "~/types/Article/type";
 const loading: Ref<boolean> = ref(false);
 const search: Ref<IArticlePayloadSearch> = ref({
   search: "",
-  min_price: 0,
+  price: {
+    min: 0,
+  },
   levels: [],
   languages: [],
 });

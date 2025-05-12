@@ -4,9 +4,7 @@ import type { IArticlePayloadSearch } from "~/types/Article/type";
 const loading: Ref<boolean> = ref(false);
 const search: Ref<IArticlePayloadSearch> = ref({
   search: "",
-  price: {
-    min: 0,
-  },
+  price: {},
   levels: [],
   languages: [],
 });
@@ -69,14 +67,17 @@ const validate = computed(() => {
               </MyButton>
             </div>
           </v-form>
+          {{ search }}
         </div>
       </div>
     </div>
     <ArticleModalsFilters
+      v-if="articleFiltersModal"
       :dialog="articleFiltersModal"
       :search="search"
       :loading="loading"
       @update:dialog="articleFiltersModal = $event"
+      @update:search="search = $event"
     />
   </div>
 </template>

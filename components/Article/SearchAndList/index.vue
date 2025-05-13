@@ -4,11 +4,29 @@ import type {
   IArticleResponseGet,
 } from "~/types/Article/type";
 import { Article } from "~/composables/useArticle";
+import { ArticleTypeEnum } from "~/enums/ArticleTypeEnum";
 
 const loading = ref<boolean>(false);
+const observer: Ref<HTMLDivElement | null> = ref(null);
 const isFiltersOpen = ref<boolean>(false);
+const page = ref<number>(1);
+
 const router = useRouter();
 const route = useRoute();
+
+useIntersectionObserver(observer, ([entry]) => {
+  console.log("observer");
+  console.log(entry?.isIntersecting);
+  if (
+    entry?.isIntersecting &&
+    articles &&
+    page.value < articles.value.meta.last_page
+  ) {
+    page.value += 1;
+    getArticles();
+    console.log(page.value);
+  }
+});
 
 const filters = ref<IArticlePayloadSearch>(
   route.query?.filters
@@ -34,33 +52,52 @@ const updateUrlParams = (params: IArticlePayloadSearch) => {
   });
 };
 
-const page = ref(1);
+// const getArticles = async () => {
+//   loading.value = true;
+//   try {
+//     const response = await Article.getAll({
+//       page: page.value,
+//       // ...sanitizeValue(filters.value),
+//     });
+//     if (response) {
+//       articles.value = response;
+//     }
+//   } finally {
+//     loading.value = false;
+//   }
+// };
 
 const getArticles = async () => {
   loading.value = true;
-  try {
-    const response = await Article.getAll({
-      page: page.value,
-      ...sanitizeValue(filters.value),
-    });
+  await Article.getAll({
+    page: page.value,
+    per_page: 12,
+    // ...sanitizeValue(filters.value),
+  }).then((response) => {
     if (response) {
+      if (articles.value) {
+        response.data = [...articles.value.data, ...response.data];
+      }
       articles.value = response;
     }
-  } finally {
     loading.value = false;
-  }
+  });
 };
 
 const { data: articles } = useAsyncData("articles-data", async () => {
   return await $fetch<IArticleResponseGet>("/apijs/request", {
     params: {
       url: "/api/v1/article",
+      params: {
+        per_page: 12,
+      },
     },
   });
 });
 
 const changeSearchField = useDebounceFn((event: InputEvent) => {
   const target = event.target as HTMLInputElement;
+  page.value = 1;
   if (target) {
     // Создаем копию текущих фильтров с обновленным поисковым запросом
     const updatedFilters = {
@@ -142,13 +179,13 @@ watch(
           <div v-for="_ in 3" v-if="loading">
             <ArticleSearchAndListSceleton />
           </div>
-          <div
-            ref="observer"
-            v-if="articles && articles.data.length > 0"
-            class="observer"
-          ></div>
         </div>
       </div>
+      <div
+        ref="observer"
+        v-if="articles && articles.data.length > 0"
+        class="observer"
+      ></div>
       <div
         v-if="articles && articles.data.length == 0"
         class="flex justify-center"

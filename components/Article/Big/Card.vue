@@ -10,7 +10,7 @@ defineProps<{
   <NuxtLink
     class="article rounded-3xl cursor-pointer dark:shadow-white max-w-[400px] transition duration-300 hover:shadow-custom h-full flex flex-col"
     :to="{
-      name: 'article-page',
+      name: 'courses-page',
       params: {
         id: article.id,
       },

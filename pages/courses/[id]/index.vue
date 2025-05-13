@@ -1,12 +1,13 @@
 <script setup lang="ts">
 definePageMeta({
-  layout: "course-sidebar",
-  name: "course",
+  name: "courses-page",
 });
-const router = useRouter();
-onBeforeMount(() => {
-  router.push({
-    name: "course-content",
-  });
-});
+
+const route = useRoute();
 </script>
+
+<template>
+  <div>Пост с id {{ route.params["id"] }}</div>
+</template>
+
+<style scoped lang="scss"></style>

@@ -3,9 +3,7 @@ const config = useRuntimeConfig();
 </script>
 
 <template>
-  <div
-    class="mt-[64px] p-[40px_20px_25px_20px] dark:bg-neutral-900 bg-neutral-100]"
-  >
+  <div class="mt-[64px] p-[40px_20px_25px_20px]">
     <div class="container flex lg:flex-row flex-col justify-between gap-5">
       <div class="flex flex-col gap-2 whitespace-nowrap">
         <div class="flex flex-row gap-5 items-center">

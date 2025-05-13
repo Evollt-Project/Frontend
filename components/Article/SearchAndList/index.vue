@@ -72,7 +72,7 @@ const getArticles = async () => {
   await Article.getAll({
     page: page.value,
     per_page: 12,
-    // ...sanitizeValue(filters.value),
+    ...sanitizeValue(filters.value),
   }).then((response) => {
     if (response) {
       if (articles.value) {
@@ -147,7 +147,7 @@ watch(
         variant="outlined"
         density="comfortable"
         v-model="filters.search"
-      ></v-text-field>
+      />
       <div class="sm:flex grid grid-cols-2 gap-[20px]">
         <MyButton size="large" @click="isFiltersOpen = true">
           <div class="flex justify-center items-center gap-2">

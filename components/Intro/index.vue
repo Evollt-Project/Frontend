@@ -11,10 +11,71 @@ const search: Ref<IArticlePayloadSearch> = ref({
 const searchCourses = () => {};
 const isFormValid = ref(false);
 const articleFiltersModal = ref(false);
+const page = ref<number>(1);
+
+const router = useRouter();
+const route = useRoute();
 
 const validate = computed(() => {
   return loading.value || !isFormValid;
 });
+
+const filters = ref<IArticlePayloadSearch>(
+  route.query?.filters
+    ? JSON.parse(route.query?.filters)
+    : {
+        search: "",
+        has_certificate: false,
+        only_free: false,
+        price: {
+          min: undefined,
+          max: undefined,
+        },
+        levels: [],
+        languages: [],
+      },
+);
+
+const updateUrlParams = (params: IArticlePayloadSearch) => {
+  router.push({
+    path: "/courses",
+    query: {
+      filters: JSON.stringify(params),
+    },
+  });
+};
+
+const changeSearchField = useDebounceFn((event: InputEvent) => {
+  const target = event.target as HTMLInputElement;
+  page.value = 1;
+  if (target) {
+    // Создаем копию текущих фильтров с обновленным поисковым запросом
+    const updatedFilters = {
+      ...sanitizeValue(filters.value),
+      search: target.value,
+    };
+
+    // Обновляем URL
+    router.push({
+      path: "/courses",
+      query: {
+        filters: JSON.stringify(updatedFilters),
+      },
+    });
+
+    // Обновляем локальное состояние фильтров
+    filters.value = updatedFilters;
+
+    // Не вызываем getArticles() здесь - это сделает watch на filters.value
+  }
+}, User.DEBOUNCE_DELAY);
+
+watch(
+  () => route.query,
+  () => {
+    filters.value = JSON.parse(route.query?.filters);
+  },
+);
 </script>
 
 <template>
@@ -37,15 +98,14 @@ const validate = computed(() => {
             class="flex sm:justify-between gap-[20px] sm:items-center flex-col sm:flex-row"
           >
             <v-text-field
-              v-model="search.search"
-              :disabled="loading"
               hide-details
               rounded="lg"
+              @input="changeSearchField"
               label="Поиск"
               prepend-inner-icon="mdi-text-box-search"
               variant="outlined"
               density="comfortable"
-              class="w-full"
+              v-model="filters.search"
             />
             <div class="sm:flex grid grid-cols-2 gap-[20px]">
               <MyButton size="large" @click="articleFiltersModal = true">
@@ -73,10 +133,10 @@ const validate = computed(() => {
     <ArticleModalsFilters
       v-if="articleFiltersModal"
       :dialog="articleFiltersModal"
-      :search="search"
+      :search="filters"
       :loading="loading"
       @update:dialog="articleFiltersModal = $event"
-      @update:search="search = $event"
+      @update:search="updateUrlParams"
     />
   </div>
 </template>

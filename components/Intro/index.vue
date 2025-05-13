@@ -67,7 +67,6 @@ const validate = computed(() => {
               </MyButton>
             </div>
           </v-form>
-          {{ search }}
         </div>
       </div>
     </div>

@@ -7,15 +7,32 @@ import { Article } from "~/composables/useArticle";
 
 const loading = ref<boolean>(false);
 const isFiltersOpen = ref<boolean>(false);
+const router = useRouter();
+const route = useRoute();
 
-const filters = ref<IArticlePayloadSearch>({
-  search: "",
-  has_certificate: false,
-  only_free: false,
-  price: { min: undefined, max: undefined }, // Явно задаём структуру
-  levels: [],
-  languages: [],
-});
+const filters = ref<IArticlePayloadSearch>(
+  route.query?.filters
+    ? JSON.parse(route.query?.filters)
+    : {
+        search: "",
+        has_certificate: false,
+        only_free: false,
+        price: {
+          min: undefined,
+          max: undefined,
+        },
+        levels: [],
+        languages: [],
+      },
+);
+
+const updateUrlParams = (params: IArticlePayloadSearch) => {
+  router.push({
+    query: {
+      filters: JSON.stringify(params),
+    },
+  });
+};
 
 const page = ref(1);
 
@@ -45,16 +62,39 @@ const { data: articles } = useAsyncData("articles-data", async () => {
 const changeSearchField = useDebounceFn((event: InputEvent) => {
   const target = event.target as HTMLInputElement;
   if (target) {
-    getArticles(filters.value);
+    // Создаем копию текущих фильтров с обновленным поисковым запросом
+    const updatedFilters = {
+      ...sanitizeValue(filters.value),
+      search: target.value,
+    };
+
+    // Обновляем URL
+    router.push({
+      query: {
+        filters: JSON.stringify(updatedFilters),
+      },
+    });
+
+    // Обновляем локальное состояние фильтров
+    filters.value = updatedFilters;
+
+    // Не вызываем getArticles() здесь - это сделает watch на filters.value
   }
 }, User.DEBOUNCE_DELAY);
 
 watch(
   () => filters.value,
-  (newFilters) => {
+  () => {
     getArticles();
   },
   { deep: true },
+);
+
+watch(
+  () => route.query,
+  () => {
+    filters.value = JSON.parse(route.query?.filters);
+  },
 );
 </script>
 
@@ -118,10 +158,12 @@ watch(
     </div>
   </div>
   <ArticleModalsFilters
+    v-if="isFiltersOpen"
     :dialog="isFiltersOpen"
     :search="filters"
     :loading="loading"
     @update:dialog="isFiltersOpen = $event"
+    @update:search="updateUrlParams"
   />
 </template>
 

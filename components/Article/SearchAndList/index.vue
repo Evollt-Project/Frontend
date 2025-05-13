@@ -131,7 +131,7 @@ watch(
         </MyButton>
       </div>
     </v-form>
-    <div class="my-[20px]">
+    <div class="mt-[40px] mb-[20px]">
       <div>
         <div class="courses__list">
           <ArticleBigCard

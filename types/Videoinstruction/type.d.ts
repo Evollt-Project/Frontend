@@ -9,7 +9,7 @@ export interface IVideoinstructionResponseBase extends IVideoinstruction {}
 export interface IVideoinstructionPayloadCreate
   extends IVideoinstructionPayloadBase {
   title: string;
-  platform: number;
+  platform: number | undefined;
   video_url: string;
 }
 

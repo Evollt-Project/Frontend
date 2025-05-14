@@ -30,9 +30,9 @@ defineProps<{
       </p>
       <div class="article-content__cover">
         <img
+          v-if="article.avatar"
           :src="photoUrl(article.avatar)"
           class="w-20 h-20 object-cover rounded-2xl"
-          v-if="article.avatar"
           alt=""
         />
         <div

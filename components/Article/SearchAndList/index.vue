@@ -1,78 +1,72 @@
 <script setup lang="ts">
+import { Article } from "~/composables/useArticle";
 import type {
   IArticlePayloadSearch,
-  IArticleResponseGet,
+  IArticleResponseSearch,
 } from "~/types/Article/type";
-import { Article } from "~/composables/useArticle";
-import { ArticleTypeEnum } from "~/enums/ArticleTypeEnum";
 
 const loading = ref<boolean>(false);
 const observer: Ref<HTMLDivElement | null> = ref(null);
 const isFiltersOpen = ref<boolean>(false);
 const page = ref<number>(1);
+const isFormValid = ref(false);
 
 const router = useRouter();
 const route = useRoute();
 
 useIntersectionObserver(observer, ([entry]) => {
-  console.log("observer");
-  console.log(entry?.isIntersecting);
   if (
     entry?.isIntersecting &&
     articles &&
-    page.value < articles.value.meta.last_page
+    page.value < articles.value!.meta.last_page
   ) {
     page.value += 1;
     getArticles();
-    console.log(page.value);
   }
 });
 
+const initialFilters = computed((): IArticlePayloadSearch => {
+  return {
+    search: "",
+    has_certificate: false,
+    only_free: false,
+    price: {
+      min: undefined,
+      max: undefined,
+    },
+    levels: [],
+    languages: [],
+  };
+});
+
 const filters = ref<IArticlePayloadSearch>(
-  route.query?.filters
-    ? JSON.parse(route.query?.filters)
-    : {
-        search: "",
-        has_certificate: false,
-        only_free: false,
-        price: {
-          min: undefined,
-          max: undefined,
-        },
-        levels: [],
-        languages: [],
-      },
+  route.query["filters"]
+    ? JSON.parse(String(route.query["filters"]))
+    : initialFilters.value,
 );
 
-const updateUrlParams = (params: IArticlePayloadSearch) => {
+const updateUrlParams = () => {
   router.push({
     query: {
-      filters: JSON.stringify(params),
+      filters: JSON.stringify(filters.value),
     },
   });
 };
-
-// const getArticles = async () => {
-//   loading.value = true;
-//   try {
-//     const response = await Article.getAll({
-//       page: page.value,
-//       // ...sanitizeValue(filters.value),
-//     });
-//     if (response) {
-//       articles.value = response;
-//     }
-//   } finally {
-//     loading.value = false;
-//   }
-// };
 
 const getArticles = async () => {
   loading.value = true;
   await Article.getAll({
     page: page.value,
     per_page: 12,
-    ...sanitizeValue(filters.value),
+    search: sanitizeValue(filters.value.search),
+    has_certificate: sanitizeValue(filters.value.has_certificate),
+    only_free: sanitizeValue(filters.value.only_free),
+    price: {
+      min: sanitizeValue(filters.value.price?.min),
+      max: sanitizeValue(filters.value.price?.max),
+    },
+    levels: sanitizeValue(filters.value.levels),
+    languages: sanitizeValue(filters.value.languages),
   }).then((response) => {
     if (response) {
       if (articles.value) {
@@ -85,7 +79,7 @@ const getArticles = async () => {
 };
 
 const { data: articles } = useAsyncData("articles-data", async () => {
-  return await $fetch<IArticleResponseGet>("/apijs/request", {
+  return await $fetch<IArticleResponseSearch>("/apijs/request", {
     params: {
       url: "/api/v1/article",
       params: {
@@ -95,58 +89,35 @@ const { data: articles } = useAsyncData("articles-data", async () => {
   });
 });
 
-const changeSearchField = useDebounceFn((event: InputEvent) => {
-  const target = event.target as HTMLInputElement;
-  page.value = 1;
-  if (target) {
-    // Создаем копию текущих фильтров с обновленным поисковым запросом
-    const updatedFilters = {
-      ...sanitizeValue(filters.value),
-      search: target.value,
-    };
-
-    // Обновляем URL
-    router.push({
-      query: {
-        filters: JSON.stringify(updatedFilters),
-      },
-    });
-
-    // Обновляем локальное состояние фильтров
-    filters.value = updatedFilters;
-
-    // Не вызываем getArticles() здесь - это сделает watch на filters.value
-  }
-}, User.DEBOUNCE_DELAY);
-
-watch(
-  () => filters.value,
-  () => {
-    getArticles();
-  },
-  { deep: true },
-);
-
 watch(
   () => route.query,
   () => {
-    filters.value = JSON.parse(route.query?.filters);
+    filters.value = route.query["filters"]
+      ? JSON.parse(String(route.query["filters"]))
+      : initialFilters.value;
+
+    articles.value = null;
+    getArticles();
   },
 );
 </script>
 
 <template>
   <div class="courses">
-    <v-form fast-fail ref="form" class="my-4 flex gap-4" @submit.prevent>
+    <v-form
+      v-model="isFormValid"
+      fast-fail
+      class="my-4 flex gap-4"
+      @submit.prevent="updateUrlParams"
+    >
       <v-text-field
+        v-model="filters.search"
         hide-details
         rounded="lg"
-        @input="changeSearchField"
         label="Поиск"
         prepend-inner-icon="mdi-text-box-search"
         variant="outlined"
         density="comfortable"
-        v-model="filters.search"
       />
       <div class="sm:flex grid grid-cols-2 gap-[20px]">
         <MyButton size="large" @click="isFiltersOpen = true">
@@ -158,7 +129,7 @@ watch(
         <MyButton
           size="large"
           type="submit"
-          :disabled="validate"
+          :disabled="!isFormValid"
           :loading="loading"
         >
           <div class="flex justify-center items-center gap-2">
@@ -172,6 +143,7 @@ watch(
       <div>
         <div class="courses__list">
           <ArticleBigCard
+            v-if="articles?.data"
             v-for="(item, index) in articles.data"
             :key="index"
             :article="item"
@@ -200,7 +172,7 @@ watch(
     :search="filters"
     :loading="loading"
     @update:dialog="isFiltersOpen = $event"
-    @update:search="updateUrlParams"
+    @update:search="filters = $event"
   />
 </template>
 

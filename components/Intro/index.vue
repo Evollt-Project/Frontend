@@ -2,80 +2,28 @@
 import type { IArticlePayloadSearch } from "~/types/Article/type";
 
 const loading: Ref<boolean> = ref(false);
-const search: Ref<IArticlePayloadSearch> = ref({
+const router = useRouter();
+const filters: Ref<IArticlePayloadSearch> = ref({
   search: "",
-  price: {},
+  has_certificate: false,
+  only_free: false,
+  price: {
+    min: undefined,
+    max: undefined,
+  },
   levels: [],
   languages: [],
 });
-const searchCourses = () => {};
-const isFormValid = ref(false);
-const articleFiltersModal = ref(false);
-const page = ref<number>(1);
-
-const router = useRouter();
-const route = useRoute();
-
-const validate = computed(() => {
-  return loading.value || !isFormValid;
-});
-
-const filters = ref<IArticlePayloadSearch>(
-  route.query?.filters
-    ? JSON.parse(route.query?.filters)
-    : {
-        search: "",
-        has_certificate: false,
-        only_free: false,
-        price: {
-          min: undefined,
-          max: undefined,
-        },
-        levels: [],
-        languages: [],
-      },
-);
-
-const updateUrlParams = (params: IArticlePayloadSearch) => {
+const searchCourses = () => {
   router.push({
-    path: "/courses",
+    name: "courses",
     query: {
-      filters: JSON.stringify(params),
+      filters: JSON.stringify(filters.value),
     },
   });
 };
-
-const changeSearchField = useDebounceFn((event: InputEvent) => {
-  const target = event.target as HTMLInputElement;
-  page.value = 1;
-  if (target) {
-    // Создаем копию текущих фильтров с обновленным поисковым запросом
-    const updatedFilters = {
-      ...sanitizeValue(filters.value),
-      search: target.value,
-    };
-
-    // Обновляем URL
-    router.push({
-      path: "/courses",
-      query: {
-        filters: JSON.stringify(updatedFilters),
-      },
-    });
-
-    // Обновляем локальное состояние фильтров
-    filters.value = updatedFilters;
-
-    // Не вызываем getArticles() здесь - это сделает watch на filters.value
-  }
-}, User.DEBOUNCE_DELAY);
-
-watch(
-  () => route.query,
-  () => {
-    filters.value = JSON.parse(route.query?.filters);
-  },
-);
+const isFormValid = ref(false);
+const articleFiltersModal = ref(false);
 </script>
 
 <template>
@@ -98,14 +46,13 @@ watch(
             class="flex sm:justify-between gap-[20px] sm:items-center flex-col sm:flex-row"
           >
             <v-text-field
+              v-model="filters.search"
               hide-details
               rounded="lg"
-              @input="changeSearchField"
               label="Поиск"
               prepend-inner-icon="mdi-text-box-search"
               variant="outlined"
               density="comfortable"
-              v-model="filters.search"
             />
             <div class="sm:flex grid grid-cols-2 gap-[20px]">
               <MyButton size="large" @click="articleFiltersModal = true">
@@ -114,12 +61,7 @@ watch(
                   <span class="hidden xs:block"> Фильтры </span>
                 </div>
               </MyButton>
-              <MyButton
-                size="large"
-                type="submit"
-                :disabled="validate"
-                :loading="loading"
-              >
+              <MyButton size="large" type="submit" :loading="loading">
                 <div class="flex justify-center items-center gap-2">
                   <v-icon icon="mdi-magnify"></v-icon>
                   <span class="hidden xs:block"> Искать </span>
@@ -136,9 +78,7 @@ watch(
       :search="filters"
       :loading="loading"
       @update:dialog="articleFiltersModal = $event"
-      @update:search="updateUrlParams"
+      @update:search="filters = $event"
     />
   </div>
 </template>
-
-<style scoped lang="scss"></style>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 definePageMeta({
-  name: "courses-page",
+  name: "current-course",
 });
 
 const route = useRoute();

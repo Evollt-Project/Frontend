@@ -58,4 +58,4 @@ export interface IArticlePayloadSearch extends IArticlePayloadBase {
   languages: LanguageId[];
 }
 
-export interface IArticleResponseSearch extends IArticleResponseBase {}
+export interface IArticleResponseSearch extends IPagination<IArticle> {}

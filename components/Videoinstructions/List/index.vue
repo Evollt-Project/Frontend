@@ -5,6 +5,11 @@ defineProps<{
   videoinstructions: IVideoinstruction[];
   isLoading: boolean;
 }>();
+const emit = defineEmits(["update:videoinstruction"]);
+
+const updateVideoinstructions = () => {
+  emit("update:videoinstruction");
+};
 </script>
 
 <template>
@@ -20,6 +25,7 @@ defineProps<{
       v-for="(item, index) in videoinstructions"
       :key="index"
       :videoinstuction="item"
+      @update:videoinstructions="updateVideoinstructions"
     />
   </div>
   <div v-else class="flex justify-center mt-5">

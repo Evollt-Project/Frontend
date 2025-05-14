@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import type { IVideoinstructionResponseGetAll } from "~/types/Videoinstruction/type";
+import type {
+  IVideoinstructionPayloadGetAll,
+  IVideoinstructionResponseGetAll,
+} from "~/types/Videoinstruction/type";
 
 definePageMeta({
   layout: "academy-support",
@@ -16,28 +19,30 @@ const { data: videoinstructions } = useAsyncData(
       params: {
         url: "/api/v1/videoinstruction",
         params: {
-          per_page: 12,
+          per_page: 10000,
         },
       },
     });
   },
 );
 
-// const getVideoinstructionsHandle = async (params: IInstructionPayloadGetAll) => {
-//   if (isLoading.value) return;
-//
-//   isLoading.value = true;
-//   const res = await Instruction.getAll({
-//     per_page: 10000,
-//     ...params,
-//   });
-//
-//   if (res) {
-//     instructions.value = res.data;
-//   }
-//
-//   isLoading.value = false;
-// };
+const getVideoinstructionsHandle = async (
+  params: IVideoinstructionPayloadGetAll,
+) => {
+  if (isLoading.value) return;
+
+  isLoading.value = true;
+  const res = await Videoinstruction.getAll({
+    per_page: 10000,
+    ...params,
+  });
+
+  if (res) {
+    videoinstructions.value = res.data;
+  }
+
+  isLoading.value = false;
+};
 </script>
 
 <template>
@@ -56,8 +61,9 @@ const { data: videoinstructions } = useAsyncData(
     </div>
 
     <VideoinstructionsList
-      :videoinstructions="videoinstructions ?? []"
+      :videoinstructions="videoinstructions?.data ?? []"
       :is-loading="isLoading"
+      @update:videoinstruction="getVideoinstructionsHandle"
     />
 
     <ModalsVideoinstructions

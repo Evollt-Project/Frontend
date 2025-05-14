@@ -39,7 +39,7 @@ export interface IVideoinstructionPayloadGetById
 }
 
 export interface IVideoinstructionResponseGetById
-  extends IPagination<IVideoinstructionResponseBase> {}
+  extends IVideoinstructionResponseBase {}
 
 export interface IVideoinstructionPayloadDelete
   extends IVideoinstructionPayloadBase {

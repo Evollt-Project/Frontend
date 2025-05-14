@@ -75,5 +75,3 @@ const deleteInstruction = async () => {
     </template>
   </ModalsConfirmAction>
 </template>
-
-<style scoped lang="scss"></style>

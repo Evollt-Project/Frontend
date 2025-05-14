@@ -18,7 +18,7 @@ const updateVideoinstructions = () => {
     class="mt-12 grid grid-cols-[repeat(auto-fit,minmax(293px,1fr))] sm:grid-cols-[repeat(auto-fit,minmax(400px,1fr))] gap-6"
   >
     <div v-if="isLoading" v-for="_ in 3">
-      <InstructionsCardSkeleton />
+      <VideoinstructionsCardSkeleton />
     </div>
     <VideoinstructionsCard
       v-else
@@ -32,5 +32,3 @@ const updateVideoinstructions = () => {
     <h3 class="text-xl">Ничего не найдено</h3>
   </div>
 </template>
-
-<style scoped lang="scss"></style>

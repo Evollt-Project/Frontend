@@ -45,6 +45,7 @@ const deleteInstruction = async () => {
         </div>
       </div>
       <iframe
+        v-if="videoinstuction.platform === 1"
         width="100%"
         height="350"
         :src="videoinstuction.video_url"
@@ -53,16 +54,15 @@ const deleteInstruction = async () => {
         webkitAllowFullScreen
         mozallowfullscreen
         allowFullScreen
-        v-if="videoinstuction.platform === 1"
       ></iframe>
     </div>
   </div>
   <ModalsVideoinstructions
     v-if="isEditModalOpen"
     :dialog="isEditModalOpen"
+    :videoinstruction="videoinstuction"
     @update:dialog="isEditModalOpen = $event"
     @on-create="getVideoinstructionsHandle"
-    :videoinstruction="videoinstuction"
   />
   <ModalsConfirmAction
     :dialog="isDeleteModalOpen"

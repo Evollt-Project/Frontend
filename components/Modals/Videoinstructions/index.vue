@@ -77,7 +77,7 @@ const submitVideoinstruction = () => {
 <template>
   <component
     :is="width > MOBILE_VERSION_WIDTH ? VDialog : VBottomSheet"
-    :max-width="width > MOBILE_VERSION_WIDTH ? 1500 : MOBILE_VERSION_WIDTH"
+    :max-width="width > MOBILE_VERSION_WIDTH ? 500 : MOBILE_VERSION_WIDTH"
     v-model="dialog"
     persistent
   >
@@ -109,7 +109,7 @@ const submitVideoinstruction = () => {
             class="grid gap-5"
             @submit.prevent="submitVideoinstruction"
           >
-            <div class="grid grid-cols-2 gap-5">
+            <div class="flex flex-col gap-5">
               <div>
                 <v-text-field
                   hide-details="auto"
@@ -122,16 +122,14 @@ const submitVideoinstruction = () => {
               </div>
               <div>
                 <v-text-field
+                  v-model="data.video_url"
+                  :rules="[Rule.getRequired(), Rule.url]"
                   hide-details="auto"
                   rounded="lg"
                   label="Url видео"
-                  :rules="Rule.getRequired()"
                   variant="outlined"
-                  v-model="data.video_url"
                 />
               </div>
-            </div>
-            <div>
               <v-select
                 v-model="data.platform"
                 :items="platformItems"

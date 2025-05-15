@@ -6,11 +6,16 @@ export class Rule {
     /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
     "Почта должна иметь валидную форму";
 
+  public static url = (value: string) =>
+    /(https?:\/\/[^\s]+)/g.test(value) || "Это поле должно содержать url";
+
   public static required = (value: string) =>
     !!value || "Это поле обязательно для заполнения";
+
   public static phone = (value: string) =>
     (!!value && value.length === 18) ||
     "Поле с номером телефона должно содержать 11 цифр";
+
   public static maxLength = (value: string, length: number) =>
     (value && value.length <= length) ||
     `Максимальное значение поля не должно превышать ${length} ${useNoun(

@@ -9,7 +9,7 @@ export interface IVideoinstructionResponseBase extends IVideoinstruction {}
 export interface IVideoinstructionPayloadCreate
   extends IVideoinstructionPayloadBase {
   title: string;
-  platform: number | undefined;
+  platform?: IEnum["video_platforms"];
   video_url: string;
 }
 
@@ -19,8 +19,8 @@ export interface IVideoinstructionResponseCreate
 export interface IVideoinstructionPayloadUpdate
   extends IVideoinstructionPayloadBase {
   id: number;
-  title: string;
-  platform?: number;
+  title?: string;
+  platform?: IEnum["video_platforms"];
   video_url?: string;
 }
 

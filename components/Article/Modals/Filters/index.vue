@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useWindowSize } from "@vueuse/core";
+import { cloneDeep } from "lodash";
 import { VBottomSheet, VDialog } from "vuetify/components";
 import { MOBILE_VERSION_WIDTH } from "~/consts/config";
 import type { IArticlePayloadSearch } from "~/types/Article/type";
@@ -9,14 +10,22 @@ const props = defineProps<{
   search: IArticlePayloadSearch;
   loading?: boolean;
 }>();
+
 const emits = defineEmits(["update:dialog", "update:search"]);
 
-const dialog: Ref<boolean> = ref(props.dialog);
+const dialog = ref<boolean>(props.dialog);
 const { width } = useWindowSize();
-const isFormValid: Ref<boolean> = ref(false);
-const search = ref(props.search);
+const isFormValid = ref<boolean>(false);
+const search = ref<IArticlePayloadSearch>(cloneDeep(props.search));
 
-const addTeacher = async () => {};
+const applyFilters = () => {
+  emits("update:search", search.value);
+  dialog.value = false;
+};
+
+const denyFilters = () => {
+  dialog.value = false;
+};
 
 watch(dialog, (value) => {
   emits("update:dialog", value);
@@ -29,20 +38,9 @@ watch(
   },
 );
 
-watch(search, (value) => {
-  emits("update:dialog", value);
-});
-
-watch(
-  () => props.search,
-  (value) => {
-    search.value = value;
-  },
-);
-
 const minMaxPriceText = computed(() => {
-  const minPrice = props.search.min_price;
-  const maxPrice = props.search.max_price;
+  const minPrice = search.value.price?.min;
+  const maxPrice = search.value.price?.max;
 
   if (minPrice && maxPrice) {
     return `с ${minPrice} по ${maxPrice}`;
@@ -103,7 +101,7 @@ const languageText = computed(() => {
           <v-form
             v-model="isFormValid"
             class="grid gap-5"
-            @submit.prevent="addTeacher"
+            @submit.prevent="applyFilters"
           >
             <v-expansion-panels>
               <ArticleModalsFiltersExpansion
@@ -113,9 +111,8 @@ const languageText = computed(() => {
                 <template #panelContent>
                   <div class="flex gap-5">
                     <v-text-field
-                      v-model="search.min_price"
+                      v-model="search.price!.min"
                       v-mask="['######']"
-                      type="number"
                       rounded="lg"
                       label="Минимальная стоимость"
                       :loading="loading"
@@ -123,9 +120,8 @@ const languageText = computed(() => {
                       density="comfortable"
                     />
                     <v-text-field
-                      v-model="search.max_price"
+                      v-model="search.price!.max"
                       v-mask="['######']"
-                      type="number"
                       rounded="lg"
                       label="Максимальная стоимость"
                       :loading="loading"
@@ -169,18 +165,18 @@ const languageText = computed(() => {
               <ArticleModalsFiltersExpansion title="Дополнительно">
                 <template #panelContent>
                   <MySwitcher
-                    v-model="search.certificates"
-                    label="Только с сертификтом"
+                    v-model="search.has_certificate"
+                    label="Только с сертификатом"
                   />
                   <MySwitcher
-                    v-model="search.discount"
-                    label="Только со скидкой"
+                    v-model="search.only_free"
+                    label="Только бесплатные"
                   />
                 </template>
               </ArticleModalsFiltersExpansion>
             </v-expansion-panels>
             <div class="flex justify-end gap-5">
-              <MyButton @click="dialog = false"> Отменить </MyButton>
+              <MyButton @click="denyFilters"> Отменить </MyButton>
               <MyButton type="submit"> Применить </MyButton>
             </div>
           </v-form>

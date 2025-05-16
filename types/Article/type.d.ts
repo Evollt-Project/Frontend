@@ -48,13 +48,14 @@ export interface IArticleResponseGet extends IArticleResponseBase {}
 
 export interface IArticlePayloadSearch extends IArticlePayloadBase {
   search: string;
-  certificates?: boolean;
-  discount?: boolean;
-  free?: boolean;
-  min_price?: number;
-  max_price?: number;
+  has_certificate?: boolean;
+  only_free?: boolean;
+  price?: {
+    min?: number;
+    max?: number;
+  };
   levels: LevelId[];
   languages: LanguageId[];
 }
 
-export interface IArticleResponseSearch extends IArticleResponseBase {}
+export interface IArticleResponseSearch extends IPagination<IArticle> {}

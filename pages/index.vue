@@ -57,6 +57,7 @@ const { data: businessCatalog } = useAsyncData("business-catalog", async () => {
       <Intro class="mb-5" />
 
       <ArticleCategoryList
+        v-if="onlineCourses.length"
         title="Онлайн-курсы"
         :article-categories="onlineCourses"
       />
@@ -73,7 +74,7 @@ const { data: businessCatalog } = useAsyncData("business-catalog", async () => {
         :categories="businessCatalog.categories"
       />
 
-      <AboutCoursesCardList/>
+      <AboutCoursesCardList />
     </div>
   </div>
 </template>

@@ -36,6 +36,11 @@ const config = useRuntimeConfig();
         <div>
           <NuxtLink>Контакты</NuxtLink>
         </div>
+        <div>
+          <NuxtLink :to="{ name: 'support-videoinstructions' }"
+            >Видеоинструкции</NuxtLink
+          >
+        </div>
       </div>
 
       <div class="flex flex-col gap-2 whitespace-nowrap">

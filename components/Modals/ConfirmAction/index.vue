@@ -5,7 +5,7 @@ import { MOBILE_VERSION_WIDTH } from "~/consts/config";
 
 const props = defineProps<{
   dialog: boolean;
-  loading: boolean;
+  loading?: boolean;
 }>();
 const emits = defineEmits(["dialog", "action"]);
 

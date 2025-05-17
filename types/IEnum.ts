@@ -9,4 +9,5 @@ export interface IEnum {
   certificate_types: EnumValues<0 | 1 | 2>;
   languages: ILanguage[];
   levels: ILevel[];
+  video_platforms: EnumValues<1>;
 }
